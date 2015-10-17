@@ -1,0 +1,15 @@
+
+### PhpStorm ###
+*.iml
+.idea/
+*.ipr
+*.iws
+.idea_modules/
+
+
+### NetBeans ###
+nbproject/
+
+
+### Vagrant ###
+.vagrant/
