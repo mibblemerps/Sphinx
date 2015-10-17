@@ -65,7 +65,7 @@ apache_go() {
         ErrorLog /var/log/apache2/error.log
         CustomLog /var/log/apache2/access.log combined
 
-        <Directory /vagrant/src>
+        <Directory />
             AllowOverride All
             Require all granted
         </Directory>
