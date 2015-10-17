@@ -66,6 +66,7 @@ apache_go() {
         CustomLog /var/log/apache2/access.log combined
 
         <Directory /vagrant/src>
+			Options Indexes FollowSymLinks MultiViews
             AllowOverride All
             Require all granted
         </Directory>
