@@ -65,12 +65,8 @@ apache_go() {
         ErrorLog /var/log/apache2/error.log
         CustomLog /var/log/apache2/access.log combined
 
-<<<<<<< HEAD
         <Directory /vagrant/src>
 			Options Indexes FollowSymLinks MultiViews
-=======
-        <Directory />
->>>>>>> dcd27b81e6e6ec29d8f38a4719815b67677e4d24
             AllowOverride All
             Require all granted
         </Directory>
