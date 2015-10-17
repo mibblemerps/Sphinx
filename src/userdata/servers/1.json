@@ -1,0 +1,30 @@
+{
+    "id": 1,
+    "name": "Potatocraft",
+    "motd": "Potatos have lots of calories.",
+    "state": "open",
+    "ipaddress": "potatocraft.pw:25565",
+    "players": [
+        {
+            "name": "mitchfizz05",
+            "uuid": "b6284cef69f440d2873054053b1a925d"
+        },
+        {
+            "name": "Notch",
+            "uuid": "069a79f444e94726a5befca90e38aaf5"
+        },
+        {
+            "name": "mindlux",
+            "uuid": "27cf5429ec01499a9edf23b47df8d4f5"
+        },
+        {
+            "name": "Spazzer400",
+            "uuid": "061e5603aa7b4455910a5547e2160ebc"
+        }
+    ],
+    "ops": [
+        "b6284cef69f440d2873054053b1a925d",
+        "069a79f444e94726a5befca90e38aaf5"
+    ],
+    "owner": "b6284cef69f440d2873054053b1a925d"
+}
