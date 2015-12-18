@@ -1,7 +1,0 @@
-
-# Rewrite everything to the request handler.
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([^?]*)$ /handler.php?path=$1 [NC,L,QSA]
-
