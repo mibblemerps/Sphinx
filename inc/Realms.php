@@ -35,9 +35,9 @@ class Realms {
     
     /**
      * Realms logger.
-     * @var \Log
+     * @var \Logger
      */
-    public static $log;
+    public static $logger;
     
     /**
      * Realms configuration.
@@ -55,7 +55,7 @@ class Realms {
     
     public static function init() {
         if (self::$hasinit) { return false; }
-        
+
         // Load configuration.
         self::$config = new Config('realms.ini');
         if (!self::$config->get('general', 'service_requests')) { // Service unavaliable. :(
@@ -63,7 +63,10 @@ class Realms {
             echo 'service unavaliable';
             exit; // terminate here.
         }
-        
+
+        // Load logger.
+        self::$logger = new Logger(self::$config->get('general', 'log_path'));
+
         // Load request registry
         self::$requestRegistry = new RequestRegistry(); // create request registry instance
         

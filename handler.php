@@ -1,5 +1,4 @@
 <?php
-$loghandeler = file_get_contents('request_log.txt');
 
 /* 
  * The MIT License
@@ -44,6 +43,15 @@ function __autoload($classname) {
 require_once 'inc/Realms.php';
 Realms::init(); // initilize Realms.
 
+/**
+ * Convenience function for logging.
+ *
+ * @return \Logger
+ */
+function logger() {
+    return Realms::$logger;
+}
+
 // Sent our footprint.
 header('X-Powered-By: Realms ' . Realms::VERSION . ' http://github.com/mitchfizz05/Realms');
 
@@ -64,8 +72,12 @@ $resp = Realms::$requestRegistry->handle($request);
 
 if ($resp === null) {
     // Bad request.
+    logger()->warn('Unrouted request: "' . $requestpath . '"!');
     http_response_code(404); // 404 Not Found
     exit; // blank response.
+} else {
+    // Request successfully processed
+    logger()->debug('Request: "' . $requestpath . '".');
 }
 
 
@@ -75,4 +87,3 @@ header('Content-Type: ' . $resp->contenttype);
 
 echo $resp->contentbody; // send content body
 
-file_put_contents('request_log.txt', $loghandeler . '|' . $requestpath);
