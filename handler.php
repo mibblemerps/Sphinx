@@ -58,7 +58,7 @@ if (isset($_COOKIE['sid'], $_COOKIE['user'], $_COOKIE['version'])) {
 
 
 // Handle request.
-$requestpath = '/' . $_GET['path'];
+$requestpath = $_SERVER['REQUEST_URI'];
 $request = new HTTPRequest($requestpath, apache_request_headers()); // create http request object
 $resp = Realms::$requestRegistry->handle($request);
 
