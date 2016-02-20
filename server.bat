@@ -1,0 +1,1 @@
+php -S localhost:80 handler.php
