@@ -35,11 +35,7 @@ use Sphinx\Http\Request;
 /**
  * Autoloader
  */
-spl_autoload_register(function($class) {
-    $parts = explode('\\', $class);
-    array_shift($parts);
-    require 'inc/' . implode('/', $parts) . '.php';
-});
+require 'vendor/autoload.php';
 
 // Load helpers
 foreach (scandir('inc/_helpers') as $filename) {

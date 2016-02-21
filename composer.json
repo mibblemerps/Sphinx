@@ -1,0 +1,19 @@
+{
+    "name": "mitchfizz05/sphinx",
+    "description": "Run your own Minecraft Realms endpoint.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mitchfizz05",
+            "email": "me@mitchfizz05.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+	"autoload": {
+		"psr-4": {
+			"Sphinx\\": "inc/"
+		}
+	}
+}

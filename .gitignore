@@ -2,3 +2,5 @@ request_log.txt
 sphinx.log
 user.txt
 .idea/
+
+/vendor/
