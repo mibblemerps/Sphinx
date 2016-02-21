@@ -1,7 +1,7 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "name": "mitchfizz05/sphinx",
+    "description": "Run your own Minecraft Realms endpoint!",
+    "keywords": ["minecraft", "server", "realms"],
     "license": "MIT",
     "type": "project",
     "require": {
