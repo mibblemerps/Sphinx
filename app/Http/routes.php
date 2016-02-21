@@ -11,7 +11,7 @@ $app->get('/', function () {
 // Availability.
 $app->get('/mco/available', 'AvailableController@available');
 $app->get('/mco/client/compatible', 'CompatibleController@compatible');
-$app->get('/StageAvailable', 'AvailableController@stagingAvailable');
+$app->get('/mco/stageAvailable', 'AvailableController@stagingAvailable');
 $app->get('/regions/ping/stat', 'PingController@ping');
 $app->get('/trial', 'TrialController@check');
 
