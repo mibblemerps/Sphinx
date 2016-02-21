@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx;
+namespace Sphinx\Realms;
 
 /*
  * The MIT License

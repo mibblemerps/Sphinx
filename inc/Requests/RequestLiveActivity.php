@@ -3,6 +3,7 @@
 namespace Sphinx\Requests;
 
 use Sphinx\Http\Response;
+use Sphinx\Realms\lists;
 
 /*
  * The MIT License

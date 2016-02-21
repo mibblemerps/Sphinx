@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx;
+namespace Sphinx\Realms;
 
 /*
  * The MIT License
@@ -27,22 +27,27 @@ namespace Sphinx;
  */
 
 /**
- * A Invite instance.
+ * Client session with Realms API.
+ *
+ * @author Mitchfizz05
  */
-class lists {
+class Session {
     /**
-     * ID of the Server(?).
+     * Minecraft session ID. The client obtains this token when they login at the launcher.
+     * @var string 
      */
-    public $serverId;
+    public $sessionid;
     
     /**
-     * Player list we are prop not gonna use xD
+     * The players username. This can change due to name changes, therefore do not rely on this to stay the same.
+     * @var string
      */
-    public $playerList;
+    public $user;
     
-  
-    
-    public static function getList() {
-        
-    }
+    /**
+     * The version of Minecraft the player is using.
+     * This is *not* the Minecraft Realms library version, this is the client version, eg. "1.8.3"
+     * @var string
+     */
+    public $version;
 }

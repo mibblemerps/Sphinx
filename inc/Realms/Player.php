@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx;
+namespace Sphinx\Realms;
 
 /*
  * The MIT License
@@ -27,78 +27,56 @@ namespace Sphinx;
  */
 
 /**
- * Minecraft server object.
+ * Player object
  *
  * @author Mitchfizz05
  */
-class Server {
-    const STATE_ADMINLOCK = 'ADMIN_LOCK';
-    const STATE_CLOSED = 'CLOSED';
-    const STATE_OPEN = 'OPEN';
-    const STATE_UNINITIALIZED = 'UNINITIALIZED';
-    
-    const GAMEMODE_SURVIVAL = 0;
-    const GAMEMODE_CREATIVE = 1;
-    const GAMEMODE_ADVENTURE = 2;
-    const GAMEMODE_SPECTATOR = 3;
-    
-    const DIFFICULTY_PEACEFUL = 0;
-    const DIFFICULTY_EASY = 1;
-    const DIFFICULTY_NORMAL = 2;
-    const DIFFICULTY_HARD = 3;
-    
+class Player {
     /**
-     * Server ID, must be unique.
-     * @var integer
-     */
-    public $id;
-    
-    /**
-     * Human readable name of server.
+     * The player's current username.
+     * Note that this can change and shouldn't relied on. The UUID should be used internally.
      * @var string
      */
-    public $name;
+    private $username;
     
     /**
-     * Server MOTD.
+     * Player's UUID.
+     * Must *not* contain hyphens!
      * @var string
      */
-    public $motd;
+    private $uuid;
     
     /**
-     * Server state. Defaults to Server::STATE_UNINITIALIZED
-     * @var string 
+     * Create new Player object.
+     * Any of the parameters are optional and can be replaced with null if the value is unknown.
+     * @param string $uuid UUID, without hyphens.
+     * @param string $username Username.
      */
-    public $state = self::STATE_UNINITIALIZED;
+    public function __construct($uuid, $username) {
+        // Quickly check if UUID doesn't contain hypens...
+        if (strpos($uuid, '-')) {
+            throw new Exception('Player UUID contains hypens');
+        }
+        $this->uuid = ($uuid == null) ? null : $uuid;
+        
+        $this->username = ($username == null) ? null : $username;
+    }
     
     /**
-     * Server gamemode.
-     * @var integer
+     * Get player's UUID.
+     * Returns null if UUID unknown.
+     * @return string
      */
-    public $gamemode = self::GAMEMODE_SURVIVAL;
+    public function getUUID() {
+        return $this->uuid;
+    }
     
     /**
-     * Is the server a minigame server?
-     * @var boolean
+     * Get players username.
+     * Returns null if username unknown.
+     * @return string
      */
-    public $minigame_server = false;
-    
-    /**
-     * Server IP. Using format "127.0.0.1:25565"
-     * @var string
-     */
-    public $ip;
-    
-    /**
-     * An array of connected players.
-     * @var array
-     */
-    public $players = array();
-    
-    /**
-     * The server owner.
-     * @var string
-     */
-    public $owner;
-    
+    public function getUsername() {
+        return $this->username;
+    }
 }

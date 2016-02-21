@@ -3,6 +3,7 @@
 namespace Sphinx;
 
 use Sphinx\Http\Request;
+use Sphinx\Realms\Session;
 
 /* 
  * The MIT License

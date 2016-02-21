@@ -3,7 +3,7 @@
 namespace Sphinx\Requests;
 
 use Sphinx\Http\Response;
-use Sphinx\Invite;
+use Sphinx\Realms\Invite;
 
 /*
  * The MIT License

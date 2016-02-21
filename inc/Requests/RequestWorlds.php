@@ -3,8 +3,8 @@
 namespace Sphinx\Requests;
 
 use Sphinx\Http\Response;
-use Sphinx\Player;
-use Sphinx\Realm;
+use Sphinx\Realms\Player;
+use Sphinx\Realms\Realm;
 
 /*
  * The MIT License
