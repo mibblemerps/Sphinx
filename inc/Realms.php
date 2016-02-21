@@ -37,13 +37,13 @@ class Realms {
     
     /**
      * Realms logger.
-     * @var \Logger
+     * @var Logger
      */
     public static $logger;
     
     /**
      * Realms configuration.
-     * @var \Config
+     * @var Config
      */
     public static $config;
     
@@ -51,7 +51,7 @@ class Realms {
     
     /**
      * Realms request registry.
-     * @var \RequestRegistry
+     * @var RequestRegistry
      */
     public static $requestRegistry;
     
