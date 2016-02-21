@@ -1,5 +1,7 @@
 <?php
 
+namespace Sphinx\Http;
+
 /*
  * The MIT License
  *

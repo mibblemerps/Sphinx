@@ -1,5 +1,7 @@
 <?php
 
+namespace Sphinx\Requests;
+
 /*
  * The MIT License
  *
@@ -25,30 +27,24 @@
  */
 
 /**
- * HTTP request
- *
+ * API request handler
  * @author Mitchfizz05
  */
-class HTTPRequest {
-    public $path;
-    public $headers;
+interface Request {
+    /**
+     * Return true if the request is addressed to this request handler.
+     * Otherwise return false.
+     * @param \Sphinx\Http\Request $request HTTP request
+     * @param \Sphinx\Session $session Session object
+     * @return boolean
+     */
+    public function should_respond($request, $session);
     
     /**
-     * HTTP request
-     * @param string $path Path relative to the target hostname.
-     * @param array $headers Array of headers. The return value of apache_request_headers() is a valid value.
+     * This is where the handler responds to the API request.
+     * @param \Sphinx\Http\Request $request HTTP request
+     * @param \Sphinx\Session $session Session object
+     * @return \Sphinx\Http\Response
      */
-    public function __construct($path, $headers) {
-        $this->path = $path;
-        $this->headers = $headers;
-    }
-    
-    /**
-     * Get HTTP header from request.
-     * @param string $header Header name
-     * @return string Header value
-     */
-    public function get_header($header) {
-        return $this->headers[$header];
-    }
+    public function respond($request, $session);
 }

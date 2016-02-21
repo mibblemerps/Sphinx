@@ -1,5 +1,7 @@
 <?php
 
+namespace Sphinx;
+
 /**
  * Sphinx logger.
  */

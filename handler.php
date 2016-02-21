@@ -1,5 +1,9 @@
 <?php
 
+namespace Sphinx;
+
+use Sphinx\Http\Request;
+
 /* 
  * The MIT License
  *
@@ -29,14 +33,18 @@
  */
 
 /**
- * Dynamic loading of classes.
- * @param string $classname
+ * Autoloader
  */
-function __autoload($classname) {
-    if (file_exists('inc/' . $classname . '.php')) {
-        include 'inc/' . $classname . '.php';
-    } elseif (file_exists('inc/Requests/' . $classname . '.php')) {
-        include 'inc/Requests/' . $classname . '.php';
+spl_autoload_register(function($class) {
+    $parts = explode('\\', $class);
+    array_shift($parts);
+    require 'inc/' . implode('/', $parts) . '.php';
+});
+
+// Load helpers
+foreach (scandir('inc/_helpers') as $filename) {
+    if (pathinfo($filename, PATHINFO_EXTENSION) == 'php') {
+        require 'inc/_helpers/' . $filename;
     }
 }
 
@@ -67,7 +75,7 @@ if (isset($_COOKIE['sid'], $_COOKIE['user'], $_COOKIE['version'])) {
 
 // Handle request.
 $requestpath = $_SERVER['REQUEST_URI'];
-$request = new HTTPRequest($requestpath, apache_request_headers()); // create http request object
+$request = new Request($requestpath, apache_request_headers()); // create http request object
 $resp = Realms::$requestRegistry->handle($request);
 
 if ($resp === null) {

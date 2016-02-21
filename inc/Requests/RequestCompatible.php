@@ -1,5 +1,9 @@
 <?php
 
+namespace Sphinx\Requests;
+
+use Sphinx\Http\Response;
+
 /*
  * The MIT License
  *

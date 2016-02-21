@@ -1,5 +1,10 @@
 <?php
-//error_reporting(0);
+
+namespace Sphinx\Requests;
+
+use Sphinx\Http\Response;
+use Sphinx\Invite;
+
 /*
  * The MIT License
  *

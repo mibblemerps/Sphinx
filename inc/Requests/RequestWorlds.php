@@ -1,5 +1,11 @@
 <?php
 
+namespace Sphinx\Requests;
+
+use Sphinx\Http\Response;
+use Sphinx\Player;
+use Sphinx\Realm;
+
 /*
  * The MIT License
  *
