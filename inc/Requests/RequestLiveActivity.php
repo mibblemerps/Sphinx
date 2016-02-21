@@ -3,7 +3,7 @@
 namespace Sphinx\Requests;
 
 use Sphinx\Http\Response;
-use Sphinx\Realms\lists;
+use Sphinx\Realms\Server;
 
 /*
  * The MIT License
@@ -30,51 +30,45 @@ use Sphinx\Realms\lists;
  */
 
 /**
- * Placeholder handler for Live Activity.
- *
+ * Handler for Live Activity.
  */
-class RequestLiveActivity {
-    public function should_respond($request, $session) {
+class RequestLiveActivity implements Request {
+    public function should_respond($request, $session){
         return ($request->path == '/activities/liveplayerlist');
     }
-    
-    protected function generateActivityJSON($Activity) {
-       /*         $players = array();
-        foreach ($Activity->invited_players as $player) {
-            $players[] = array(
-                'name' => $player->getUsername(),
-                'uuid' => $player->getUUID(),
-            );
-        }*/
+
+    /**
+     * Generate JSON response for server activity.
+     *
+     * @param Server $server
+     * @return array
+     */
+    protected function generateActivityJSON($server) {
         // Formulate JSON response.
         $json = array(
-            'serverId' => $Activity->serverId,
-            //'playerList' => $Activity->playerList,
+            'serverId' => $server->id,
+            //'playerList' => $server->players,
 
         );
-        
+
         return $json;
     }
-    
-    public function respond($request, $session) {
-       // error_reporting(0);
-		$Activity = new lists();
-        $Activity->serverId = 1;
-        //$Activity->playerList = '';
 
-        
+    public function respond($request, $session) {
+        $server = new Server();
+        $server->id = 1;
+
+
         // Generate response.
         $json = array(
             'lists' => array(
-                $this->generateActivityJSON($Activity)
+                $this->generateActivityJSON($server)
             )
         );
-        
-        $responsetext = json_encode($json);
-        
+
         $resp = new Response();
         $resp->contenttype = 'application/json';
-        $resp->contentbody = $responsetext;
+        $resp->contentbody = json_encode($json);
         return $resp;
     }
 }
