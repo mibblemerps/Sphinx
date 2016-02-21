@@ -16,7 +16,7 @@ class JoinController extends Controller
      */
     public function join($id)
     {
-        if ($id == 0) {
+        if ($id == 1) {
             // Hardcoded server IP - debug purposes.
             return [
                 'address' => 'us.mineplex.com:25565'
