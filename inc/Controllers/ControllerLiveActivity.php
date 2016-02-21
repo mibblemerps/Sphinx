@@ -1,6 +1,10 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
+
+use Sphinx\Controllers\Controller;
+use Sphinx\Http\Response;
+use Sphinx\Realms\Server;
 
 /*
  * The MIT License
@@ -27,24 +31,45 @@ namespace Sphinx\Requests;
  */
 
 /**
- * API request handler
- * @author Mitchfizz05
+ * Handler for Live Activity.
  */
-interface Request {
+class ControllerLiveActivity implements Controller {
+    public function should_respond($request, $session){
+        return ($request->path == '/activities/liveplayerlist');
+    }
+
     /**
-     * Return true if the request is addressed to this request handler.
-     * Otherwise return false.
-     * @param \Sphinx\Http\Request $request HTTP request
-     * @param \Sphinx\Session $session Session object
-     * @return boolean
+     * Generate JSON response for server activity.
+     *
+     * @param Server $server
+     * @return array
      */
-    public function should_respond($request, $session);
-    
-    /**
-     * This is where the handler responds to the API request.
-     * @param \Sphinx\Http\Request $request HTTP request
-     * @param \Sphinx\Session $session Session object
-     * @return \Sphinx\Http\Response
-     */
-    public function respond($request, $session);
+    protected function generateActivityJSON($server) {
+        // Formulate JSON response.
+        $json = array(
+            'serverId' => $server->id,
+            //'playerList' => $server->players,
+
+        );
+
+        return $json;
+    }
+
+    public function respond($request, $session) {
+        $server = new Server();
+        $server->id = 1;
+
+
+        // Generate response.
+        $json = array(
+            'lists' => array(
+                $this->generateActivityJSON($server)
+            )
+        );
+
+        $resp = new Response();
+        $resp->contenttype = 'application/json';
+        $resp->contentbody = json_encode($json);
+        return $resp;
+    }
 }

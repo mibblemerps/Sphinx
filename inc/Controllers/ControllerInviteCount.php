@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
 
@@ -29,19 +29,18 @@ use Sphinx\Http\Response;
  */
 
 /**
- * Request Ping.
+ * Request amount of pending Invites.
  *
-
  */
-class RequestPing implements Request {
+class ControllerInviteCount implements Controller {
     public function should_respond($request, $session) {
-        return ($request->path == '/regions/ping/stat');
+        return ($request->path == '/invites/count/pending');
     }
     
     public function respond($request, $session) {
         // Forge response
         $resp = new Response();
-        $resp->contentbody = 'true';
+        $resp->contentbody = '1';
         
         return $resp;
     }

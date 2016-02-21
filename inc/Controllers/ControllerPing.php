@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
 
@@ -29,19 +29,19 @@ use Sphinx\Http\Response;
  */
 
 /**
- * Handles the compatible request.
+ * Request Ping.
  *
- * @author Mitchfizz05
+
  */
-class RequestCompatible implements Request {
+class ControllerPing implements Controller {
     public function should_respond($request, $session) {
-        return ($request->path == '/mco/client/compatible');
+        return ($request->path == '/regions/ping/stat');
     }
     
     public function respond($request, $session) {
         // Forge response
         $resp = new Response();
-        $resp->contentbody = 'COMPATIBLE';
+        $resp->contentbody = 'true';
         
         return $resp;
     }

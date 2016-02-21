@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
 
@@ -29,18 +29,19 @@ use Sphinx\Http\Response;
  */
 
 /**
- * Request to see if a trial for a Minecraft Realm is avaliable.
+ * Request to see if Minecraft Realms is avaliable.
  *
+ * @author Mitchfizz05
  */
-class RequestTrial implements Request {
+class ControllerAvailable implements Controller {
     public function should_respond($request, $session) {
-        return ($request->path == '/trial');
+        return ($request->path == '/mco/available');
     }
     
     public function respond($request, $session) {
         // Forge response
         $resp = new Response();
-        $resp->contentbody = 'false';
+        $resp->contentbody = 'true';
         
         return $resp;
     }

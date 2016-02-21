@@ -1,9 +1,9 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
-use Sphinx\Realms\Server;
+use Sphinx\Realms\Invite;
 
 /*
  * The MIT License
@@ -30,45 +30,49 @@ use Sphinx\Realms\Server;
  */
 
 /**
- * Handler for Live Activity.
+ * Placeholder handler for pending invites.
+ *
  */
-class RequestLiveActivity implements Request {
-    public function should_respond($request, $session){
-        return ($request->path == '/activities/liveplayerlist');
+class ControllerInvites implements Controller {
+    public function should_respond($request, $session) {
+        return ($request->path == '/invites/pending');
     }
-
-    /**
-     * Generate JSON response for server activity.
-     *
-     * @param Server $server
-     * @return array
-     */
-    protected function generateActivityJSON($server) {
+    
+    protected function generateinviteJSON($invite) {
+        
         // Formulate JSON response.
         $json = array(
-            'serverId' => $server->id,
-            //'playerList' => $server->players,
-
+            'invitationId' => $invite->invitationId,
+            'worldName' => $invite->worldName,
+            'worldOwnerName' => $invite->worldOwnerName,
+            'worldOwnerUuid' => $invite->worldOwnerUuid,
+            'date' => $invite->invitedate,
         );
-
+        
         return $json;
     }
-
+    
     public function respond($request, $session) {
-        $server = new Server();
-        $server->id = 1;
-
-
+        
+		$invite = new Invite();
+        $invite->invitationId = 1;
+        $invite->worldName = 'potatocraft';
+        $invite->worldOwnerName = 'mitchfizz05';
+        $invite->worldOwnerUuid = 'b6284cef69f440d2873054053b1a925d';
+		$invite->invitedate = '1455922800000';
+        
         // Generate response.
         $json = array(
-            'lists' => array(
-                $this->generateActivityJSON($server)
+            'invites' => array(
+                $this->generateinviteJSON($invite)
             )
         );
-
+        
+        $responsetext = json_encode($json);
+        
         $resp = new Response();
         $resp->contenttype = 'application/json';
-        $resp->contentbody = json_encode($json);
+        $resp->contentbody = $responsetext;
         return $resp;
     }
 }

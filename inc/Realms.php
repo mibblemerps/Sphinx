@@ -73,17 +73,14 @@ class Realms {
         self::$requestRegistry = new RequestRegistry(); // create request registry instance
         
         // Dynamically load request handlers.
-        $handler_files = scandir('inc/Requests');
+        $handler_files = scandir('inc/Controllers');
         foreach ($handler_files as $handler_file) {
             if ($handler_file == '.' ||
                 $handler_file == '..' ||
-                $handler_file == 'Request.php') { continue; }
-            
-            // Load PHP file
-            require 'inc/Requests/' . $handler_file;
+                $handler_file == 'Controller.php') { continue; }
             
             // Register handler
-            $classname = 'Sphinx\\Requests\\' . pathinfo($handler_file, PATHINFO_FILENAME);
+            $classname = 'Sphinx\\Controllers\\' . pathinfo($handler_file, PATHINFO_FILENAME);
             self::$requestRegistry->register(new $classname);
         }
         

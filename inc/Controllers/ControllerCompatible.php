@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
 
@@ -29,38 +29,19 @@ use Sphinx\Http\Response;
  */
 
 /**
- * Description of RequestJoin
+ * Handles the compatible request.
  *
  * @author Mitchfizz05
  */
-class RequestJoin {
+class ControllerCompatible implements Controller {
     public function should_respond($request, $session) {
-        if (preg_match('/\/worlds\/([0-9]{1,5})\/join/', $request->path)) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($request->path == '/mco/client/compatible');
     }
     
     public function respond($request, $session) {
-        // Get the Realm ID the user wants to connect to..
-        $preg_matches = array();
-        preg_match('/\/worlds\/([0-9]{1,5})\/join/', $request->path, $preg_matches);
-        $realm_id = $preg_matches[0];
-        
+        // Forge response
         $resp = new Response();
-        
-        if ($realm_id == 0) {
-            $resp->statuscode = 200;
-            // Tempoary debug, hardcored server. Join if you like. :)
-            $resp->contentbody = json_encode(array(
-                'address' => 'potatocraft.pw:25565'
-            ));
-        } else {
-            // Server not found! Return blank 404.
-            $resp->statuscode = 404;
-            $resp->contentbody = '';
-        }
+        $resp->contentbody = 'COMPATIBLE';
         
         return $resp;
     }

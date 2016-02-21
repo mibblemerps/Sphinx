@@ -1,8 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
-
-use Sphinx\Http\Response;
+namespace Sphinx\Controllers;
 
 /*
  * The MIT License
@@ -29,19 +27,24 @@ use Sphinx\Http\Response;
  */
 
 /**
- * Request to see if the stage server is avaliable.
- *
+ * API request handler
+ * @author Mitchfizz05
  */
-class RequestStageAvailable implements Request {
-    public function should_respond($request, $session) {
-        return ($request->path == '/StageAvailable');
-    }
+interface Controller {
+    /**
+     * Return true if the request is addressed to this request handler.
+     * Otherwise return false.
+     * @param \Sphinx\Http\Request $request HTTP request
+     * @param \Sphinx\Session $session Session object
+     * @return boolean
+     */
+    public function should_respond($request, $session);
     
-    public function respond($request, $session) {
-        // Forge response
-        $resp = new Response();
-        $resp->contentbody = 'true';
-        
-        return $resp;
-    }
+    /**
+     * This is where the handler responds to the API request.
+     * @param \Sphinx\Http\Request $request HTTP request
+     * @param \Sphinx\Session $session Session object
+     * @return \Sphinx\Http\Response
+     */
+    public function respond($request, $session);
 }

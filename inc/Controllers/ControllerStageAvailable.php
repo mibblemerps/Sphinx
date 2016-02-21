@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
 
@@ -29,26 +29,18 @@ use Sphinx\Http\Response;
  */
 
 /**
- * For the "Buy Realm" button located in-game.
+ * Request to see if the stage server is avaliable.
  *
- * @author Mitchfizz05
  */
-class RequestBuy implements Request {
+class ControllerStageAvailable implements Controller {
     public function should_respond($request, $session) {
-        return ($request->path == '/mco/buy');
+        return ($request->path == '/StageAvailable');
     }
     
     public function respond($request, $session) {
-        // Generate message to display to end user.
-        $message = Realms::$config->get('messages', 'buy_realm');
-        $message = str_replace('{EMAIL}', Realms::$config->get('general', 'contact'), $message);
-        $message = str_replace('&', '§', $message); // colour codes
-        
         // Forge response
         $resp = new Response();
-        $resp->contentbody = json_encode(array(
-            'statusMessage' => $message
-        ));
+        $resp->contentbody = 'true';
         
         return $resp;
     }

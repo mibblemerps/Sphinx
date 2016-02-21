@@ -1,6 +1,6 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
 use Sphinx\Realms\Player;
@@ -35,7 +35,7 @@ use Sphinx\Realms\Realm;
  *
  * @author Mitchfizz05
  */
-class RequestWorlds {
+class ControllerWorlds implements Controller {
     public function should_respond($request, $session) {
         return ($request->path == '/worlds');
     }
@@ -43,7 +43,8 @@ class RequestWorlds {
     /**
      * Generate a JSON response to be packaged up and sent to the client.
      * NOTE: Does not return encoded JSON. JSON must manually be encoded with json_encode().
-     * @param \Realm $server
+     * @param Realm $server
+     * @return array
      */
     protected function generateServerJSON($server) {
         // Generate player list.

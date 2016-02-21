@@ -1,9 +1,8 @@
 <?php
 
-namespace Sphinx\Requests;
+namespace Sphinx\Controllers;
 
 use Sphinx\Http\Response;
-use Sphinx\Realms\Invite;
 
 /*
  * The MIT License
@@ -30,49 +29,39 @@ use Sphinx\Realms\Invite;
  */
 
 /**
- * Placeholder handler for pending invites.
+ * Description of RequestJoin
  *
+ * @author Mitchfizz05
  */
-class RequestInvites {
+class ControllerJoin implements Controller {
     public function should_respond($request, $session) {
-        return ($request->path == '/invites/pending');
-    }
-    
-    protected function generateinviteJSON($invite) {
-        
-        // Formulate JSON response.
-        $json = array(
-            'invitationId' => $invite->invitationId,
-            'worldName' => $invite->worldName,
-            'worldOwnerName' => $invite->worldOwnerName,
-            'worldOwnerUuid' => $invite->worldOwnerUuid,
-            'date' => $invite->invitedate,
-        );
-        
-        return $json;
+        if (preg_match('/\/worlds\/([0-9]{1,5})\/join/', $request->path)) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public function respond($request, $session) {
-        
-		$invite = new Invite();
-        $invite->invitationId = 1;
-        $invite->worldName = 'potatocraft';
-        $invite->worldOwnerName = 'mitchfizz05';
-        $invite->worldOwnerUuid = 'b6284cef69f440d2873054053b1a925d';
-		$invite->invitedate = '1455922800000';
-        
-        // Generate response.
-        $json = array(
-            'invites' => array(
-                $this->generateinviteJSON($invite)
-            )
-        );
-        
-        $responsetext = json_encode($json);
+        // Get the Realm ID the user wants to connect to..
+        $preg_matches = array();
+        preg_match('/\/worlds\/([0-9]{1,5})\/join/', $request->path, $preg_matches);
+        $realm_id = $preg_matches[0];
         
         $resp = new Response();
-        $resp->contenttype = 'application/json';
-        $resp->contentbody = $responsetext;
+        
+        if ($realm_id == 0) {
+            $resp->statuscode = 200;
+            // Tempoary debug, hardcored server. Join if you like. :)
+            $resp->contentbody = json_encode(array(
+                'address' => 'potatocraft.pw:25565'
+            ));
+        } else {
+            // Server not found! Return blank 404.
+            $resp->statuscode = 404;
+            $resp->contentbody = '';
+        }
+        
         return $resp;
     }
 }
