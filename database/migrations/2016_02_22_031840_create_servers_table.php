@@ -26,6 +26,7 @@ class CreateServersTable extends Migration
             $table->boolean('minigames_server')->default(false);
             $table->string('motd')->default('A Minecraft Realm');
             $table->string('owner');
+            $table->timestamps();
         });
     }
 
