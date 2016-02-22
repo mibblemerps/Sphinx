@@ -28,7 +28,7 @@ class WorldController extends Controller
         $json = array(
             'id' => $server->id,
             'remoteSubscriptionId' => $server->id,
-            'name' => $server->server_name,
+            'name' => $server->name,
             'players' => $players,
             'motd' => $server->motd,
             'state' => $server->state,
@@ -36,8 +36,8 @@ class WorldController extends Controller
             'ownerUUID' => $server->owner->uuid,
             'daysLeft' => $server->days_left,
             'ip' => $server->address,
-            'expired' => $server->expired,
-            'minigame' => $server->minigame_server
+            'expired' => !!$server->expired,
+            'minigame' => !!$server->minigames_server
         );
 
         return $json;
@@ -45,29 +45,16 @@ class WorldController extends Controller
 
     public function viewall()
     {
-        $server = new Server();
-        $server->id = 1;
-        $server->address = 'potatocraft.pw:25565';
-        $server->state = Server::STATE_OPEN;
-        $server->name = 'Potatocraft';
-        $server->days_left = 365;
-        $server->expired = false;
-        $server->invited_players = array(
-            new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05'),
-            new Player('27cf5429ec01499a9edf23b47df8d4f5', 'mindlux'),
-            new Player('061e5603aa7b4455910a5547e2160ebc', 'Spazzer400')
-        );
-        $server->operators = array(
-            new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05')
-        );
-        $server->minigames_server = false;
-        $server->motd = 'Potatos have lots of calories.';
-        $server->owner = new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05');
+        $servers = Server::all();
+
+        // Generate JSON
+        $serverlistJson = [];
+        foreach ($servers as $server) {
+            $serverlistJson[] = $this->generateServerJSON($server);
+        }
 
         return [
-            'servers' => [
-                $this->generateServerJSON($server)
-            ]
+            'servers' => $serverlistJson
         ];
     }
 }
