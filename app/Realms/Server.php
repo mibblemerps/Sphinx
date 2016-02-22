@@ -7,6 +7,7 @@
  */
 
 namespace App\Realms;
+use Illuminate\Database\Eloquent\Model;
 
 
 /**
@@ -14,7 +15,7 @@ namespace App\Realms;
  *
  * @author Mitchfizz05
  */
-class Server {
+class Server extends Model {
     const STATE_ADMINLOCK = 'ADMIN_LOCK';
     const STATE_CLOSED = 'CLOSED';
     const STATE_OPEN = 'OPEN';
@@ -29,6 +30,8 @@ class Server {
     const DIFFICULTY_EASY = 1;
     const DIFFICULTY_NORMAL = 2;
     const DIFFICULTY_HARD = 3;
+
+    protected $guarded = [];
 
     /**
      * Server ID, must be unique.
