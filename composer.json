@@ -4,10 +4,13 @@
     "keywords": ["minecraft", "server", "realms"],
     "license": "MIT",
     "type": "project",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
     "require": {
         "php": ">=5.5.9",
         "laravel/lumen-framework": "5.2.*",
-        "vlucas/phpdotenv": "~2.2"
+        "vlucas/phpdotenv": "~2.2",
+        "vluzrmos/tinker": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
