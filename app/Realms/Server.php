@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: me
- * Date: 21/02/2016
- * Time: 10:02 PM
- */
 
 namespace App\Realms;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Minecraft server object.
  *
- * @author Mitchfizz05
+ * @property int $id Server ID, must be unique.
+ * @property string $name Human readable name of server.
+ * @property string $motd Message of the day (motd).
+ * @property string $state Server state. Refer to STATE_* constants.
+ * @property int $gamemode Server gamemode (uses in-game gamemode IDs)
+ * @property bool $minigames_server Is the server a minigame server?
+ * @property string $address Server IP.
+ * @property Player[] $players An array of connected players.
+ * @property Player[] $invited_players An array of players invited to join.
+ * @property Player[] $operators An array of players who have operator status.
+ *
+ * @property int $days_left Remaining days of subscription (for Realms).
+ * @property bool $expired Has the Realm expired (for Realms).
+ * @property Player $owner The owner of the Realm.
  */
 class Server extends Model {
     const STATE_ADMINLOCK = 'ADMIN_LOCK';
@@ -34,57 +41,96 @@ class Server extends Model {
     protected $guarded = [];
 
     /**
-     * Server ID, must be unique.
-     * @var integer
+     * Mutator for owner attribute, encodes player objects into json.
+     *
+     * @param $value
+     * @return string
      */
-    public $id;
+    public function setOwnerAttribute($value)
+    {
+        $this->attributes['owner'] = json_encode([
+            'uuid' => $value->username,
+            'username' => $value->uuid
+        ]);
+    }
 
     /**
-     * Human readable name of server.
-     * @var string
+     * Accessor for owner attribute, decodes player objects from json.
+     *
+     * @param $value
+     * @return Player
      */
-    public $name;
+    public function getOwnerAttribute($value)
+    {
+        $playerJson = json_decode($value);
+        return new Player(
+            $playerJson->uuid,
+            $playerJson->username
+        );
+    }
 
     /**
-     * Server MOTD.
-     * @var string
+     * Mutator for players attribute.
+     *
+     * @param Player[] $value
+     * @param string $attribute Name of attribute to mutate, allows reuse of this method.
+     * @return string
      */
-    public $motd;
+    public function setInvitedPlayersAttribute($value, $attribute = 'invited_players')
+    {
+        $playerJson = [];
+
+        foreach ($value as $player)
+        {
+            $playerJson[] = [
+                'uuid' => $player->uuid,
+                'username' => $player->username
+            ];
+        }
+
+        $this->attributes[$attribute] = json_encode($playerJson);
+    }
 
     /**
-     * Server state. Defaults to Server::STATE_UNINITIALIZED
-     * @var string
+     * Accessor for player attribute.
+     *
+     * @param array $value
+     * @return Player[]
      */
-    public $state = self::STATE_UNINITIALIZED;
+    public function getInvitedPlayersAttribute($value)
+    {
+        $players = [];
+
+        foreach (json_decode($value) as $playerJson)
+        {
+            $players[] = new Player(
+                $playerJson->uuid,
+                $playerJson->username
+            );
+        }
+
+        return $players;
+    }
 
     /**
-     * Server gamemode.
-     * @var integer
+     * Mutator for ops attribute. Wraps around player's mutator.
+     *
+     * @param Player[] $value
+     * @return string
      */
-    public $gamemode = self::GAMEMODE_SURVIVAL;
+    public function setOperatorsAttribute($value)
+    {
+        $this->setInvitedPlayersAttribute($value, 'operators');
+    }
 
     /**
-     * Is the server a minigame server?
-     * @var boolean
+     * Accessor for ops attribute. Wraps around player's accessor.
+     *
+     * @param array $value
+     * @return Player[]
      */
-    public $minigame_server = false;
-
-    /**
-     * Server IP. Using format "127.0.0.1:25565"
-     * @var string
-     */
-    public $ip;
-
-    /**
-     * An array of connected players.
-     * @var array
-     */
-    public $players = array();
-
-    /**
-     * The server owner.
-     * @var string
-     */
-    public $owner;
-
+    public function getOperatorsAttribute($value)
+    {
+        return $this->getInvitedPlayersAttribute($value);
+    }
 }

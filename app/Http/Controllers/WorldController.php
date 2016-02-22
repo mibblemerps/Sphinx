@@ -49,7 +49,7 @@ class WorldController extends Controller
         $server->id = 1;
         $server->address = 'potatocraft.pw:25565';
         $server->state = Server::STATE_OPEN;
-        $server->server_name = 'Potatocraft';
+        $server->name = 'Potatocraft';
         $server->days_left = 365;
         $server->expired = false;
         $server->invited_players = array(
@@ -60,7 +60,7 @@ class WorldController extends Controller
         $server->operators = array(
             new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05')
         );
-        $server->minigame_server = false;
+        $server->minigames_server = false;
         $server->motd = 'Potatos have lots of calories.';
         $server->owner = new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05');
 
