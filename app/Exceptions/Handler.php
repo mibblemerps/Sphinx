@@ -47,6 +47,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        // Convert model not found exceptions to 404 not found exceptions.
+        if ($e instanceof ModelNotFoundException) {
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+        }
+
         if ($e instanceof NotFoundHttpException) {
             // 404 error.
             $resp = new Response();
