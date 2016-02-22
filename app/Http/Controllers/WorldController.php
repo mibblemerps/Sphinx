@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Realms\Realm;
 use App\Realms\Player;
+use App\Realms\Server;
 
 class WorldController extends Controller
 {
@@ -45,10 +45,10 @@ class WorldController extends Controller
 
     public function viewall()
     {
-        $server = new Realm();
+        $server = new Server();
         $server->id = 1;
         $server->address = 'potatocraft.pw:25565';
-        $server->state = Realm::STATE_OPEN;
+        $server->state = Server::STATE_OPEN;
         $server->server_name = 'Potatocraft';
         $server->days_left = 365;
         $server->expired = false;
