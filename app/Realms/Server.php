@@ -49,8 +49,8 @@ class Server extends Model {
     public function setOwnerAttribute($value)
     {
         $this->attributes['owner'] = json_encode([
-            'uuid' => $value->username,
-            'username' => $value->uuid
+            'uuid' => $value->uuid,
+            'username' => $value->username
         ]);
     }
 
