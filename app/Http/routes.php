@@ -8,6 +8,10 @@ $app->get('/', function () {
     return redirect('https://github.com/mitchfizz05/Sphinx');
 });
 
+if (env('APP_DEBUG') && !App\Facades\MinecraftAuth::check()) {
+    App\Facades\MinecraftAuth::set(new App\Realms\Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05'));
+}
+
 // Availability.
 $app->get('/mco/available', 'AvailableController@available');
 $app->get('/mco/client/compatible', 'CompatibleController@compatible');

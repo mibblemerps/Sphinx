@@ -63,6 +63,17 @@ class MinecraftAuth
     }
 
     /**
+     * Set a player as authentication. Generally for testing.
+     *
+     * @param App\Realms\Player
+     */
+    public function set($player)
+    {
+        $this->loggedIn = true;
+        $this->player = $player;
+    }
+
+    /**
      * Determine if the current user is authenticated.
      *
      * @return bool
