@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Invite model.
  *
- * @package App
+ * @property int $id Invitation ID
+ * @property int $realm_id ID of Realm the invite is for.
+ * @property Player $to The player the invite was sent to.
  */
 class Invite extends Model
 {
