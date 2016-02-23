@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             'invited_players' => [
                 new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05'),
                 new Player('27cf5429ec01499a9edf23b47df8d4f5', 'mindlux'),
-                new Player('061e5603aa7b4455910a5547e2160ebc', 'Spazzer400')
+                new Player('061e5603aa7b4455910a5547e2160ebc', 'Spazzer400'),
+                new Player('0c9f23fb2e8f48cf99895d940b45bda8', 'harmjan123'),
             ],
             'operators' => [
                 new App\Realms\Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05')
