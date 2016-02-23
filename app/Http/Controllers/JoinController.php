@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Realms\Player;
+use App\Realms\Server;
 
 /**
  * Class ControllerJoin
@@ -16,13 +18,14 @@ class JoinController extends Controller
      */
     public function join($id)
     {
-        if ($id == 1) {
-            // Hardcoded server IP - debug purposes.
-            return [
-                'address' => 'us.mineplex.com:25565'
-            ];
+        $server = Server::findOrFail($id);
+        if (!$server->isInvited(Player::current())) {
+            // Not invited. Sorry! :(
+            abort(403); // 403 Forbidden.
         }
 
-        abort(404); // 404 Not Found
+        return [
+            'address' => $server->address
+        ];
     }
 }
