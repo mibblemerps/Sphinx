@@ -10,7 +10,7 @@ class WorldController extends Controller
     /**
      * Generate a JSON response to be packaged up and sent to the client.
      * NOTE: Does not return encoded JSON. JSON must manually be encoded with json_encode().
-     * @param Realm $server
+     * @param Server $server
      * @return array
      */
     protected function generateServerJSON($server) {
