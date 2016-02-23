@@ -115,7 +115,7 @@ class InviteController
 
         // Add current player to servers invited players list.
         // Couldn't directly append new player to invited players array due to PHP bug. https://bugs.php.net/bug.php?id=41641
-        $invited = $server->invited_player;
+        $invited = $server->invited_players;
         $invited[] = Player::current();
         $server->invited_players = $invited;
         $server->save();
