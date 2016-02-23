@@ -26,15 +26,15 @@ class WorldController extends Controller
 
         // Formulate JSON response.
         $json = array(
-            'id' => $server->id,
-            'remoteSubscriptionId' => $server->id,
+            'id' => intval($server->id),
+            'remoteSubscriptionId' => intval($server->id),
             'name' => $server->name,
             'players' => $players,
             'motd' => $server->motd,
             'state' => $server->state,
             'owner' => $server->owner->username,
             'ownerUUID' => $server->owner->uuid,
-            'daysLeft' => $server->days_left,
+            'daysLeft' => intval($server->days_left),
             'ip' => $server->address,
             'expired' => !!$server->expired,
             'minigame' => !!$server->minigames_server
