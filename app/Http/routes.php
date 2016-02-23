@@ -27,7 +27,7 @@ $app->put('/invites/reject/{id}', 'InviteController@reject');
 
 // Worlds
 $app->get('/worlds/{id}/join', 'JoinController@join');
+$app->get('/worlds/{id}', 'WorldController@view');
 $app->get('/worlds', 'WorldController@viewall');
 $app->get('/activities/liveplayerlist', 'LiveActivityController@playerlist');
-$app->get('/worlds/{id}', 'WorldController@viewall');
 $app->delete('/invites/{id}', 'WorldController@leave');

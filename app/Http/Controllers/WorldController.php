@@ -65,6 +65,17 @@ class WorldController extends Controller
         ];
     }
 
+    /**
+     * View a single server.
+     *
+     * @param int $id Server ID
+     * @return array
+     */
+    public function view($id)
+    {
+        return $this->generateServerJSON(Server::findOrFail($id));
+    }
+
     public function leave($id)
     {
         if (!Player::isLoggedIn()) {
