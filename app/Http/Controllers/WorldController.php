@@ -14,7 +14,7 @@ class WorldController extends Controller
      * @param Server $server
      * @return array
      */
-    protected function generateServerJSON($server) {
+    public static function generateServerJSON($server) {
         // Generate player list.
         $players = array();
         foreach ($server->invited_players as $player) {
@@ -57,7 +57,7 @@ class WorldController extends Controller
                 continue;
             }
 
-            $serverlistJson[] = $this->generateServerJSON($server);
+            $serverlistJson[] = self::generateServerJSON($server);
         }
 
         return [
@@ -73,7 +73,7 @@ class WorldController extends Controller
      */
     public function view($id)
     {
-        return $this->generateServerJSON(Server::findOrFail($id));
+        return self::generateServerJSON(Server::findOrFail($id));
     }
 
     public function leave($id)

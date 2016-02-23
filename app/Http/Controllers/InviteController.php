@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Facades\MinecraftAuth;
 use App\Realms\Invite;
 use App\Realms\Player;
+use App\Realms\Server;
+use Illuminate\Http\Request;
 
 /**
  * Class InviteController
@@ -125,5 +127,26 @@ class InviteController
         $invite->save();
 
         return '';
+    }
+
+    public function invite(Request $request, $id)
+    {
+        // Check if player has rights to invite people to Realm.
+        $server = Server::findOrFail($id);
+        if ($server->owner->uuid != Player::current()->uuid) {
+            abort(403); // 403 Forbidden.
+        }
+
+        $player = new Player(null, $request->input('name'));
+        $player->lookupFromApi(); // fetch uuid from API.
+
+        // Create invitation.
+        Invite::create([
+            'realm_id' => $id,
+            'to' => $player
+        ]);
+
+        // Return updated server json.
+        return WorldController::generateServerJSON($server);
     }
 }
