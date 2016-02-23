@@ -3,6 +3,7 @@
 namespace App\Realms;
 use App\Facades\MinecraftAuth;
 use Laravel\Lumen\Application;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 /**
  * Player object.
@@ -11,6 +12,11 @@ use Laravel\Lumen\Application;
  */
 class Player
 {
+    /**
+     * Mojang API endpoint.
+     */
+    const MOJANG_API = 'https://api.mojang.com';
+
     /**
      * The player's current username.
      * Note that this can change and shouldn't relied on. The UUID should be used internally.
@@ -88,5 +94,29 @@ class Player
         }
 
         return $invites;
+    }
+
+    /**
+     * Fill in the UUID or username (whatever's missing from the Mojang API).
+     */
+    public function lookupFromApi()
+    {
+        $query = is_null($this->uuid) ? $this->username : $this->username;
+        if ($query === null) {
+            // Needs either uuid or username to perform lookup!
+            throw new \Exception('Needs UUID or username to perform API lookup!');
+        }
+
+        // Contact Mojang's servers.
+        $resp = file_get_contents(self::MOJANG_API . '/users/profiles/minecraft/' . urlencode($query));
+        $resp = json_decode($resp);
+        if ($resp === null) {
+            // Request failed.
+            abort(503, 'Mojang\'s API unreachable.');
+        }
+
+        // Fill in details.
+        $this->uuid = $resp->id;
+        $this->username = $resp->name;
     }
 }
