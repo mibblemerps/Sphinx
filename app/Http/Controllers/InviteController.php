@@ -40,7 +40,7 @@ class InviteController
     {
         $invite = new Invite();
         $invite->id = 1;
-        $invite->worldName = 'potatocraft';
+        $invite->worldName = 'Potatocraft';
         $invite->worldOwnerName = 'mitchfizz05';
         $invite->worldOwnerUuid = 'b6284cef69f440d2873054053b1a925d';
         $invite->created_at = 1455922800;
