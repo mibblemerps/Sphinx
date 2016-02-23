@@ -60,7 +60,7 @@ class InviteController
     /**
      * Reject an invitation.
      *
-     * @param $id
+     * @param int $id Invite ID
      * @return string
      */
     public function reject($id)
