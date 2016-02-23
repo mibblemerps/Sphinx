@@ -62,4 +62,25 @@ class Player
     {
         return MinecraftAuth::check();
     }
+
+    /**
+     * Get an array of this users pending invites.
+     *
+     * @return Invite[]
+     */
+    public function getInvites()
+    {
+        $invites = [];
+
+        // Loop through all invites
+        $allInvites = Invite::all();
+        foreach ($allInvites as $invite)
+        {
+            if ($invite->to->uuid == $this->uuid) {
+                $invites[] = $invite;
+            }
+        }
+
+        return $invites;
+    }
 }
