@@ -60,6 +60,16 @@ class Server extends Model {
     }
 
     /**
+     * Invites relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invites()
+    {
+        return $this->hasMany('App\Realms\Invite', 'realm_id');
+    }
+
+    /**
      * Mutator for owner attribute, encodes player objects into json.
      *
      * @param $value
