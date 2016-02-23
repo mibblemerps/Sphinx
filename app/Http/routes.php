@@ -18,6 +18,7 @@ $app->get('/trial', 'TrialController@check');
 // Invites.
 $app->get('/invites/count/pending', 'InviteController@pendingCount');
 $app->get('/invites/pending', 'InviteController@view');
+$app->put('/invites/reject/{id}', 'InviteController@reject');
 
 // Worlds
 $app->get('/worlds/{id}/join', 'JoinController@join');

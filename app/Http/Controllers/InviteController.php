@@ -56,4 +56,26 @@ class InviteController
             'invites' => $invitesJson
         ];
     }
+
+    /**
+     * Reject an invitation.
+     *
+     * @param $id
+     * @return string
+     */
+    public function reject($id)
+    {
+        $invite = Invite::find($id);
+
+        // Check the invite belongs to this user.
+        if ($invite->to->uuid != Player::current()->uuid) {
+            // This invite does not belong to the current user!
+            abort(403); // 403 Forbidden.
+        }
+
+        // Discard invite.
+        $invite->delete();
+
+        return '';
+    }
 }
