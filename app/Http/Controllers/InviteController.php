@@ -78,4 +78,35 @@ class InviteController
 
         return '';
     }
+
+    /**
+     * Accept an invitation.
+     *
+     * @param int $id Invite ID
+     * @return string
+     */
+    public function accept($id)
+    {
+        $invite = Invite::find($id);
+
+        // Check the invite belongs to this user.
+        if ($invite->to->uuid != Player::current()->uuid) {
+            // This invite does not belong to the current user!
+            abort(403); // 403 Forbidden.
+        }
+
+        $server = $invite->server;
+
+        // Add current player to servers invited players list.
+        // Couldn't directly append new player to invited players array due to PHP bug. https://bugs.php.net/bug.php?id=41641
+        $invited = $server->invited_player;
+        $invited[] = Player::current();
+        $server->invited_players = $invited;
+        $server->save();
+
+        // Discard invite - it's no longer needed.
+        $invite->delete();
+
+        return '';
+    }
 }
