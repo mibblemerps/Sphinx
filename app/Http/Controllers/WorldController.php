@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Realms\Player;
 use App\Realms\Server;
+use App\Realms\Invite;
 
 class WorldController extends Controller
 {
@@ -62,5 +63,29 @@ class WorldController extends Controller
         return [
             'servers' => $serverlistJson
         ];
+    }
+
+    public function leave($id)
+    {
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+        $server = Server::find($id);
+
+        // Remove user from invited players list.
+        $invited = $server->invited_players;
+        $newInvited = [];
+        foreach ($invited as $invited_player) {
+            if ($invited_player->uuid != Player::current()->uuid) {
+                $newInvited[] = $invited_player;
+            }
+        }
+
+        // Save changes
+        $server->invited_players = $newInvited;
+        $server->save();
+
+        return '';
     }
 }

@@ -26,3 +26,4 @@ $app->get('/worlds/{id}/join', 'JoinController@join');
 $app->get('/worlds', 'WorldController@viewall');
 $app->get('/activities/liveplayerlist', 'LiveActivityController@playerlist');
 $app->get('/worlds/{id}', 'WorldController@viewall');
+$app->delete('/invites/{id}', 'WorldController@leave');
