@@ -66,9 +66,10 @@ class Player
     /**
      * Get an array of this users pending invites.
      *
+     * @param bool $includingAccepted Include accepted invites in the results?
      * @return Invite[]
      */
-    public function getInvites()
+    public function getInvites($includingAccepted = false)
     {
         $invites = [];
 
@@ -76,6 +77,11 @@ class Player
         $allInvites = Invite::all();
         foreach ($allInvites as $invite)
         {
+            if ($invite->accepted & !$includingAccepted) {
+                // Invite already accepted.
+                continue;
+            }
+
             if ($invite->to->uuid == $this->uuid) {
                 $invites[] = $invite;
             }
