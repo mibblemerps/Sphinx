@@ -120,4 +120,32 @@ class WorldController extends Controller
 
         return '';
     }
+	public function close($id)
+    {	$server = Server::find($id);
+		// TODO: make it so only the owner can do this! (im to lazy atm.)
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+
+        // Change State.
+        $server->state = "CLOSED";
+        $server->save();
+
+        return 'true';
+    }
+	public function open($id)
+    {	$server = Server::find($id);
+		// TODO: make it so only the owner can do this! (im to lazy atm.)
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+
+        // Change State.
+        $server->state = "OPEN";
+        $server->save();
+
+        return 'true';
+    }
 }
