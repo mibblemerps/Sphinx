@@ -48,6 +48,10 @@ class InviteController
         // Generate JSON structure.
         $invitesJson = [];
         foreach ($invites as $invite) {
+            if ($invite->accepted) {
+                continue; // Invite already accepted, don't display.
+            }
+
             $invitesJson[] = $this->generateInviteJson($invite);
         }
 
@@ -73,6 +77,12 @@ class InviteController
             abort(403); // 403 Forbidden.
         }
 
+        // Check that the invite hasn't been accepted yet.
+        if ($invite->accepted) {
+            // Already accepted.
+            abort(400); // 400 Bad Request
+        }
+
         // Discard invite.
         $invite->delete();
 
@@ -95,6 +105,12 @@ class InviteController
             abort(403); // 403 Forbidden.
         }
 
+        // Check that the invite hasn't been accepted yet.
+        if ($invite->accepted) {
+            // Already accepted.
+            abort(400); // 400 Bad Request
+        }
+
         $server = $invite->server;
 
         // Add current player to servers invited players list.
@@ -104,8 +120,9 @@ class InviteController
         $server->invited_players = $invited;
         $server->save();
 
-        // Discard invite - it's no longer needed.
-        $invite->delete();
+        // Mark invite as accepted.
+        $invite->accepted = true;
+        $invite->save();
 
         return '';
     }
