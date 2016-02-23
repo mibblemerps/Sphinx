@@ -27,7 +27,7 @@ class Invite extends Model
      */
     public function server()
     {
-        return $this->belongsTo('App\Realms\Server');
+        return $this->belongsTo('App\Realms\Server', 'realm_id', 'id');
     }
 
     /**

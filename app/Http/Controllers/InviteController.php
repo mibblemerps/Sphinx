@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\MinecraftAuth;
 use App\Realms\Invite;
 use App\Realms\Player;
 
@@ -16,9 +17,9 @@ class InviteController
         // Formulate JSON response.
         $json = [
             'invitationId' => intval($invite->id),
-            'worldName' => $invite->world_name,
-            'worldOwnerName' => $invite->world_owner->username,
-            'worldOwnerUuid' => $invite->world_owner->uuid,
+            'worldName' => $invite->server->name,
+            'worldOwnerName' => $invite->server->owner->username,
+            'worldOwnerUuid' => $invite->server->owner->uuid,
             'date' => strtotime($invite->created_at) . '000',
         ];
 
@@ -32,22 +33,27 @@ class InviteController
      */
     public function pendingCount()
     {
-        return '1';
+        return count(Player::current()->getInvites());
     }
 
-
+    /**
+     * View available invites.
+     *
+     * @return array
+     */
     public function view()
     {
-        $invite = new Invite();
-        $invite->id = 1;
-        $invite->world_name = 'Potatocraft';
-        $invite->world_owner = new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05');
-        $invite->created_at = 1455922800;
+        $invites = Player::current()->getInvites();
 
+        // Generate JSON structure.
+        $invitesJson = [];
+        foreach ($invites as $invite) {
+            $invitesJson[] = $this->generateInviteJson($invite);
+        }
+
+        // Return response.
         return [
-            'invites' => [
-                $this->generateInviteJson($invite)
-            ]
+            'invites' => $invitesJson
         ];
     }
 }
