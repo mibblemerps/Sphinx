@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Realms\Invite;
-use Carbon\Carbon;
+use App\Realms\Player;
 
 /**
  * Class InviteController
@@ -15,10 +15,10 @@ class InviteController
     {
         // Formulate JSON response.
         $json = [
-            'invitationId' => $invite->id,
-            'worldName' => $invite->worldName,
-            'worldOwnerName' => $invite->worldOwnerName,
-            'worldOwnerUuid' => $invite->worldOwnerUuid,
+            'invitationId' => intval($invite->id),
+            'worldName' => $invite->world_name,
+            'worldOwnerName' => $invite->world_owner->username,
+            'worldOwnerUuid' => $invite->world_owner->uuid,
             'date' => strtotime($invite->created_at) . '000',
         ];
 
@@ -40,9 +40,8 @@ class InviteController
     {
         $invite = new Invite();
         $invite->id = 1;
-        $invite->worldName = 'Potatocraft';
-        $invite->worldOwnerName = 'mitchfizz05';
-        $invite->worldOwnerUuid = 'b6284cef69f440d2873054053b1a925d';
+        $invite->world_name = 'Potatocraft';
+        $invite->world_owner = new Player('b6284cef69f440d2873054053b1a925d', 'mitchfizz05');
         $invite->created_at = 1455922800;
 
         return [
