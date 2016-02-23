@@ -41,6 +41,25 @@ class Server extends Model {
     protected $guarded = [];
 
     /**
+     * Check if a player is invited to this Realm.
+     *
+     * @param Player $player
+     * @return bool
+     */
+    public function isInvited($player)
+    {
+        foreach ($this->invited_players as $invited_player) {
+            if ($invited_player->uuid == $player->uuid) {
+                // Invited! Yay. :3
+                return true;
+            }
+        }
+
+        // Not invited. :(
+        return false;
+    }
+
+    /**
      * Mutator for owner attribute, encodes player objects into json.
      *
      * @param $value

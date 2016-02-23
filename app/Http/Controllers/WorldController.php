@@ -50,6 +50,12 @@ class WorldController extends Controller
         // Generate JSON
         $serverlistJson = [];
         foreach ($servers as $server) {
+            // Check if we are invited to this server.
+            if (!$server->isInvited(Player::current())) {
+                // Not invited. :(
+                continue;
+            }
+
             $serverlistJson[] = $this->generateServerJSON($server);
         }
 
