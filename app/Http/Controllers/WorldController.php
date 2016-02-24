@@ -84,6 +84,11 @@ class WorldController extends Controller
 
         $server = Server::find($id);
 
+        // Ensure the owner isn't removing themselves from their own Realm.
+        if (Player::current()->uuid == $server->owner->uuid) {
+            abort(400); // 400 Bad Request
+        }
+
         // Remove user from invited players list.
         $server->removePlayer(Player::current());
 
