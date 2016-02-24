@@ -85,17 +85,7 @@ class WorldController extends Controller
         $server = Server::find($id);
 
         // Remove user from invited players list.
-        $invited = $server->invited_players;
-        $newInvited = [];
-        foreach ($invited as $invited_player) {
-            if ($invited_player->uuid != Player::current()->uuid) {
-                $newInvited[] = $invited_player;
-            }
-        }
-
-        // Save changes
-        $server->invited_players = $newInvited;
-        $server->save();
+        $server->removePlayer(Player::current());
 
         return '';
     }

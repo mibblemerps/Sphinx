@@ -60,6 +60,45 @@ class Server extends Model {
     }
 
     /**
+     * Add a new player to the Realm.
+     *
+     * @param Player $player
+     */
+    public function addPlayer($player)
+    {
+        if ($this->isInvited($player)) {
+            // Already invited
+            return;
+        }
+
+        $invited = $this->invited_players;
+        $invited[] = $player;
+        $this->invited_players = $player;
+
+        $this->save();
+    }
+
+    /**
+     * Remove a player from the Realm.
+     *
+     * @param Player $player
+     */
+    public function removePlayer($player)
+    {
+        $invited = $this->invited_players;
+
+        foreach ($this->invited_players as $invited_player) {
+            if ($invited_player->uuid != Player::current()->uuid) {
+                $newInvited[] = $invited_player;
+            }
+        }
+
+        $this->invited_players = $invited;
+
+        $this->save();
+    }
+
+    /**
      * Invites relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
