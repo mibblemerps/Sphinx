@@ -89,4 +89,30 @@ class WorldController extends Controller
 
         return '';
     }
+
+    /**
+     * Remove a user from the Realm. As in, de-whitelist.
+     *
+     * @param int $id
+     * @param Player $player
+     * @return string
+     */
+    public function kick($id, $player)
+    {
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+        $server = Server::findOrFail($id);
+
+        // Check user owns server.
+        if (Player::current()->uuid != $server->owner->uuid) {
+            abort(403); // 403 Forbidden
+        }
+
+        // Remove user from Realm.
+        $server->removePlayer(new Player($player, null));
+
+        return '';
+    }
 }

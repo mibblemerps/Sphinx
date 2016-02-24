@@ -25,6 +25,7 @@ $app->get('/invites/pending', 'InviteController@view');
 $app->put('/invites/accept/{id}', 'InviteController@accept');
 $app->put('/invites/reject/{id}', 'InviteController@reject');
 $app->post('/invites/{id}', 'InviteController@invite');
+$app->delete('/invites/{id}/invite/{player}', 'WorldController@kick');
 
 // Worlds
 $app->get('/worlds/{id}/join', 'JoinController@join');
