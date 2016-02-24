@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         // Create a Potatocraft entry.
         Server::create([
-            'id' => 1,
             'address' => 'us.mineplex.com',
             'state' => Server::STATE_OPEN,
             'name' => 'Potatocraft',
