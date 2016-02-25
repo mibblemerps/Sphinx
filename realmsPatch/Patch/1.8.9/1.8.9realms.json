@@ -196,7 +196,7 @@
       }
     },
     {
-      "name": "com.mojang:realms:1.7.59",
+      "name": "com.mojang:realms:1.7.59+sphinx",
       "downloads": {
         "artifact": {
           "url": "https://raw.githubusercontent.com/mitchfizz05/Sphinx/master/realmsPatch/1.7.59/realms-1.7.59.jar",
