@@ -76,6 +76,12 @@ class WorldController extends Controller
         return self::generateServerJSON(Server::findOrFail($id));
     }
 
+    /**
+     * Leave a Realm you've been invited to.
+     *
+     * @param int $id Realm ID
+     * @return string
+     */
     public function leave($id)
     {
         if (!Player::isLoggedIn()) {
@@ -141,7 +147,7 @@ class WorldController extends Controller
 	public function open($id)
     {
         $server = Server::find($id);
-        
+
         if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
         }
