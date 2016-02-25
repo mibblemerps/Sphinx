@@ -121,14 +121,16 @@ class WorldController extends Controller
         return '';
     }
 	public function close($id)
-    {	$server = Server::find($id);        
-	if (Player::current()->uuid != $server->owner->uuid) {
+    {
+        $server = Server::find($id);
+
+	    if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
         }
+
         if (!Player::isLoggedIn()) {
             abort(401); // 401 Unauthorized - not logged in!
         }
-
 
         // Change State.
         $server->state = "CLOSED";
@@ -137,14 +139,16 @@ class WorldController extends Controller
         return 'true';
     }
 	public function open($id)
-    {	$server = Server::find($id);
-		        if (Player::current()->uuid != $server->owner->uuid) {
+    {
+        $server = Server::find($id);
+        
+        if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
         }
+
         if (!Player::isLoggedIn()) {
             abort(401); // 401 Unauthorized - not logged in!
         }
-
 
         // Change State.
         $server->state = "OPEN";
