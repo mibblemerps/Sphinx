@@ -1,5 +1,5 @@
 {
-  "id": "1.8.9realms",
+  "id": "1.8.9-Sphinx",
   "time": "2016-02-09T09:22:32+01:00",
   "releaseTime": "2015-12-03T10:24:39+01:00",
   "type": "release",
@@ -199,7 +199,7 @@
       "name": "com.mojang:realms:1.7.59+sphinx",
       "downloads": {
         "artifact": {
-          "url": "https://raw.githubusercontent.com/mitchfizz05/Sphinx/master/realmsPatch/1.7.59/realms-1.7.59.jar",
+          "url": "https://raw.githubusercontent.com/mitchfizz05/Sphinx/master/Sphinx-Patch/dl/1.7.59/realms-1.7.59.jar",
           "sha1": "52742b15acad2a81d997640510fe2cd17bd2285d",
           "size": 1198123
         }
