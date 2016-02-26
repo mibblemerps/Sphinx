@@ -46,9 +46,7 @@ Server.prototype.provision = function (server) {
 	fs.writeFileSync(this.serverPath + "/eula.txt", "eula=true");
 	
 	// Create server.properties
-	var template = fs.readFileSync("server.properties.template", "utf-8");
-	template = template.replace("{SERVER_PORT}", this.serverdata.port); // set port
-	fs.writeFileSync(this.serverPath + "/server.properties", template);
+	this.updateServerProperties();
 	
 	// Write provision time to file.
 	fs.writeFileSync(this.serverPath + "/provisioned.txt", new Date().toString());
@@ -149,7 +147,12 @@ Server.prototype.updateServerProperties = function () {
 	var _this = this;
 	
 	// Open server properties file for changes.
-	var props = new McProperties(fs.readFileSync(this.serverPath + "/server.properties", "utf-8"));
+	if (fileExists(this.serverPath + "/server.properties")) {
+		var props = new McProperties(fs.readFileSync(this.serverPath + "/server.properties", "utf-8"));
+	} else {
+		// Properties don't exist. Creating blank one...
+		var props = new McProperties("");
+	}
 	
 	// Modify values.
 	Object.keys(this.serverdata.properties).forEach(function (key) {
