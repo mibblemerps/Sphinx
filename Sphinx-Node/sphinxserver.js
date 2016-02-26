@@ -52,8 +52,11 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 		server.updateServerProperties();
 		
 		// Restart if neccesary.
-		if (restartNeeded) {
+		if (restartNeeded && server.serverdata.active) {
 			server.restart();
+		} else if (!server.serverdata.active) {
+			// Server inactive, stop it if it's running.
+			server.stop();
 		}
 	});
 }

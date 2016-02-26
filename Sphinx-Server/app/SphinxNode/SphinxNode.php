@@ -97,6 +97,7 @@ class SphinxNode
                 'id' => $server->id,
                 'name' => $server->name,
                 'jar' => env('MINECRAFT_JAR', 'minecraft_server.1.8.9.jar'),
+                'active' => ($server->state == Server::STATE_OPEN),
                 'properties' => [
                     'server-ip' => '0.0.0.0',
                     'server-port' => env('SERVER_PORT_START', 25000) + $server->id,
