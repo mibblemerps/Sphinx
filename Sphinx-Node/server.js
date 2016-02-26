@@ -121,10 +121,17 @@ Server.prototype.start = function () {
 }
 
 /**
+ * Send a command to the server.
+ */
+Server.prototype.sendCommand = function (command) {
+	this.process.stdin.write(command + "\n");
+}
+
+/**
  * Stop the Minecraft server.
  */
 Server.prototype.stop = function () {
-	this.process.stdin.write(serverCommands.stop + "\n");
+	this.sendCommand("stop");
 }
 
 /**
