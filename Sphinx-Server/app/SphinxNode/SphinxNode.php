@@ -107,7 +107,7 @@ class SphinxNode
                 ],
                 'whitelist' => $whitelistJson,
                 'ops' => $opsJson,
-                'needRestart' => true
+                'needRestart' => false
             ];
         }
 

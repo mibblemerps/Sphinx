@@ -42,6 +42,10 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 			_this.servers[serverManifest.id] = new Server(serverManifest);
 			server = _this.servers[serverManifest.id];
 			server.init(); // initialize server
+			
+			if (server.serverdata.active) {
+				restartNeeded = true;
+			}
 		} else {
 			server.serverdata = serverManifest;
 		}
