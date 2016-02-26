@@ -27,14 +27,14 @@ function initServers() {
 	for (var i = 0; i < serverdata.length; i++) {
 		servers[i] = new Server(serverdata[i]);
 		servers[i].init(); // initialize server
+		
+		servers[i].updateServerProperties(); // update server properties
 	}
 }
 
 function startServers() {
 	for (var i = 0; i < servers.length; i++) {
 		servers[i].start();
-		
-		servers[i].updateServerProperties();
 	}
 }
 
