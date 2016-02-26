@@ -5,7 +5,7 @@
 
 var fs = require("fs");
 var colors = require("colors");
-var server = require("./server.js");
+var Server = require("./server.js");
 
 // Minecraft server data.
 var serverdata = []
@@ -25,7 +25,8 @@ function loadServerData() {
  */
 function initServers() {
 	for (var i = 0; i < serverdata.length; i++) {
-		server.init(serverdata[i]); // initialize server
+		var myserver = new Server(serverdata[i]);
+		myserver.init();
 	}
 }
 
