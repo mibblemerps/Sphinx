@@ -79,7 +79,7 @@ class SphinxNode
             $whitelistJson = [];
             foreach ($server->invited_players as $player) {
                 $whitelistJson[] = [
-                    'uuid' => $player->uuid,
+                    'uuid' => $player->getFullUuid(),
                     'name' => $player->username
                 ];
             }
@@ -88,7 +88,7 @@ class SphinxNode
             $opsJson = [];
             foreach ($server->operators as $player) {
                 $opsJson[] = [
-                    'uuid' => $player->uuid,
+                    'uuid' => $player->getFullUuid(),
                     'name' => $player->username
                 ];
             }
