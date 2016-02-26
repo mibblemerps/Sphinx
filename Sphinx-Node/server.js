@@ -34,6 +34,10 @@ var Server = function (serverdata) {
 	this.started = false; // has the server finished starting up?
 }
 
+/**
+ * Provison a Minecraft server.
+ * Creates it's directory, sets config and automatically agrees to the EULA.
+ */
 Server.prototype.provision = function (server) {
 	fs.mkdirSync(this.serverPath); // make server directory
 	
