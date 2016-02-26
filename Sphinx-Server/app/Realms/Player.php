@@ -97,6 +97,21 @@ class Player
     }
 
     /**
+     * Get the full UUID with hyphen seperators.
+     *
+     * @return string
+     */
+    public function getFullUuid()
+    {
+        $uuid = $this->uuid;
+        $uuid = substr_replace($uuid, '-', 8, 0);
+        $uuid = substr_replace($uuid, '-', 13, 0);
+        $uuid = substr_replace($uuid, '-', 18, 0);
+        $uuid = substr_replace($uuid, '-', 23, 0);
+        return $uuid;
+    }
+
+    /**
      * Fill in the UUID or username (whatever's missing from the Mojang API).
      */
     public function lookupFromApi()
