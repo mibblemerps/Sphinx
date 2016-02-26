@@ -5,9 +5,10 @@
 var ws = require("nodejs-websocket");
 var Server = require("./server.js");
 
-var SphinxServer = function (servers, remoteip, bindto) {
+var SphinxServer = function (servers, remoteip, secret, bindto) {
 	this.servers = servers;
 	this.sphinxIP = remoteip;
+	this.sphinxSecret = secret;
 	this.bindip = bindto.split(":")[0];
 	this.bindport = bindto.split(":")[1];
 }
@@ -67,6 +68,11 @@ SphinxServer.prototype.startServer = function () {
 	
 	// Create server.
 	this.server = ws.createServer({}, function (connection) {
+		if (connection.socket.remoteAddress != process.env.SPHINX_IP) {
+			// Mismatch!
+			connection.close();
+		}
+		
 		connection.on("text", function (data) {
 			//try {
 				var payload = JSON.parse(data);

@@ -31,7 +31,7 @@ function saveServerData() {
  */
 function startWebsocketServer() {
 	console.log(("Starting websocket server...").cyan);
-	sphinxserver = new SphinxServer(servers, process.env.SPHINX_IP, process.env.BIND_TO);
+	sphinxserver = new SphinxServer(servers, process.env.SPHINX_IP, process.env.SPHINX_SECRET, process.env.BIND_TO);
 	sphinxserver.startServer();
 	console.log(("Websocket server active on " + sphinxserver.bindip + ":" + sphinxserver.bindport).cyan);
 }
