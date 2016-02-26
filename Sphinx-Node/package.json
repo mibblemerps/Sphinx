@@ -1,0 +1,15 @@
+{
+  "name": "sphinx-node",
+  "version": "1.0.0",
+  "description": "Program to run Minecraft Servers for Sphinx.",
+  "main": "sphinx.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "minecraft",
+    "server"
+  ],
+  "author": "Mitchfizz05 <me@mitchfizz05.net>",
+  "license": "MIT"
+}
