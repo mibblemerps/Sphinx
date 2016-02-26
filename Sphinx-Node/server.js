@@ -10,6 +10,10 @@ var regexPatterns = {
 	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g
 };
 
+var serverCommands = {
+	stop: "stop", // command to stop the server
+}
+
 function fileExists(file) {
 	var exists = false;
 	try {
@@ -65,6 +69,9 @@ Server.prototype.init = function (server) {
 	console.log(("Server " + this.serverdata.id + " good to go!").green);
 }
 
+/**
+ * Start the Minecraft server.
+ */
 Server.prototype.start = function () {
 	var _this = this;
 	
@@ -79,7 +86,9 @@ Server.prototype.start = function () {
 	
 	this.started = true;
 	
-	this.process.stdout.setEncoding("utf8");
+	this.process.stdout.setEncoding("utf-8");
+	this.process.stdin.setEncoding("utf-8");
+	
 	var handleData = function (data) {
 		// Received output from server!
 		var str = data.toString();
@@ -105,6 +114,20 @@ Server.prototype.start = function () {
 		_this.running = false;
 		console.log("Server " + _this.serverdata.id + " has stopped. Code: " + code);
 	})
+}
+
+/**
+ * Stop the Minecraft server.
+ */
+Server.prototype.stop = function () {
+	this.process.stdin.write(serverCommands.stop + "\n");
+}
+
+/**
+ * Check if the server is running.
+ */
+Server.prototype.isRunning = function () {
+	return this.running;
 }
 
 module.exports = Server;

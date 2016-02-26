@@ -37,6 +37,56 @@ function startServers() {
 }
 
 /**
+ * Stop all servers.
+ */
+function stopServers() {
+	for (var i = 0; i < servers.length; i++) {
+		servers[i].stop();
+	}
+}
+
+/**
+ * Are any servers running?
+ */
+function isServersRunning() {
+	for (var i = 0; i < servers.length; i++) {
+		if (servers[i].isRunning()) {
+			return true; // a server is still running.
+		}
+	}
+	
+	return false;
+}
+
+function bindShutdownHandler() { // Thanks - http://stackoverflow.com/a/14861513 !
+	if (process.platform === "win32") {
+		var rl = require("readline").createInterface({
+			input: process.stdin,
+			output: process.stdout
+		});
+		
+		rl.on("SIGINT", function () {
+			process.emit("SIGINT");
+		});
+	}
+	
+	process.on("SIGINT", function () {
+		// Gracefully shutdown servers.
+		console.log(("Shutting down Minecraft servers...").cyan);
+		stopServers();
+		
+		var shutdownPoller = setInterval(function () {
+			// Check if servers have shutdown yet.
+			if (!isServersRunning()) {
+				console.log(("All servers shutdown. Exiting...").cyan);
+				clearInterval(shutdownPoller);
+				process.exit();
+			}
+		}, 100);
+	});
+}
+
+/**
  * Start Sphinx node
  */
 function init() {
@@ -46,8 +96,12 @@ function init() {
 	
 	initServers();
 	
+	bindShutdownHandler();
+	
 	startServers();
 }
+
+
 
 // Start server.
 init();
