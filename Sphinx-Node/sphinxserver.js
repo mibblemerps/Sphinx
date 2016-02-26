@@ -5,10 +5,9 @@
 var ws = require("nodejs-websocket");
 var Server = require("./server.js");
 
-var SphinxServer = function (servers, remoteip, secret, bindto) {
+var SphinxServer = function (servers, remoteip, bindto) {
 	this.servers = servers;
 	this.sphinxIP = remoteip;
-	this.sphinxSecret = secret;
 	this.bindip = bindto.split(":")[0];
 	this.bindport = bindto.split(":")[1];
 }
