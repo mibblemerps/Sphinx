@@ -29,6 +29,7 @@ function initServers() {
 		servers[i].init(); // initialize server
 		
 		servers[i].updateServerProperties(); // update server properties
+		servers[i].updateServerLists(); // update server whitelist and ops list.
 	}
 }
 

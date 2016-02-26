@@ -8,11 +8,15 @@ var sanitizefs = require("sanitize-filename");
 var McProperties = require("./mcproperties.js");
 
 var regexPatterns = {
-	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g
+	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g,
 };
 
 var serverCommands = {
 	stop: "stop", // command to stop the server
+	whitelist_add: "whitelist add {PLAYER}", // command to whitelist a player
+	whitelist_remove: "whitelist remove {PLAYER}",
+	op_add: "op {PLAYER}", // op a player
+	op_remove: "deop {PLAYER}", // deop a player
 }
 
 function fileExists(file) {
@@ -163,6 +167,81 @@ Server.prototype.updateServerProperties = function () {
 	
 	// Save
 	fs.writeFileSync(this.serverPath + "/server.properties", props.compile());
+}
+
+/**
+ * Update server whitelist/ops file.
+ */
+Server.prototype.updateServerLists = function (mode) {
+	if (mode == "ops") {
+		var currentlist = this.serverdata.ops;
+		var listfile = this.serverPath + "/ops.json";
+	} else if (mode == "whitelist") {
+		var currentlist = this.serverdata.whitelist;
+		var listfile = this.serverPath + "/whitelist.json";
+	} else {
+		this.updateServerLists("whitelist");
+		
+		mode = "ops";
+		var currentlist = this.serverdata.ops;
+		var listfile = this.serverPath + "/ops.json";
+	}
+	
+	if (this.running) {
+		// Server is running. Read list from file, compare difference, and op/whitelist via console.
+		// This won't be fully up-to-date, but duplicate /whitelist and /op commands don't harm anything (much).
+		
+		var disklist = JSON.parse(fs.readFileSync(listfile, "utf-8"));
+		
+		// Flatten disk list.
+		var newdisklist = [];
+		for (var i = 0; i < disklist.length; i++) {
+			newdisklist.push(disklist[i].name);
+		}
+		
+		// Flatten current list.
+		var newcurrentlist = [];
+		for (var i = 0; i < currentlist.length; i++) {
+			newcurrentlist.push(currentlist[i].name);
+		}
+		
+		var toRemove = newdisklist.filter(function (player) {
+			return newcurrentlist.indexOf(player) < 0;
+		});
+		
+		var toAdd = newcurrentlist.filter(function (player) {
+			return newdisklist.indexOf(player) < 0;
+		});
+		
+		// Select appropiate command for mode.
+		if (mode == "whitelist") {
+			var addCommand = serverCommands.whitelist_add;
+			var removeCommand = serverCommands.whitelist_remove;
+		} else {
+			var addCommand = serverCommands.op_add;
+			var removeCommand = serverCommands.op_remove;
+		}
+			
+		// Remove players.
+		for (var i = 0; i < toRemove.length; i++) {
+			this.sendCommand(removeCommand.replace("{PLAYER}", toRemove[i]));
+		}
+		
+		// Add players.
+		for (var i = 0; i < toAdd.length; i++) {
+			this.sendCommand(addCommand.replace("{PLAYER}", toAdd[i]));
+		}
+	} else {
+		if (mode == "ops") {
+			// Add op level to JSON structure.
+			for (var i = 0; i < currentlist.length; i++) {
+				currentlist[i]["level"] = 4; // op level 4
+			}
+		}
+		
+		// Server not running, simply overwrite the file.
+		fs.writeFileSync(listfile, JSON.stringify(currentlist));
+	}
 }
 
 module.exports = Server;
