@@ -125,7 +125,7 @@ Server.prototype.start = function () {
 		
 		if (_this.restarting) {
 			// Server restarting, start server back up.
-			this.start();
+			_this.start();
 		}
 	})
 }
