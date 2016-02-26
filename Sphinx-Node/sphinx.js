@@ -8,6 +8,8 @@ var colors = require("colors");
 var Server = require("./server.js");
 var SphinxServer = require('./sphinxserver.js');
 
+require("dotenv").config();
+
 // Minecraft server data.
 var serverdata = []
 
