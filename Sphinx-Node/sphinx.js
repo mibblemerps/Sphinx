@@ -25,8 +25,14 @@ function loadServerData() {
  */
 function initServers() {
 	for (var i = 0; i < serverdata.length; i++) {
-		var myserver = new Server(serverdata[i]);
-		myserver.init();
+		servers[i] = new Server(serverdata[i]);
+		servers[i].init(); // initialize server
+	}
+}
+
+function startServers() {
+	for (var i = 0; i < servers.length; i++) {
+		servers[i].start();
 	}
 }
 
@@ -39,6 +45,8 @@ function init() {
 	loadServerData();
 	
 	initServers();
+	
+	startServers();
 }
 
 // Start server.
