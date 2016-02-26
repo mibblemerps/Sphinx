@@ -141,7 +141,9 @@ Server.prototype.sendCommand = function (command) {
  * Stop the Minecraft server.
  */
 Server.prototype.stop = function () {
-	this.sendCommand("stop");
+	if (this.running) {
+		this.sendCommand("stop");
+	}
 }
 
 Server.prototype.restart = function () {
