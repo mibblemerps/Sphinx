@@ -3,6 +3,7 @@
  */
 
 var ws = require("nodejs-websocket");
+var http = require("http");
 var Server = require("./server.js");
 
 var SphinxServer = function (servers, remoteip, bindto) {
@@ -66,6 +67,17 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 	});
 }
 
+/**
+ * Send a request out for the manifest to be sent.
+ * The manifest will arrive seperately via the Websocket.
+ */
+SphinxServer.prototype.requestManifest = function () {
+	http.get({
+		host: process.env.SPHINX_ACCESS,
+		path: "/sphinx/api/request-manifest"
+	});
+}
+
 SphinxServer.prototype.startServer = function () {
 	var _this = this;
 	
@@ -97,6 +109,9 @@ SphinxServer.prototype.startServer = function () {
 			//}
 		});
 	}).listen(this.bindport, this.bindip);
+	
+	// Request manifest.
+	this.requestManifest();
 }
 
 
