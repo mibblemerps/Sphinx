@@ -1,3 +1,8 @@
 [
-	
+	{
+		"id": 1,
+		"name": "Potatocraft",
+		"port": 25000,
+		"jar": "minecraft_server.1.8.9.jar"
+	}
 ]
