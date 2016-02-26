@@ -30,7 +30,7 @@ function loadServerData() {
 function startWebsocketServer() {
 	console.log(("Starting websocket server...").cyan);
 	sphinxserver = new SphinxServer(servers, "127.0.0.1", "127.0.0.1:8000");
-	console.log(("Websocket server active.").cyan);
+	console.log(("Websocket server active on " + sphinxserver.bindip + ":" + sphinxserver.bindport).cyan);
 }
 
 /**
