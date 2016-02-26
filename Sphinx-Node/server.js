@@ -73,8 +73,6 @@ Server.prototype.init = function (server) {
 		console.log("Server " + this.serverdata.id + " does not have a directory. Generating one now...");
 		this.provision();
 	}
-	
-	console.log(("Server " + this.serverdata.id + " good to go!").green);
 }
 
 /**

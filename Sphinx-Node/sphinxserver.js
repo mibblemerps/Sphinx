@@ -30,7 +30,7 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 	Object.keys(payload.servers).forEach(function (key) {
 		var serverManifest = payload.servers[key];
 		
-		console.log("Manifest received for " + serverManifest.id);
+		console.log(("Received metadata for server " + serverManifest.name + " [" + serverManifest.id + "].").yellow);
 		
 		var restartNeeded = serverManifest.needRestart;
 		serverManifest.needRestart = undefined;
