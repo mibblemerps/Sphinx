@@ -106,7 +106,7 @@ Server.prototype.start = function () {
 			if (regexPatterns.started.test(line)) {
 				// Server has started.
 				_this.started = true;
-				console.log("Server " + _this.serverdata.id + " has started.");
+				console.log(("Server " + _this.serverdata.id + " has started.").yellow);
 			}
 		}
 	}
@@ -116,7 +116,7 @@ Server.prototype.start = function () {
 		// Server exited.
 		_this.started = false;
 		_this.running = false;
-		console.log("Server " + _this.serverdata.id + " has stopped. Code: " + code);
+		console.log(("Server " + _this.serverdata.id + " has stopped. Code: " + code).yellow);
 	})
 }
 
