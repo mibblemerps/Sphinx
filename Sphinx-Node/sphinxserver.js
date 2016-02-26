@@ -39,7 +39,8 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 		
 		if (typeof server === "undefined") {
 			// Server not defined.
-			server = new Server(serverManifest);
+			_this.servers[serverManifest.id] = new Server(serverManifest);
+			server = _this.servers[serverManifest.id];
 			server.init(); // initialize server
 		} else {
 			server.serverdata = serverManifest;
