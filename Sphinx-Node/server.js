@@ -37,6 +37,7 @@ var Server = function (serverdata) {
 	
 	this.running = false; // is the server currently running?
 	this.started = false; // has the server finished starting up?
+	this restarting = false; // is the server restarting?
 }
 
 /**
@@ -109,6 +110,7 @@ Server.prototype.start = function () {
 			if (regexPatterns.started.test(line)) {
 				// Server has started.
 				_this.started = true;
+				_this.restarting = false;
 				console.log(("Server " + _this.serverdata.id + " has started.").yellow);
 			}
 		}
@@ -120,6 +122,11 @@ Server.prototype.start = function () {
 		_this.started = false;
 		_this.running = false;
 		console.log(("Server " + _this.serverdata.id + " has stopped. Code: " + code).yellow);
+		
+		if (_this.restarting) {
+			// Server restarting, start server back up.
+			this.start();
+		}
 	})
 }
 
@@ -135,6 +142,11 @@ Server.prototype.sendCommand = function (command) {
  */
 Server.prototype.stop = function () {
 	this.sendCommand("stop");
+}
+
+Server.prototype.restart = function () {
+	this.restarting = true;
+	this.stop();
 }
 
 /**
