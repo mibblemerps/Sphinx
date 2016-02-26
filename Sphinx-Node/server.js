@@ -5,6 +5,7 @@
 var fs = require("fs");
 var spawn = require("child_process").spawn;
 var sanitizefs = require("sanitize-filename");
+var McProperties = require("./mcproperties.js");
 
 var regexPatterns = {
 	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g
@@ -139,6 +140,26 @@ Server.prototype.stop = function () {
  */
 Server.prototype.isRunning = function () {
 	return this.running;
+}
+
+/**
+ * Update the server properties
+ */
+Server.prototype.updateServerProperties = function () {
+	var _this = this;
+	
+	// Open server properties file for changes.
+	var props = new McProperties(fs.readFileSync(this.serverPath + "/server.properties", "utf-8"));
+	
+	// Modify values.
+	Object.keys(this.serverdata.properties).forEach(function (key) {
+		var value = _this.serverdata.properties[key];
+		
+		props.set(key, value);
+	});
+	
+	// Save
+	fs.writeFileSync(this.serverPath + "/server.properties", props.compile());
 }
 
 module.exports = Server;

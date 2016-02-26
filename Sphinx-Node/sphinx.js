@@ -33,6 +33,8 @@ function initServers() {
 function startServers() {
 	for (var i = 0; i < servers.length; i++) {
 		servers[i].start();
+		
+		servers[i].updateServerProperties();
 	}
 }
 
