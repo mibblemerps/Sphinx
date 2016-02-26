@@ -6,6 +6,7 @@
 var fs = require("fs");
 var colors = require("colors");
 var Server = require("./server.js");
+var SphinxServer = require('./sphinxserver.js');
 
 // Minecraft server data.
 var serverdata = []
@@ -13,11 +14,23 @@ var serverdata = []
 // Minecraft server instances.
 var servers = [];
 
+// Sphinx server object.
+var sphinxserver;
+
 /**
  * Load server data from disk.
  */
 function loadServerData() {
 	serverdata = JSON.parse(fs.readFileSync("serverdata.json", "utf-8"));
+}
+
+/**
+ * Start websockets server to listen for requests from the Sphinx server.
+ */
+function startWebsocketServer() {
+	console.log(("Starting websocket server...").cyan);
+	sphinxserver = new SphinxServer(servers, "127.0.0.1", "127.0.0.1:8000");
+	console.log(("Websocket server active.").cyan);
 }
 
 /**
@@ -96,6 +109,8 @@ function init() {
 	console.log(("Starting Sphinx Node...").cyan);
 	
 	loadServerData();
+	
+	startWebsocketServer();
 	
 	initServers();
 	
