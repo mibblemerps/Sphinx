@@ -4,6 +4,18 @@
 
 var fs = require("fs");
 var spawn = require("child_process").spawn;
+var sanitizefs = require("sanitize-filename");
+
+function fileExists(file) {
+	var exists = false;
+	try {
+		if (fs.statSync(file)) {
+			exists = true;
+		}
+	} catch (e) {  }
+	
+	return exists;
+}
 
 function provision(server) {
 	var serverPath = "servers/" + parseInt(server.id);
@@ -28,15 +40,14 @@ function provision(server) {
 function init(server) {
 	var serverPath = "servers/" + parseInt(server.id);
 	
-	// Verify the server has been provisioned.
-	var provisioned = false;
-	try {
-		if (fs.statSync(serverPath).isDirectory()) {
-			provisioned = true;
-		}
-	} catch (e) {  }
+	// Verify the server has the neccesary jar file available.
+	if (!fileExists("jars/" + sanitizefs(server.jar))) {
+		console.log(("Server " + server.id + " is missing it's neccesary jar: " + server.jar + "!").red);
+		return;
+	}
 	
-	if (!provisioned) {
+	// Verify the server has been provisioned.
+	if (!fileExists(serverPath)) {
 		// Server not yet provisioned!
 		console.log("Server " + server.id + " does not have a directory. Generating one now...");
 		provision(server);
