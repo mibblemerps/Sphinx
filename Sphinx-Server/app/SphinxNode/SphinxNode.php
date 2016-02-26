@@ -2,6 +2,8 @@
 
 namespace App\SphinxNode;
 
+use App\Realms\Player;
+use App\Realms\Server;
 use WebSocket\Client;
 
 /**
@@ -51,5 +53,69 @@ class SphinxNode
             // Ping failed.
             return false;
         }
+    }
+
+    /**
+     * Send the servers manifest to the nodejs server.
+     *
+     * @return array
+     */
+    public function sendManifest($forServers = [])
+    {
+        // Generate json
+        $serverJson = [];
+        foreach (Server::all() as $server) {
+            if (($forServers !== []) && (!in_array($server->id, $forServers))) {
+                // Not one of the selected servers.
+                continue;
+            }
+
+            if (!$server->isInvited(Player::current())) {
+                // Not invited.
+                continue;
+            }
+
+            // Generate whitelist JSON.
+            $whitelistJson = [];
+            foreach ($server->invited_players as $player) {
+                $whitelistJson[] = [
+                    'uuid' => $player->uuid,
+                    'name' => $player->username
+                ];
+            }
+
+            // Generate ops JSON.
+            $opsJson = [];
+            foreach ($server->operators as $player) {
+                $opsJson[] = [
+                    'uuid' => $player->uuid,
+                    'name' => $player->username
+                ];
+            }
+
+            $serverJson[] = [
+                'id' => $server->id,
+                'name' => $server->name,
+                'jar' => env('MINECRAFT_JAR', 'minecraft_server.1.8.9.jar'),
+                'properties' => [
+                    'server-ip' => '0.0.0.0',
+                    'server-port' => env('SERVER_PORT_START', 25000) + $server->id,
+                    'max-players' => env('SERVER_MAX_PLAYERS', 10),
+                    'white-list' => 'true',
+                    'motd' => $server->motd
+                ],
+                'whitelist' => $whitelistJson,
+                'ops' => $opsJson,
+                'needRestart' => true
+            ];
+        }
+
+        // Send manifest.
+        $this->connection->send(json_encode([
+            'action' => 'manifest',
+            'servers' => $serverJson
+        ]));
+
+        $this->connection->close();
     }
 }

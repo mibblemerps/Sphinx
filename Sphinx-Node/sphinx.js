@@ -18,10 +18,10 @@ var servers = [];
 var sphinxserver;
 
 /**
- * Load server data from disk.
+ * Save server data.
  */
-function loadServerData() {
-	serverdata = JSON.parse(fs.readFileSync("serverdata.json", "utf-8"));
+function saveServerData() {
+	fs.writeFileSync("serverdata.json", JSON.stringify(serverdata));
 }
 
 /**
@@ -30,6 +30,7 @@ function loadServerData() {
 function startWebsocketServer() {
 	console.log(("Starting websocket server...").cyan);
 	sphinxserver = new SphinxServer(servers, "127.0.0.1", "127.0.0.1:8000");
+	sphinxserver.startServer();
 	console.log(("Websocket server active on " + sphinxserver.bindip + ":" + sphinxserver.bindport).cyan);
 }
 
@@ -38,38 +39,40 @@ function startWebsocketServer() {
  */
 function initServers() {
 	for (var i = 0; i < serverdata.length; i++) {
-		servers[i] = new Server(serverdata[i]);
-		servers[i].init(); // initialize server
+		var id = serverdata[i].id;
 		
-		servers[i].updateServerProperties(); // update server properties
-		servers[i].updateServerLists(); // update server whitelist and ops list.
+		servers[id] = new Server(serverdata[i]);
+		servers[id].init(); // initialize server
+		
+		servers[id].updateServerProperties(); // update server properties
+		servers[id].updateServerLists(); // update server whitelist and ops list.
 	}
 }
 
 function startServers() {
-	for (var i = 0; i < servers.length; i++) {
-		servers[i].start();
-	}
+	Object.keys(servers).forEach(function (id) {
+		servers[id].start();
+	});
 }
 
 /**
  * Stop all servers.
  */
 function stopServers() {
-	for (var i = 0; i < servers.length; i++) {
-		servers[i].stop();
-	}
+	Object.keys(servers).forEach(function (id) {
+		servers[id].stop();
+	});
 }
 
 /**
  * Are any servers running?
  */
 function isServersRunning() {
-	for (var i = 0; i < servers.length; i++) {
-		if (servers[i].isRunning()) {
+	Object.keys(servers).forEach(function (id) {
+		if (servers[id].isRunning()) {
 			return true; // a server is still running.
 		}
-	}
+	});
 	
 	return false;
 }
@@ -107,8 +110,6 @@ function bindShutdownHandler() { // Thanks - http://stackoverflow.com/a/14861513
  */
 function init() {
 	console.log(("Starting Sphinx Node...").cyan);
-	
-	loadServerData();
 	
 	startWebsocketServer();
 	

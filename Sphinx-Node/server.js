@@ -37,7 +37,7 @@ var Server = function (serverdata) {
 	
 	this.running = false; // is the server currently running?
 	this.started = false; // has the server finished starting up?
-	this restarting = false; // is the server restarting?
+	this.restarting = false; // is the server restarting?
 }
 
 /**
@@ -145,8 +145,12 @@ Server.prototype.stop = function () {
 }
 
 Server.prototype.restart = function () {
-	this.restarting = true;
-	this.stop();
+	if (this.running) {
+		this.restarting = true;
+		this.stop();
+	} else {
+		this.start();
+	}
 }
 
 /**

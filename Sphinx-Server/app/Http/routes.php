@@ -35,3 +35,9 @@ $app->get('/worlds/{id}', 'WorldController@view');
 $app->get('/worlds', 'WorldController@viewall');
 $app->get('/activities/liveplayerlist', 'LiveActivityController@playerlist');
 $app->delete('/invites/{id}', 'WorldController@leave');
+
+// Sphinx API
+$app->group(['namespace' => 'App\Http\Controllers\NodeApi', 'prefix' => '/sphinx/api'], function () use ($app) {
+    $app->get('/ping', 'PingController@ping');
+    $app->get('/request-manifest', 'ManifestController@request');
+});
