@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "colors": "1.1.x",
-    "sanitize-filename": "1.5.x"
+    "sanitize-filename": "1.5.x",
+    "nodejs-websocket": "1.5.x"
   }
 }
