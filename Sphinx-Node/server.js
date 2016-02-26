@@ -87,7 +87,7 @@ Server.prototype.start = function () {
 		cwd: __dirname + "\\" + this.serverPath
 	});
 	
-	this.started = true;
+	this.running = true;
 	
 	this.process.stdout.setEncoding("utf-8");
 	this.process.stdin.setEncoding("utf-8");
