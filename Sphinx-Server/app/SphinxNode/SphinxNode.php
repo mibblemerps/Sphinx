@@ -119,4 +119,21 @@ class SphinxNode
 
         $this->connection->close();
     }
+
+    /**
+     * Request to join a server.
+     * Returns the server's IP address.
+     *
+     * @param int $serverid
+     */
+    public function joinServer($serverid)
+    {
+        $this->connection->send(json_encode([
+            'action' => 'join',
+            'id' => $serverid
+        ]));
+
+        $resp = json_decode($this->connection->receive());
+        return $resp->address;
+    }
 }

@@ -71,6 +71,23 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 }
 
 /**
+ * Handle requests to join a Realm.
+ */
+SphinxServer.prototype.handleJoin = function (connection, payload) {
+	var serverid = payload.id;
+
+	// Build server address.
+	var ip = process.env.SERVER_CONNECT_IP;
+	var port = parseInt(serverid) + parseInt(process.env.SERVER_PORT_START) - 1;
+	var address = ip + ":" + port;
+
+	// Send response.
+	connection.sendText(JSON.stringify({
+		address: address
+	}));
+}
+
+/**
  * Send a request out for the manifest to be sent.
  * The manifest will arrive seperately via the Websocket.
  */
@@ -103,9 +120,12 @@ SphinxServer.prototype.startServer = function () {
 					case "manifest":
 						_this.handleServerManifest(connection, payload);
 						break;
+						
+					case "join":
+						_this.handleJoin(connection, payload);
+						break;
+						
 				}
-				
-				connection.close();
 			//} catch (e) {
 			//	console.log(("Error occured whilst processing a request!").red);
 			//}
