@@ -95,15 +95,17 @@ class Server extends Model {
      */
     public function removePlayer($player)
     {
+        // Remove player from invited list.
         $invited = $this->invited_players;
-
         foreach ($invited as $i => $invited_player) {
             if ($invited_player->uuid == $player->uuid) {
                 unset($invited[$i]);
             }
         }
-
         $this->invited_players = array_values($invited);
+
+        // Also deop player.
+        $this->deopPlayer($player);
 
         $this->save();
     }
