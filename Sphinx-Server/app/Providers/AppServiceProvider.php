@@ -18,11 +18,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app['sphinxnode'] = new \App\SphinxNode\SphinxNode('ws://' . env('SPHINX_NODE_ADDRESS', '127.0.0.1:8000') . '/');
 
         // Event handler to send manifest on server update.
-        Server::saved(function ($server) {
-            SphinxNode::sendManifest([$server->id]);
-        });
-        Server::created(function ($server) {
-            SphinxNode::sendManifest([$server->id]);
-        });
+        $update = function ($server) {
+            try {
+                SphinxNode::sendManifest([$server->id]);
+            } catch (\Exception $e) {
+                // Failed to send manifest. Not end of the world.
+            }
+        };
+        Server::saved($update);
+        Server::created($update);
     }
 }
