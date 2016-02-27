@@ -112,26 +112,56 @@ class Player
     }
 
     /**
-     * Fill in the UUID or username (whatever's missing from the Mojang API).
+     * Lookup username from Mojang's API.
+     *
+     * @return string
      */
-    public function lookupFromApi()
+    public function lookupUsername()
     {
-        $query = is_null($this->uuid) ? $this->username : $this->uuid;
-        if ($query === null) {
-            // Needs either uuid or username to perform lookup!
-            throw new \Exception('Needs UUID or username to perform API lookup!');
-        }
-
-        // Contact Mojang's servers.
-        $resp = file_get_contents(self::MOJANG_API . '/users/profiles/minecraft/' . urlencode($query));
+        $resp = file_get_contents(self::MOJANG_API . '/user/profiles/' . urlencode($this->uuid) . '/names');
         $resp = json_decode($resp);
         if ($resp === null) {
             // Request failed.
             abort(503, 'Mojang\'s API unreachable.');
         }
 
-        // Fill in details.
-        $this->uuid = $resp->id;
-        $this->username = $resp->name;
+        return last($resp)->name;
+    }
+
+    /**
+     * Lookup UUID from Mojang's API.
+     *
+     * @return string
+     */
+    public function lookupUuid()
+    {
+        $resp = file_get_contents(self::MOJANG_API . '/users/profiles/minecraft/' . urlencode($this->username));
+        $resp = json_decode($resp);
+        if ($resp === null) {
+            // Request failed.
+            abort(503, 'Mojang\'s API unreachable.');
+        }
+
+        return $resp->id;
+    }
+
+    /**
+     * Fill in the UUID or username (whatever's missing from the Mojang API).
+     */
+    public function lookupFromApi()
+    {
+        // What are we looking up?
+        $which = is_null($this->uuid) ? 'uuid' : 'name';
+        if ($which === null) {
+            // Needs either uuid or username to perform lookup!
+            throw new \Exception('Needs UUID or username to perform API lookup!');
+        }
+
+        // Contact Mojang's servers.
+        if ($which == 'uuid') {
+            $this->uuid = $this->lookupUuid();
+        } else if ($which == 'name') {
+            $this->username = $this->lookupUsername();
+        }
     }
 }
