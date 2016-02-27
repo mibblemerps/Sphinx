@@ -58,9 +58,11 @@ class SphinxNode
     /**
      * Send the servers manifest to the nodejs server.
      *
+     * @param int[] $forServers Array of server IDs to include.
+     * @param bool $needRestart Should the node restart the server after receiving these changes?
      * @return array
      */
-    public function sendManifest($forServers = [])
+    public function sendManifest($forServers = [], $needRestart = false)
     {
         // Generate json
         $serverJson = [];
@@ -107,7 +109,7 @@ class SphinxNode
                 ],
                 'whitelist' => $whitelistJson,
                 'ops' => $opsJson,
-                'needRestart' => false
+                'needRestart' => $needRestart
             ];
         }
 
