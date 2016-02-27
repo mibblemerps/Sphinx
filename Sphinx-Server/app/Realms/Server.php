@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Realms;
+use App\Facades\SphinxNode;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -60,6 +62,14 @@ class Server extends Model {
     }
 
     /**
+     * Push changes to the Sphinx Node.
+     */
+    public function push()
+    {
+        SphinxNode::sendManifest([$this->id]);
+    }
+
+    /**
      * Add a new player to the Realm.
      *
      * @param Player $player
@@ -87,13 +97,13 @@ class Server extends Model {
     {
         $invited = $this->invited_players;
 
-        foreach ($this->invited_players as $invited_player) {
-            if ($invited_player->uuid != Player::current()->uuid) {
-                $newInvited[] = $invited_player;
+        foreach ($invited as $i => $invited_player) {
+            if ($invited_player->uuid == $player->uuid) {
+                unset($invited[$i]);
             }
         }
 
-        $this->invited_players = $invited;
+        $this->invited_players = array_values($invited);
 
         $this->save();
     }
