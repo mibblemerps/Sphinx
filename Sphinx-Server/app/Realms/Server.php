@@ -109,6 +109,64 @@ class Server extends Model {
     }
 
     /**
+     * Check if a player is an operator.
+     *
+     * @param Player $player
+     * @return bool
+     */
+    public function isOp($player)
+    {
+        foreach ($this->operators as $op) {
+            if ($op->uuid == $player->uuid) {
+                // Invited! Yay. :3
+                return true;
+            }
+        }
+
+        // Not invited. :(
+        return false;
+    }
+
+    /**
+     * Give a player operator status.
+     *
+     * @param Player $player
+     */
+    public function opPlayer($player)
+    {
+        if ($this->isOp($player)) {
+            // Already invited
+            return;
+        }
+
+        $ops = $this->operators;
+        $ops[] = $player;
+        $this->operators = $ops;
+
+        $this->save();
+    }
+
+    /**
+     * Revoke operator status from a player.
+     *
+     * @param Player $player
+     */
+    public function deopPlayer($player)
+    {
+        $ops = $this->operators;
+
+        foreach ($ops as $i => $op) {
+            if ($op->uuid == $player->uuid) {
+                unset($ops[$i]);
+            }
+        }
+
+        $this->operators = array_values($ops);
+
+        $this->save();
+    }
+
+    /**
      * Invites relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
