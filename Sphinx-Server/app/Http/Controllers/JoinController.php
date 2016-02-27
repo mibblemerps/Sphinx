@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Facades\SphinxNode;
 use App\Realms\Player;
 use App\Realms\Server;
 
@@ -25,7 +26,7 @@ class JoinController extends Controller
         }
 
         return [
-            'address' => $server->address
+            'address' => SphinxNode::joinServer($server->id)
         ];
     }
 }
