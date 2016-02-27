@@ -118,12 +118,12 @@ class Server extends Model {
     {
         foreach ($this->operators as $op) {
             if ($op->uuid == $player->uuid) {
-                // Invited! Yay. :3
+                // Already oped.
                 return true;
             }
         }
 
-        // Not invited. :(
+        // Not operator.
         return false;
     }
 
@@ -135,7 +135,7 @@ class Server extends Model {
     public function opPlayer($player)
     {
         if ($this->isOp($player)) {
-            // Already invited
+            // Already oped
             return;
         }
 
