@@ -70,13 +70,14 @@ function stopServers() {
  * Are any servers running?
  */
 function isServersRunning() {
+	var running = false;
 	Object.keys(servers).forEach(function (id) {
-		if (servers[id].isRunning()) {
-			return true; // a server is still running.
+		if (servers[id].running) {
+			running = true; // a server is still running.
 		}
 	});
 	
-	return false;
+	return running;
 }
 
 function bindShutdownHandler() { // Thanks - http://stackoverflow.com/a/14861513 !
