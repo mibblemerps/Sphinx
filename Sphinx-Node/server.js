@@ -88,7 +88,7 @@ Server.prototype.start = function (startedCallback) {
 	
 	// Spawn Java process.
 	this.process = spawn("java", ["-jar", jarfile, "-Xmx512M", "nogui"], {
-		cwd: __dirname + "\\" + this.serverPath
+		cwd: __dirname + "/" + this.serverPath
 	});
 	
 	this.running = true;
