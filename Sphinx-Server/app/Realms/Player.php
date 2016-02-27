@@ -116,7 +116,7 @@ class Player
      */
     public function lookupFromApi()
     {
-        $query = is_null($this->uuid) ? $this->username : $this->username;
+        $query = is_null($this->uuid) ? $this->username : $this->uuid;
         if ($query === null) {
             // Needs either uuid or username to perform lookup!
             throw new \Exception('Needs UUID or username to perform API lookup!');
