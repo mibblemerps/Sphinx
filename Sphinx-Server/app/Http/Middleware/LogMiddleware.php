@@ -14,19 +14,24 @@ class LogMiddleware
     /**
      * Log a request to the request log.
      *
-     * @param Request $request Path to log.
+     * @param Request $request
+     * @param Response $response
      * @param bool $routed Was the request successfully routed? i.e. didn't 404?
      */
-    public function log($request, $routed = true) {
+    public function log($request, $response) {
         $path = '/' . $request->path();
         $method = $request->method();
+
+        // Work out if request was successful.
+        $responseClass = substr($response->getStatusCode(), 0, 1);
+        $routed = ($responseClass == '2' || $responseClass == '3');
 
         // Generate message
         $timestamp = date('c');
         if ($routed) {
             $message = "[$timestamp]: $method to \"$path\".";
         } else {
-            $message = "[$timestamp]: Unrouted $method to \"$path\"!";
+            $message = "[$timestamp]: Errored $method to \"$path\"! Response code: " . $response->getStatusCode();
         }
 
         // Append to file.
@@ -50,10 +55,7 @@ class LogMiddleware
             return; // debug mode disable, skip request logging.
         }
 
-        $responseClass = substr($response->getStatusCode(), 0, 1);
-        $routed = ($responseClass == '2' || $responseClass == '3');
-
         // Log request to file.
-        $this->log($request, $routed);
+        $this->log($request, $response);
     }
 }
