@@ -79,7 +79,7 @@ Server.prototype.init = function (server) {
 /**
  * Start the Minecraft server.
  */
-Server.prototype.start = function () {
+Server.prototype.start = function (startedCallback) {
 	var _this = this;
 	
 	console.log(("Starting server " + this.serverdata.id + "...").yellow);
@@ -111,6 +111,10 @@ Server.prototype.start = function () {
 				_this.started = true;
 				_this.restarting = false;
 				console.log(("Server " + _this.serverdata.id + " has started.").yellow);
+				
+				if (typeof startedCallback !== "undefined") {
+					startedCallback();
+				}
 			}
 		}
 	}

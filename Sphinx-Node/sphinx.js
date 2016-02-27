@@ -10,11 +10,19 @@ var SphinxServer = require('./sphinxserver.js');
 
 require("dotenv").config();
 
+// Staged start mode enabled?
+var stagedStartEnabled = (process.env.STAGED_START.toLowerCase() == "true");
+
 // Minecraft server data.
 var serverdata = []
 
 // Minecraft server instances.
 var servers = [];
+
+// Queue of servers to be started.
+var serverStartQueue = [];
+// Server currently starting.
+var serverStartQueueCurrent;
 
 // Sphinx server object.
 var sphinxserver;
@@ -31,7 +39,7 @@ function saveServerData() {
  */
 function startWebsocketServer() {
 	console.log(("Starting websocket server...").cyan);
-	sphinxserver = new SphinxServer(servers, process.env.SPHINX_IP, process.env.BIND_TO);
+	sphinxserver = new SphinxServer(servers, serverStartQueue, process.env.SPHINX_IP, process.env.BIND_TO);
 	sphinxserver.startServer();
 	console.log(("Websocket server active on " + sphinxserver.bindip + ":" + sphinxserver.bindport).cyan);
 }
@@ -51,19 +59,49 @@ function initServers() {
 	}
 }
 
-function startServers() {
-	Object.keys(servers).forEach(function (id) {
-		servers[id].start();
-	});
-}
-
 /**
  * Stop all servers.
  */
 function stopServers() {
+	// Clear start queue.
+	serverStartQueue = [];
+	
+	// Stop all currently running servers.
 	Object.keys(servers).forEach(function (id) {
 		servers[id].stop();
 	});
+}
+
+/**
+ * Start the server start queue.
+ * The queue will start servers one after the other (provided STAGED_START is enabled).
+ * If STAGED_START is disabled, the queue will start each server all at once.
+ */
+function startServerStartQueue()
+{
+	if (stagedStartEnabled) {
+		console.log(("Staged start mode enabled.").cyan);
+	}
+	
+	setInterval(function () {	
+		// Check if previous server has finished starting.
+		if (stagedStartEnabled && (typeof serverStartQueueCurrent !== "undefined") && !serverStartQueueCurrent.started) {
+			// Not yet.
+			return;
+		}
+		
+		// Previous server started. Start the next one!
+		var next = serverStartQueue.shift();
+		if (typeof next === "undefined") {
+			// Oh. There is no next one. :(
+			return;
+		}
+		
+		serverStartQueueCurrent = next;
+		
+		// Restart (starting if not already started) this server.
+		serverStartQueueCurrent.restart();
+	}, 100);
 }
 
 /**
@@ -120,7 +158,7 @@ function init() {
 	
 	bindShutdownHandler();
 	
-	startServers();
+	startServerStartQueue();
 }
 
 

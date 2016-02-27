@@ -6,9 +6,10 @@ var ws = require("nodejs-websocket");
 var http = require("http");
 var Server = require("./server.js");
 
-var SphinxServer = function (servers, remoteip, bindto) {
+var SphinxServer = function (servers, serverStartQueue, remoteip, bindto) {
 	this.servers = servers;
 	this.sphinxIP = remoteip;
+	this.serverStartQueue = serverStartQueue;
 	this.bindip = bindto.split(":")[0];
 	this.bindport = bindto.split(":")[1];
 }
@@ -59,7 +60,7 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 		
 		// Restart if neccesary.
 		if (restartNeeded && server.serverdata.active) {
-			server.restart();
+			_this.serverStartQueue.push(server);
 		} else if (!server.serverdata.active) {
 			// Server inactive, stop it if it's running.
 			server.stop();
@@ -89,7 +90,7 @@ SphinxServer.prototype.startServer = function () {
 		}
 		
 		connection.on("text", function (data) {
-			try {
+			//try {
 				var payload = JSON.parse(data);
 				
 				switch (payload.action) {
@@ -103,9 +104,9 @@ SphinxServer.prototype.startServer = function () {
 				}
 				
 				connection.close();
-			} catch (e) {
-				console.log(("Error occured whilst processing a request!").red);
-			}
+			//} catch (e) {
+			//	console.log(("Error occured whilst processing a request!").red);
+			//}
 		});
 	}).listen(this.bindport, this.bindip);
 	
