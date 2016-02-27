@@ -20,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
         // Event handler to send manifest on server update.
         $update = function ($server) {
             try {
-                SphinxNode::sendManifest([$server->id]);
+                if ($server->autoPush) {
+                    SphinxNode::sendManifest([$server->id]);
+                }
             } catch (\Exception $e) {
                 // Failed to send manifest. Not end of the world.
             }

@@ -43,6 +43,13 @@ class Server extends Model {
     protected $guarded = [];
 
     /**
+     * Should updates be automatically pushed to the Sphinx Node?
+     *
+     * @var bool
+     */
+    public $autoPush = true;
+
+    /**
      * Check if a player is invited to this Realm.
      *
      * @param Player $player
@@ -166,6 +173,16 @@ class Server extends Model {
         $this->operators = array_values($ops);
 
         $this->save();
+    }
+
+    /**
+     * Save without pushing manifest.
+     */
+    public function silentSave()
+    {
+        $this->autoPush = false;
+        $this->save();
+        $this->autoPush = true;
     }
 
     /**
