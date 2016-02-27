@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\SphinxNode;
 use App\Realms\Player;
 use App\Realms\Server;
 use App\Realms\Invite;
@@ -126,6 +127,7 @@ class WorldController extends Controller
 
         return '';
     }
+
 	public function close($id)
     {
         $server = Server::find($id);
@@ -140,10 +142,12 @@ class WorldController extends Controller
 
         // Change State.
         $server->state = "CLOSED";
-        $server->save();
+        $server->silentSave(); // save without pushing changes
+        SphinxNode::sendManifest([$server->id], true);
 
         return 'true';
     }
+
 	public function open($id)
     {
         $server = Server::find($id);
@@ -158,7 +162,8 @@ class WorldController extends Controller
 
         // Change State.
         $server->state = "OPEN";
-        $server->save();
+        $server->silentSave(); // save without pushing changes
+        SphinxNode::sendManifest([$server->id], true);
 
         return 'true';
     }
