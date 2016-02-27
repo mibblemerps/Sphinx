@@ -16,7 +16,8 @@ var serverCommands = {
 	whitelist_add: "whitelist add {PLAYER}", // command to whitelist a player
 	whitelist_remove: "whitelist remove {PLAYER}",
 	op_add: "op {PLAYER}", // op a player
-	op_remove: "deop {PLAYER}", // deop a player
+	op_remove: "deop {PLAYER}", // deop a player,
+	kick: "kick {PLAYER}", // kick a player from the server
 }
 
 function fileExists(file) {
@@ -241,6 +242,12 @@ Server.prototype.updateServerLists = function (mode) {
 		// Remove players.
 		for (var i = 0; i < toRemove.length; i++) {
 			this.sendCommand(removeCommand.replace("{PLAYER}", toRemove[i]));
+			
+			if (mode == "whitelist") {
+				// Demote and kick the player.
+				this.sendCommand(serverCommands.op_remove.replace("{PLAYER}", toRemove[i]));
+				this.sendCommand(serverCommands.kick.replace("{PLAYER}", toRemove[i]));
+			}
 		}
 		
 		// Add players.
