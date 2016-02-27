@@ -101,8 +101,6 @@ class SphinxNode
                 'jar' => env('MINECRAFT_JAR', 'minecraft_server.1.8.9.jar'),
                 'active' => ($server->state == Server::STATE_OPEN),
                 'properties' => [
-                    'server-ip' => '0.0.0.0',
-                    'server-port' => env('SERVER_PORT_START', 25000) + $server->id,
                     'max-players' => env('SERVER_MAX_PLAYERS', 10),
                     'white-list' => 'true',
                     'motd' => $server->motd

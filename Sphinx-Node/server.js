@@ -186,6 +186,10 @@ Server.prototype.updateServerProperties = function () {
 		props.set(key, value);
 	});
 	
+	// Set IP/port information.
+	props.set("server-port", parseInt(process.env.SERVER_PORT_START) + parseInt(this.serverdata.id) - 1);
+	props.set("server-ip", process.env.SERVER_BIND_IP);
+	
 	// Save
 	fs.writeFileSync(this.serverPath + "/server.properties", props.compile());
 }
