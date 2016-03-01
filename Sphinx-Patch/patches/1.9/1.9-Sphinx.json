@@ -199,7 +199,7 @@
       "name": "com.mojang:realms:1.8.3+sphinx",
       "downloads": {
         "artifact": {
-          "url": "https://raw.githubusercontent.com/mitchfizz05/Sphinx/master/Sphinx-Patch/dl/1.7.59/realms-1.7.59.jar",
+          "url": "https://raw.githubusercontent.com/mitchfizz05/Sphinx/master/Sphinx-Patch/dl/1.8.3/realms-1.8.3.jar",
           "sha1": "9a2e34851804ceda93a01382fd5ce2ad3a3cf7d3",
           "size": 1130161
         }
