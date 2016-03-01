@@ -31,6 +31,7 @@ rm /tmp/sphinx.json 2>/dev/null
 # Download Sphinx version.json file.
 echo Downloading patch...
 wget https://raw.githubusercontent.com/mitchfizz05/Sphinx/master/Sphinx-Patch/patches/1.9/1.9-Sphinx.json -O /tmp/sphinx.json --quiet
+wget https://github.com/mitchfizz05/Sphinx/raw/master/Sphinx-Patch/dl/1.8.3/realms-1.8.3.jar -O /tmp/sphinx.jar --quiet
 
 # Install the patch.
 echo Installing patch...
@@ -38,10 +39,13 @@ echo Installing patch...
 mkdir $MINECRAFT/versions/1.9-Sphinx
 cp $MINECRAFT/versions/1.9/1.9.jar $MINECRAFT/versions/1.9-Sphinx/1.9-Sphinx.jar
 cp /tmp/sphinx.json $MINECRAFT/versions/1.9-Sphinx/1.9-Sphinx.json
+mkdir $MINECRAFT/libraries/com/mojang/realms/1.8.3+sphinx
+cp /tmp/sphinx.jar $MINECRAFT/libraries/com/mojang/realms/1.8.3+sphinx/realms-1.8.3+sphinx.jar
 
 echo ""
 echo "Patch successfully installed!"
 
-# Remove temp file.
+# Remove temp files.
 rm /tmp/sphinx.json
+rm /tmp/sphinx.jar
 
