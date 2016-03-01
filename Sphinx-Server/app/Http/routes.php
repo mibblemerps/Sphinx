@@ -16,7 +16,7 @@ if (env('APP_DEBUG') && !App\Facades\MinecraftAuth::check()) {
 $app->get('/mco/available', 'AvailableController@available');
 $app->get('/mco/client/compatible', 'CompatibleController@compatible');
 $app->get('/mco/stageAvailable', 'AvailableController@stagingAvailable');
-$app->get('/regions/ping/stat', 'PingController@ping');
+$app->post('/regions/ping/stat', 'PingController@ping');
 $app->get('/trial', 'TrialController@check');
 
 // Invites.
