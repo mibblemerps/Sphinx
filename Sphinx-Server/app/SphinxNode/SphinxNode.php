@@ -103,7 +103,8 @@ class SphinxNode
                 'properties' => [
                     'max-players' => env('SERVER_MAX_PLAYERS', 10),
                     'white-list' => 'true',
-                    'motd' => $server->motd
+                    'motd' => $server->motd,
+                    'op-permission-level' => (env('ENFORCE_OP_PERMISSIONS', true) ? '2' : '4')
                 ],
                 'whitelist' => $whitelistJson,
                 'ops' => $opsJson,
