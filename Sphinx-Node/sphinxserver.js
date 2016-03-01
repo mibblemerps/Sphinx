@@ -92,8 +92,12 @@ SphinxServer.prototype.handleJoin = function (connection, payload) {
  * The manifest will arrive seperately via the Websocket.
  */
 SphinxServer.prototype.requestManifest = function () {
+	var host = process.env.SPHINX_ACCESS.split(":")[0];
+	var port = process.env.SPHINX_ACCESS.split(":")[1];
+	
 	http.get({
-		host: process.env.SPHINX_ACCESS,
+		host: host,
+		port: port,
 		path: "/sphinx/api/request-manifest"
 	});
 }
