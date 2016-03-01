@@ -14,13 +14,13 @@ echo ""
 
 # Checking if Minecraft Minecraft can run Sphinx
 echo Checking system requirements...
-if [ -f $MINECRAFT/versions/1.9 ]; then
+if [ ! -d "$MINECRAFT/versions/1.9" ]; then
 	echo "Cannot install Sphinx!"
 	echo "You must have Minecraft installed in the default location and Minecraft 1.9 installed."
 	exit
 fi
 
-if [ -f $MINECRAFT/versions/1.9-Sphinx ]; then
+if [ -d "$MINECRAFT/versions/1.9-Sphinx" ]; then
 	echo "Sphinx is already installed!"
 	exit
 fi
