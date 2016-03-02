@@ -40,6 +40,7 @@ var Server = function (serverdata) {
 	this.running = false; // is the server currently running?
 	this.started = false; // has the server finished starting up?
 	this.restarting = false; // is the server restarting?
+    this.timeSinceLastPlayer = 0; // how many seconds since a player was last online?
 }
 
 /**
@@ -63,6 +64,8 @@ Server.prototype.provision = function (server) {
 * Initialize a server's files, ready to launch.
 */
 Server.prototype.init = function (server) {
+    var _this = this;
+    
 	// Verify the server has the neccesary jar file available.
 	if (!fileExists("jars/" + sanitizefs(this.serverdata.jar))) {
 		console.log(("Server " + this.serverdata.id + " is missing it's neccesary jar: " + this.serverdata.jar + "!").red);
@@ -75,6 +78,39 @@ Server.prototype.init = function (server) {
 		console.log("Server " + this.serverdata.id + " does not have a directory. Generating one now...");
 		this.provision();
 	}
+    
+    // Start a timer for last time player was online.
+    setInterval(function () {
+        _this.automaticServerShutdown(_this);
+    }, 1000);
+}
+
+/**
+ * Should be called every second.
+ * Turns off server if it's been inactive for more than 5 minutes.
+ */
+Server.prototype.automaticServerShutdown = function (_this) {
+    if (this.started) {
+        this.getPlayerCount(function (error, players) {
+            if (!error) {
+                if (players.online > 0) {
+                    // A player is online - reset timer to 0.
+                    _this.timeSinceLastPlayer = 0;
+                } else {
+                    // No players online, increment counter.
+                    _this.timeSinceLastPlayer++;
+                    
+                    if (_this.timeSinceLastPlayer > 300) {
+                        // No one has been online for a while. Shutdown server.
+                        _this.stop();
+                    }
+                }
+            }
+        });
+    } else {
+        // Server not running - reset timer to 0.
+        _this.timeSinceLastPlayer = 0;
+    }
 }
 
 /**
