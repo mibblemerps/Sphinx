@@ -86,8 +86,6 @@ SphinxServer.prototype.handleJoin = function (connection, payload) {
             ip = null;
         }
         
-        console.log("Fullfilling join request: " + ip);
-        
         // Send response.
         connection.sendText(JSON.stringify({
             address: ip
