@@ -60,8 +60,10 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 		
 		if (restartNeeded) {
 			if (server.serverdata.active) {
-				// Server active - start server.
-				_this.serverStartQueue.push(server);
+				if (server.running) {
+                    // Server running, restart it.
+                    _this.serverStartQueue.push(server);
+                }
 			} else {
 				// Server inactive - stop server.
 				server.stop();
@@ -76,15 +78,21 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 SphinxServer.prototype.handleJoin = function (connection, payload) {
 	var serverid = payload.id;
 
-	// Build server address.
-	var ip = process.env.SERVER_CONNECT_IP;
-	var port = parseInt(serverid) + parseInt(process.env.SERVER_PORT_START) - 1;
-	var address = ip + ":" + port;
-
-	// Send response.
-	connection.sendText(JSON.stringify({
-		address: address
-	}));
+	// Get server IP (and start server if neccesary)...
+    var address;
+    this.servers[serverid].join(function (ip) {
+        if (!ip) {
+            // Failed to get IP!
+            ip = null;
+        }
+        
+        console.log("Fullfilling join request: " + ip);
+        
+        // Send response.
+        connection.sendText(JSON.stringify({
+            address: ip
+        }));
+    });
 }
 
 /**

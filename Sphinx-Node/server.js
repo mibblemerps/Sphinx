@@ -109,7 +109,7 @@ Server.prototype.automaticServerShutdown = function (_this) {
                     // No players online, increment counter.
                     _this.timeSinceLastPlayer++;
                     
-                    if (_this.timeSinceLastPlayer > 300) {
+                    if (_this.timeSinceLastPlayer > parseInt(process.env.INACTIVITY_TIMER)) {
                         // No one has been online for a while. Shutdown server.
                         _this.stop();
                     }
@@ -353,6 +353,39 @@ Server.prototype.getPlayerCount = function (callback) {
                 max: response.players.max
             });
         }
+    });
+}
+
+/**
+ * Get the IP to the server.
+ * Also starts the server if neccesary.
+ */
+Server.prototype.join = function (callback) {
+    var _this = this;
+    
+    if (!this.serverdata.active) {
+        // Server inactive. Cannot join.
+        callback(undefined);
+        return;
+    }
+    
+    // Reset last player counter to eliminate chance of server shutting down while joining.
+    this.timeSinceLastPlayer = 0;
+    
+    if (this.started) {
+        // Server already started.
+        callback(_this.serverip + ":" + _this.serverport);
+        return;
+    }
+    
+    if (!this.running) {
+        // Server not running. Start it now.
+        this.start();
+    }
+    
+    // Wait until the server 
+    this.once("started", function () {
+        callback(_this.serverip + ":" + _this.serverport);
     });
 }
 

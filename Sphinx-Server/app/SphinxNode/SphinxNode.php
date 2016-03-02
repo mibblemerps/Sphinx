@@ -29,6 +29,9 @@ class SphinxNode
 
         // Connect to the node.
         $this->connection = new Client($nodeAddress);
+
+        // Change timeout so long running operations don't timeout.
+        $this->connection->setTimeout(30);
     }
 
     /**
