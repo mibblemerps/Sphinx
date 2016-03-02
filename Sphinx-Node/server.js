@@ -88,10 +88,12 @@ Server.prototype.init = function (server) {
 		this.provision();
 	}
     
-    // Start a timer for last time player was online.
-    setInterval(function () {
-        _this.automaticServerShutdown(_this);
-    }, 1000);
+    if (process.env.INACTIVITY_TIMER != "-1") {
+        // Start a timer for last time player was online.
+        setInterval(function () {
+            _this.automaticServerShutdown(_this);
+        }, 1000);
+    }
 }
 
 /**

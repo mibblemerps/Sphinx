@@ -60,8 +60,8 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 		
 		if (restartNeeded) {
 			if (server.serverdata.active) {
-				if (server.running) {
-                    // Server running, restart it.
+				if (server.running || (process.env.INACTIVITY_TIMER == -1)) {
+                    // Server running, restart it. (Or on-demand servers is disabled, so start even if not running)
                     _this.serverStartQueue.push(server);
                 }
 			} else {
