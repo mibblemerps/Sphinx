@@ -16,6 +16,7 @@
     "colors": "1.1.x",
     "sanitize-filename": "1.5.x",
     "nodejs-websocket": "1.5.x",
-    "dotenv": "2.0.x"
+    "dotenv": "2.0.x",
+    "mc-ping-updated": "0.0.x"
   }
 }
