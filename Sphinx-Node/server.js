@@ -7,6 +7,8 @@ var spawn = require("child_process").spawn;
 var sanitizefs = require("sanitize-filename");
 var McProperties = require("./mcproperties.js");
 var mcping = require("mc-ping-updated");
+var EventEmitter = require("events");
+var util = require("util");
 
 var regexPatterns = {
 	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g,
@@ -45,7 +47,10 @@ var Server = function (serverdata) {
     // Server IP and port.
     this.serverport = parseInt(process.env.SERVER_PORT_START) + parseInt(this.serverdata.id) - 1;
     this.serverip = process.env.SERVER_CONNECT_IP;
+    
+    EventEmitter.call(this);
 }
+util.inherits(Server, EventEmitter);
 
 /**
  * Provison a Minecraft server.
@@ -131,6 +136,9 @@ Server.prototype.start = function (startedCallback) {
 	this.process = spawn("java", ["-jar", jarfile, "-Xmx512M", "nogui"], {
 		cwd: __dirname + "/" + this.serverPath
 	});
+    
+    // Emit event.
+    this.emit("starting");
 	
 	this.running = true;
 	
@@ -153,6 +161,10 @@ Server.prototype.start = function (startedCallback) {
 				_this.restarting = false;
 				console.log(("Server " + _this.serverdata.id + " has started.").yellow);
 				
+                // Emit event
+                _this.emit("started");
+                
+                // Run callback
 				if (typeof startedCallback !== "undefined") {
 					startedCallback();
 				}
@@ -166,6 +178,9 @@ Server.prototype.start = function (startedCallback) {
 		_this.started = false;
 		_this.running = false;
 		console.log(("Server " + _this.serverdata.id + " has stopped. Code: " + code).yellow);
+        
+        // Emit event.
+        _this.emit("stopped");
 		
 		if (_this.restarting) {
 			// Server restarting, start server back up.
