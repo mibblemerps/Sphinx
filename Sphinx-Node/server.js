@@ -6,6 +6,7 @@ var fs = require("fs");
 var spawn = require("child_process").spawn;
 var sanitizefs = require("sanitize-filename");
 var McProperties = require("./mcproperties.js");
+var mcping = require("mc-ping-updated");
 
 var regexPatterns = {
 	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g,
@@ -273,6 +274,31 @@ Server.prototype.updateServerLists = function (mode) {
 		// Server not running, simply overwrite the file.
 		fs.writeFileSync(listfile, JSON.stringify(currentlist));
 	}
+}
+
+/**
+ * Get online player count and max player slots.
+ */
+Server.prototype.getPlayerCount = function (callback) {
+    if (!this.started) {
+        return;
+    }
+    
+    var host = process.env.SERVER_CONNECT_IP;
+    var port = parseInt(process.env.SERVER_PORT_START) + parseInt(this.serverdata.id) - 1;
+    
+    mcping(host, port, function (error, response) {
+        if (error) {
+            // Error :(
+            callback(error, undefined);
+        } else {
+            // Success!
+            callback(undefined, {
+                online: response.players.online,
+                max: response.players.max
+            });
+        }
+    });
 }
 
 module.exports = Server;
