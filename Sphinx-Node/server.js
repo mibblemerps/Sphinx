@@ -41,6 +41,10 @@ var Server = function (serverdata) {
 	this.started = false; // has the server finished starting up?
 	this.restarting = false; // is the server restarting?
     this.timeSinceLastPlayer = 0; // how many seconds since a player was last online?
+    
+    // Server IP and port.
+    this.serverport = parseInt(process.env.SERVER_PORT_START) + parseInt(this.serverdata.id) - 1;
+    this.serverip = process.env.SERVER_CONNECT_IP;
 }
 
 /**
@@ -224,7 +228,7 @@ Server.prototype.updateServerProperties = function () {
 	});
 	
 	// Set IP/port information.
-	props.set("server-port", parseInt(process.env.SERVER_PORT_START) + parseInt(this.serverdata.id) - 1);
+	props.set("server-port", this.serverport);
 	props.set("server-ip", process.env.SERVER_BIND_IP);
 	
 	// Save
