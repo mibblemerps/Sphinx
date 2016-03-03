@@ -28,13 +28,6 @@ var serverStartQueueCurrent;
 var sphinxserver;
 
 /**
- * Save server data.
- */
-function saveServerData() {
-	fs.writeFileSync("serverdata.json", JSON.stringify(serverdata));
-}
-
-/**
  * Start websockets server to listen for requests from the Sphinx server.
  */
 function startWebsocketServer() {
@@ -42,21 +35,6 @@ function startWebsocketServer() {
 	sphinxserver = new SphinxServer(servers, serverStartQueue, process.env.SPHINX_IP, process.env.BIND_TO);
 	sphinxserver.startServer();
 	console.log(("Websocket server active on " + sphinxserver.bindip + ":" + sphinxserver.bindport).cyan);
-}
-
-/**
- * Initialize all the servers directories ready to be used.
- */
-function initServers() {
-	for (var i = 0; i < serverdata.length; i++) {
-		var id = serverdata[i].id;
-		
-		servers[id] = new Server(serverdata[i]);
-		servers[id].init(); // initialize server
-		
-		servers[id].updateServerProperties(); // update server properties
-		servers[id].updateServerLists(); // update server whitelist and ops list.
-	}
 }
 
 /**
@@ -154,15 +132,10 @@ function init() {
 	
 	startWebsocketServer();
 	
-	initServers();
-	
 	bindShutdownHandler();
 	
 	startServerStartQueue();
 }
 
-
-
-// Start server.
+// Start Sphinx Node.
 init();
-
