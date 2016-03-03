@@ -209,6 +209,10 @@ Server.prototype.stop = function () {
 	}
 }
 
+/**
+ * Restart the server.
+ * If the server is not already running, it'll simply be started instead.
+ */
 Server.prototype.restart = function () {
 	if (this.running) {
 		this.restarting = true;
