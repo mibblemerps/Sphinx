@@ -50,7 +50,7 @@ class AvailabilityController
      *
      * @return string
      */
-    public function trial()
+    public function trialAvailable()
     {
         return 'false';
     }
