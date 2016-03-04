@@ -6,6 +6,7 @@ use App\Facades\SphinxNode;
 use App\Realms\Player;
 use App\Realms\Server;
 use App\Realms\Invite;
+use Illuminate\Http\Request;
 
 class WorldController extends Controller
 {
@@ -203,4 +204,27 @@ class WorldController extends Controller
             'address' => SphinxNode::joinServer($server->id)
         ];
     }
+	
+	public function UpdateServerInfo(Request $request,$serverId)
+    {
+        $server = Server::find($serverId);
+
+		if (Player::current()->uuid != $server->owner->uuid) {
+            abort(403); // 403 Forbidden
+        }
+
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+        // Change Server name and desc.
+        $server->name = $request->input('name');
+		$server->motd = $request->input('description');
+        $server->Save(); // save!
+
+        return 'true';
+    }
+
 }
+
+

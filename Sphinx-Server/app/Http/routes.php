@@ -37,6 +37,7 @@ $app->get('/worlds/{id}/join', 'WorldController@join');
 $app->put('/worlds/{id}/close', 'WorldController@close');
 $app->put('/worlds/{id}/open', 'WorldController@open');
 $app->get('/worlds/{id}', 'WorldController@view');
+$app->post('/worlds/{id}', 'WorldController@UpdateServerInfo');
 $app->post('/ops/{id}/{player}', 'OpController@op');
 $app->delete('/ops/{id}/{player}', 'OpController@deop');
 $app->get('/subscriptions/{id}', 'SubscriptionController@view');
