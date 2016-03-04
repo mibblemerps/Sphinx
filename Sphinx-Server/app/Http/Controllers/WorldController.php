@@ -45,7 +45,12 @@ class WorldController extends Controller
         return $json;
     }
 
-    public function viewall()
+    /**
+     * Return a listing of all Realms available to the player.
+     *
+     * @return array
+     */
+    public function listing()
     {
         $servers = Server::all();
 
@@ -69,27 +74,27 @@ class WorldController extends Controller
     /**
      * View a single server.
      *
-     * @param int $id Server ID
+     * @param int $serverId Server ID
      * @return array
      */
-    public function view($id)
+    public function view($serverId)
     {
-        return self::generateServerJSON(Server::findOrFail($id));
+        return self::generateServerJSON(Server::findOrFail($serverId));
     }
 
     /**
      * Leave a Realm you've been invited to.
      *
-     * @param int $id Realm ID
-     * @return string
+     * @param int $serverId Server ID
+     * @return mixed
      */
-    public function leave($id)
+    public function leave($serverId)
     {
         if (!Player::isLoggedIn()) {
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::find($id);
+        $server = Server::find($serverId);
 
         // Ensure the owner isn't removing themselves from their own Realm.
         if (Player::current()->uuid == $server->owner->uuid) {
@@ -105,17 +110,17 @@ class WorldController extends Controller
     /**
      * Remove a user from the Realm. As in, de-whitelist.
      *
-     * @param int $id
-     * @param Player $player
-     * @return string
+     * @param int $serverId Server ID
+     * @param Player $playerUuid Player UUID
+     * @return mixed
      */
-    public function kick($id, $player)
+    public function kick($serverId, $playerUuid)
     {
         if (!Player::isLoggedIn()) {
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::findOrFail($id);
+        $server = Server::findOrFail($serverId);
 
         // Check user owns server.
         if (Player::current()->uuid != $server->owner->uuid) {
@@ -123,14 +128,20 @@ class WorldController extends Controller
         }
 
         // Remove user from Realm.
-        $server->removePlayer(new Player($player, null));
+        $server->removePlayer(new Player($playerUuid, null));
 
         return '';
     }
 
-	public function close($id)
+    /**
+     * Close the Realm, making it unavailable to join and shutting down the server.
+     *
+     * @param int $serverId Server ID
+     * @return mixed
+     */
+	public function close($serverId)
     {
-        $server = Server::find($id);
+        $server = Server::find($serverId);
 
 	    if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
@@ -148,9 +159,15 @@ class WorldController extends Controller
         return 'true';
     }
 
-	public function open($id)
+    /**
+     * Open the Realm, making it available to join once more.
+     *
+     * @param int $serverId Server ID
+     * @return mixed
+     */
+	public function open($serverId)
     {
-        $server = Server::find($id);
+        $server = Server::find($serverId);
 
         if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
@@ -166,5 +183,24 @@ class WorldController extends Controller
         SphinxNode::sendManifest([$server->id], true);
 
         return 'true';
+    }
+
+    /**
+     * Join a server.
+     *
+     * @param int $serverId
+     * @return mixed
+     */
+    public function join($serverId)
+    {
+        $server = Server::findOrFail($serverId);
+        if (!$server->isInvited(Player::current())) {
+            // Not invited. Sorry! :(
+            abort(403); // 403 Forbidden.
+        }
+
+        return [
+            'address' => SphinxNode::joinServer($server->id)
+        ];
     }
 }

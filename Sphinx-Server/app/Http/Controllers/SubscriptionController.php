@@ -22,9 +22,15 @@ class SubscriptionController extends Controller
         return ceil($days / 1.013888888888889);
     }
 
-    public function view($serverid)
+    /**
+     * View subscription information.
+     *
+     * @param int $serverId Server ID
+     * @return array
+     */
+    public function view($serverId)
     {
-        $server = Server::findOrFail($serverid);
+        $server = Server::findOrFail($serverId);
 
         return [
             'daysLeft' => $this->normalizeDays($server->days_left),

@@ -129,10 +129,18 @@ class InviteController
         return '';
     }
 
-    public function invite(Request $request, $id)
+    /**
+     * Send an invitation to another player.
+     *
+     * @param Request $request
+     * @param int $serverId Server ID
+     * @return mixed
+     * @throws \Exception
+     */
+    public function invite(Request $request, $serverId)
     {
         // Check if player has rights to invite people to Realm.
-        $server = Server::findOrFail($id);
+        $server = Server::findOrFail($serverId);
         if ($server->owner->uuid != Player::current()->uuid) {
             abort(403); // 403 Forbidden.
         }
@@ -142,7 +150,7 @@ class InviteController
 
         // Create invitation.
         Invite::create([
-            'realm_id' => $id,
+            'realm_id' => $serverId,
             'to' => $player
         ]);
 

@@ -16,12 +16,12 @@ class OpController extends Controller
     /**
      * Get op list. Should be sent back after oping/deoping a player to update the client.
      *
-     * @param Server $server
+     * @param int $serverId Server ID
      * @return array
      */
-    public function oplist($serverid)
+    public function oplist($serverId)
     {
-        $server = Server::findOrFail($serverid);
+        $server = Server::findOrFail($serverId);
 
         // Make list of all op usernames.
         $opNames = [];
@@ -34,18 +34,23 @@ class OpController extends Controller
             'ops' => $opNames
         ];
 
-        Log::info(print_r($resp, true));
-
         return $resp;
     }
 
-    public function op(Request $request, $id, $player)
+    /**
+     * Give a player operator status.
+     *
+     * @param int $serverId Server ID
+     * @param string $playerUuid Player's UUID
+     * @return mixed
+     */
+    public function op($serverId, $playerUuid)
     {
         if (!Player::isLoggedIn()) {
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::findOrFail($id);
+        $server = Server::findOrFail($serverId);
 
         // Check user owns server.
         if (Player::current()->uuid != $server->owner->uuid) {
@@ -53,20 +58,27 @@ class OpController extends Controller
         }
 
         // Op player.
-        $player = new Player($player, null);
+        $player = new Player($playerUuid, null);
         $player->lookupFromApi();
         $server->opPlayer($player);
 
-        return $this->oplist($id);
+        return $this->oplist($serverId);
     }
 
-    public function deop($id, $player)
+    /**
+     * Revoke operator status from a player.
+     *
+     * @param int $serverId Server ID
+     * @param string $playerUuid Player's UUID
+     * @return mixed
+     */
+    public function deop($serverId, $playerUuid)
     {
         if (!Player::isLoggedIn()) {
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::findOrFail($id);
+        $server = Server::findOrFail($serverId);
 
         // Check user owns server.
         if (Player::current()->uuid != $server->owner->uuid) {
@@ -74,10 +86,10 @@ class OpController extends Controller
         }
 
         // Deop player.
-        $player = new Player($player, null);
+        $player = new Player($playerUuid, null);
         $player->lookupFromApi();
         $server->deopPlayer($player);
 
-        return $this->oplist($id);
+        return $this->oplist($serverId);
     }
 }
