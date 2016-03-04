@@ -51,6 +51,6 @@ $app->group(['namespace' => 'App\Http\Controllers\NodeApi', 'prefix' => '/sphinx
 // Sphinx Dashboard
 $app->group(['namespace' => 'App\Http\Controllers\Dashboard', 'prefix' => '/sphinx/dashboard'], function () use ($app) {
     $app->get('/', function () {
-        return view('common.template');
+        return view('home');
     });
 });
