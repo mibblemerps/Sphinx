@@ -47,3 +47,10 @@ $app->group(['namespace' => 'App\Http\Controllers\NodeApi', 'prefix' => '/sphinx
     $app->get('/ping', 'PingController@ping');
     $app->get('/request-manifest', 'ManifestController@request');
 });
+
+// Sphinx Dashboard
+$app->group(['namespace' => 'App\Http\Controllers\Dashboard', 'prefix' => '/sphinx/dashboard'], function () use ($app) {
+    $app->get('/', function () {
+        return view('common.template');
+    });
+});
