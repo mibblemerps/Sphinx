@@ -1,0 +1,23 @@
+.form-login {
+    max-width: 330px;
+    margin: 0 auto;
+}
+
+.form-login .form-control {
+    height: auto;
+    padding: 8px;
+    font-size: 20px;
+    z-index: 1;
+}
+
+.form-login .form-control:focus {
+    z-index: 2;
+}
+
+.form-login .form-control {
+    margin-bottom: 8px;
+}
+
+.form-login .btn-primary {
+    margin-top: 10px;
+}
