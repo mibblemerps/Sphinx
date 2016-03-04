@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ url('/css/main.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    @yield('head')
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
