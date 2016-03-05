@@ -45,10 +45,10 @@
                 {!! csrf_field() !!}
 
                 <label for="name">Realm Name</label>
-                <input type="text" class="form-control" name="name">
+                <input type="text" class="form-control" name="name" maxlength="32">
 
                 <label for="name">Owner</label>
-                <input type="text" class="form-control" name="owner">
+                <input type="text" class="form-control" name="owner" maxlength="64">
 
                 <div class="text-muted">Everything else can be configured in-game.</div>
 
