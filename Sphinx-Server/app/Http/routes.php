@@ -45,7 +45,7 @@ Route::delete('/ops/{id}/{player}', 'OpController@deop');
 Route::get('/subscriptions/{id}', 'SubscriptionController@view');
 
 // Sphinx API
-Route::group(['namespace' => 'App\Http\Controllers\NodeApi', 'prefix' => '/sphinx/api'], function () {
+Route::group(['namespace' => 'NodeApi', 'prefix' => '/sphinx/api'], function () {
     Route::get('/ping', 'PingController@ping');
     Route::get('/request-manifest', 'ManifestController@request');
 });
