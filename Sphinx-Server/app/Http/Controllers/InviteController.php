@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
  * Class InviteController
  * @package App\Http\Controllers
  */
-class InviteController
+class InviteController extends Controller
 {
     protected function generateInviteJson($invite)
     {

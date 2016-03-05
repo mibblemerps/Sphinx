@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class AvailabilityController
+class AvailabilityController extends Controller
 {
     /**
      * Is the Realms service available?

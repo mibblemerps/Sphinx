@@ -2,41 +2,30 @@
 
 namespace App\Providers;
 
-use App\Auth\MinecraftAuth;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * The policy mappings for the application.
      *
-     * @return void
+     * @var array
      */
-    public function register()
-    {
-        //
-    }
+    protected $policies = [
+        'App\Model' => 'App\Policies\ModelPolicy',
+    ];
 
     /**
-     * Boot the authentication services for the application.
+     * Register any application authentication / authorization services.
      *
+     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      * @return void
      */
-    public function boot()
+    public function boot(GateContract $gate)
     {
-        // Register Minecraft authenticator.
-        $this->app['minecraft_auth'] = new MinecraftAuth($this->app['request']);
+        $this->registerPolicies($gate);
 
-        // Register dashboard authentication services.
-        config('auth.defaults.guard', 'web');
-        config('auth.guards', [
-            'web' => ['driver' => 'session', 'provider' => 'users']
-        ]);
-        config('auth.providers', [
-            'users' => [
-                'driver' => 'eloquent',
-                'model' => \App\User::class
-            ]
-        ]);
+        //
     }
 }

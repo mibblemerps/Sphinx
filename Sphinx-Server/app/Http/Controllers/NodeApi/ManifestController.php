@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\NodeApi;
+
 use App\Facades\SphinxNode;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 /**
  * Sphinx API controller for requesting the manifest.
@@ -10,7 +12,7 @@ use Illuminate\Http\Request;
  *
  * @package App\Http\Controllers\NodeApi
  */
-class ManifestController
+class ManifestController extends Controller
 {
     /**
      * Get the entire server manifest.
