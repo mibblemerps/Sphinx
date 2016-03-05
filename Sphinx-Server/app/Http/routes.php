@@ -60,6 +60,8 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => '/sphinx/dashboard', 'midd
     // Restricted routes that require the user to be logged in.
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'DashboardController@dashboard');
+        Route::get('/realms', 'RealmsController@listing');
+
         Route::get('/ajax/stats', 'DashboardController@statsApi');
     });
 });
