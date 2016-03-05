@@ -31,7 +31,7 @@
                     @if(!(isset($simple_navbar) && $simple_navbar) )
                         <li class="active"><a href="{{ url('/sphinx/dashboard') }}">Home</a></li>
                         <li><a href="{{ url('/sphinx/dashboard/realms') }}">Realms</a></li>
-                        <li><a href="{{ url('/sphinx/dashboard/logout') }}">Logout</a></li>
+                        <li><a href="{{ url('/sphinx/dashboard/logout?_token=' . csrf_token()) }}">Logout</a></li>
                     @endif
                 </ul>
             </div>
