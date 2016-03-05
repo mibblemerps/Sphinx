@@ -94,6 +94,26 @@ SphinxServer.prototype.handleJoin = function (connection, payload) {
 }
 
 /**
+ * Get node statistics.
+ */
+SphinxServer.prototype.handleStats = function (connection, payload) {
+    var _this = this;
+    
+    // Check how many servers are running.
+    var serversRunning = 0;
+    Object.keys(this.servers).forEach(function (serverid) {
+        if (_this.servers[serverid].running) {
+            serversRunning++;
+        }
+    });
+    
+    // Respond with stats.
+    connection.sendText(JSON.stringify({
+        serversRunning: serversRunning 
+    }));
+}
+
+/**
  * Send a request out for the manifest to be sent.
  * The manifest will arrive seperately via the Websocket.
  */
@@ -119,7 +139,7 @@ SphinxServer.prototype.startServer = function () {
 		}
 		
 		connection.on("text", function (data) {
-			try {
+			//try {
 				var payload = JSON.parse(data);
 				
 				switch (payload.action) {
@@ -134,11 +154,15 @@ SphinxServer.prototype.startServer = function () {
 					case "join":
 						_this.handleJoin(connection, payload);
 						break;
+                        
+                    case "stats":
+                        _this.handleStats(connection, payload);
+                        break;
 						
 				}
-			} catch (e) {
-				console.log(("Error occured whilst processing a request!").red);
-			}
+			//} catch (e) {
+			//	console.log(("Error occured whilst processing a request!").red);
+			//}
 		});
 	}).listen(this.bindport, this.bindip);
 	

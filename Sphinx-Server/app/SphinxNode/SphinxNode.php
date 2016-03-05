@@ -140,4 +140,20 @@ class SphinxNode
         $resp = json_decode($this->connection->receive());
         return $resp->address;
     }
+
+    /**
+     * Get an array of statistics from the Sphinx Node.
+     *
+     * @return array
+     * @throws \WebSocket\BadOpcodeException
+     */
+    public function stats()
+    {
+        $this->connection->send(json_encode([
+            'action' => 'stats'
+        ]));
+
+        $resp = json_decode($this->connection->receive(), true);
+        return $resp;
+    }
 }
