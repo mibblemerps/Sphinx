@@ -8,7 +8,12 @@ use App\Realms\Server;
 
 class DashboardController extends Controller
 {
-    public function dashboard()
+    /**
+     * Create an array of stats.
+     *
+     * @return array
+     */
+    protected function fetchStats()
     {
         // Get stats.
         $nodeOnline = SphinxNode::ping();
@@ -28,6 +33,21 @@ class DashboardController extends Controller
         // Get other stats.
         $stats['realmCount'] = Server::count();
 
-        return view('dashboard', ['stats' => $stats]);
+        return $stats;
+    }
+
+    /**
+     * View dashboard.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function dashboard()
+    {
+        return view('dashboard', ['stats' => $this->fetchStats()]);
+    }
+
+    public function statsApi()
+    {
+        return $this->fetchStats();
     }
 }
