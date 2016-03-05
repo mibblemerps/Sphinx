@@ -139,7 +139,7 @@ SphinxServer.prototype.startServer = function () {
 		}
 		
 		connection.on("text", function (data) {
-			//try {
+			try {
 				var payload = JSON.parse(data);
 				
 				switch (payload.action) {
@@ -160,9 +160,9 @@ SphinxServer.prototype.startServer = function () {
                         break;
 						
 				}
-			//} catch (e) {
-			//	console.log(("Error occured whilst processing a request!").red);
-			//}
+			} catch (e) {
+				console.log(("Error occured whilst processing a request!").red);
+			}
 		});
 	}).listen(this.bindport, this.bindip);
 	

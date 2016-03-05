@@ -42,6 +42,8 @@ var Server = function (serverdata) {
 	this.running = false; // is the server currently running?
 	this.started = false; // has the server finished starting up?
 	this.restarting = false; // is the server restarting?
+    
+    this.playerCount = 0; // number of players connected to this server.
     this.timeSinceLastPlayer = 0; // how many seconds since a player was last online?
     
     // Server IP and port.
@@ -91,8 +93,28 @@ Server.prototype.init = function (server) {
     if (process.env.INACTIVITY_TIMER != "-1") {
         // Start a timer for last time player was online.
         setInterval(function () {
-            _this.automaticServerShutdown(_this);
+            _this.updatePlayerCount();
+            _this.automaticServerShutdown();
         }, 1000);
+    }
+}
+
+Server.prototype.updatePlayerCount = function () {
+    var _this = this;
+    
+    if (this.started) {
+        var playerdata = this.getPlayerCount(function (error, players) {
+            if (error) {
+                // Error occured. Let's just say no one is online.
+                _this.playerCount = 0;
+            } else {
+                // Got result.
+                _this.playerCount = players.online;
+            }
+        });
+    } else {
+        // Server not running. No players are online, obviously.
+        this.playerCount = 0;
     }
 }
 
@@ -100,27 +122,23 @@ Server.prototype.init = function (server) {
  * Should be called every second.
  * Turns off server if it's been inactive for more than 5 minutes.
  */
-Server.prototype.automaticServerShutdown = function (_this) {
+Server.prototype.automaticServerShutdown = function () {
     if (this.started) {
-        this.getPlayerCount(function (error, players) {
-            if (!error) {
-                if (players.online > 0) {
-                    // A player is online - reset timer to 0.
-                    _this.timeSinceLastPlayer = 0;
-                } else {
-                    // No players online, increment counter.
-                    _this.timeSinceLastPlayer++;
-                    
-                    if (_this.timeSinceLastPlayer > parseInt(process.env.INACTIVITY_TIMER)) {
-                        // No one has been online for a while. Shutdown server.
-                        _this.stop();
-                    }
-                }
+        if (this.playerCount > 0) {
+            // A player is online - reset timer to 0.
+            this.timeSinceLastPlayer = 0;
+        } else {
+            // No players online, increment counter.
+            this.timeSinceLastPlayer++;
+            
+            if (this.timeSinceLastPlayer > parseInt(process.env.INACTIVITY_TIMER)) {
+                // No one has been online for a while. Shutdown server.
+                this.stop();
             }
-        });
+        }
     } else {
         // Server not running - reset timer to 0.
-        _this.timeSinceLastPlayer = 0;
+        this.timeSinceLastPlayer = 0;
     }
 }
 
