@@ -1,3 +1,5 @@
+<?php $simple_navbar = true; ?>
+
 @extends('common.template')
 
 @section('head')

@@ -28,8 +28,10 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="{{ url('/sphinx/dashboard') }}">Home</a></li>
-                    <li><a href="{{ url('/sphinx/dashboard/realms') }}">Realms</a></li>
+                    @if(!(isset($simple_navbar) && $simple_navbar) )
+                        <li class="active"><a href="{{ url('/sphinx/dashboard') }}">Home</a></li>
+                        <li><a href="{{ url('/sphinx/dashboard/realms') }}">Realms</a></li>
+                    @endif
                 </ul>
             </div>
         </div>
