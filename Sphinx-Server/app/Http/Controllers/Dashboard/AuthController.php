@@ -30,6 +30,18 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/sphinx/dashboard';
 
+    /**
+     * Where to redirect after logout.
+     *
+     * @var string
+     */
+    protected $redirectAfterLogout = '/sphinx/dashboard/login';
+
+    /**
+     * Property to authenticate users with.
+     *
+     * @var string
+     */
     protected $username = 'username';
 
     /**

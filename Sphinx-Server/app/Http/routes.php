@@ -55,6 +55,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => '/sphinx/dashboard', 'midd
     // Login routes.
     Route::get('/login', 'AuthController@loginForm');
     Route::post('/login', 'AuthController@login');
+    Route::get('/logout', 'AuthController@logout');
 
     // Restricted routes that require the user to be logged in.
     Route::group(['middleware' => 'auth'], function () {
