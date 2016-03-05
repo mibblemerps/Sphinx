@@ -19,7 +19,7 @@
             <h1>Hello, {{ Auth::user()->username }}!</h1>
         </div>
         <div class="col-md-4">
-            <table class="statistics-table table table-hover">
+            <table class="statistics-table table">
                 <tr>
                     <td class="stat-name">Node Online?</td>
                     <td class="stat-value" id="stat-nodeOnline">{!! $stats['nodeOnline'] ? '<span style="color:green;">Online</span>' : '<span style="color:red;">Offline</span>' !!}</td>
