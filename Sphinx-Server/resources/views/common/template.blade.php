@@ -9,6 +9,8 @@
 
     <script>
         window.sphinx = {
+            baseUrl: "{{ url('/') }}",
+            dashboardUrl: "{{ url('/sphinx/dashboard') }}",
             csrfToken: "{{ csrf_token() }}"
         };
     </script>
