@@ -51,8 +51,7 @@ Route::group(['namespace' => 'App\Http\Controllers\NodeApi', 'prefix' => '/sphin
 });
 
 // Sphinx Dashboard
-Route::group(['namespace' => 'App\Http\Controllers\Dashboard', 'prefix' => '/sphinx/dashboard'], function () {
-    Route::get('/', function () {
-        return view('login');
-    });
+Route::group(['namespace' => 'Dashboard', 'prefix' => '/sphinx/dashboard', 'middleware' => 'web'], function () {
+    Route::get('/login', 'AuthController@loginForm');
+    Route::post('/login', 'AuthController@login');
 });
