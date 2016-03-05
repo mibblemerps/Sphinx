@@ -41,19 +41,17 @@
         </div>
         <div class="col-md-4">
             <h2>Create Realm</h2>
-            <form action="" method="post" class="form-create-realm">
-                {!! csrf_field() !!}
-
+            <div class="form-create-realm">
                 <label for="name">Realm Name</label>
-                <input type="text" class="form-control" name="name" maxlength="32">
+                <input type="text" id="realm-create-name" class="form-control" name="name" maxlength="32">
 
                 <label for="name">Owner</label>
-                <input type="text" class="form-control" name="owner" maxlength="64">
+                <input type="text" id="realm-create-owner" class="form-control" name="owner" maxlength="64">
 
                 <div class="text-muted">Everything else can be configured in-game.</div>
 
-                <input type="submit" class="btn btn-lg btn-success" value="Create" onclick="alert('Incomplete.'); return false;">
-            </form>
+                <input type="button" id="realm-create-submit" class="btn btn-lg btn-success" value="Create">
+            </div>
         </div>
     </div>
 @endsection

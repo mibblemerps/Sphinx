@@ -1,3 +1,3 @@
-.form-create-realm input[type=submit] {
+.form-create-realm #realm-create-submit {
     float: right;
 }
