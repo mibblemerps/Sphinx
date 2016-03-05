@@ -40,6 +40,7 @@ Route::put('/worlds/{id}/close', 'WorldController@close');
 Route::put('/worlds/{id}/open', 'WorldController@open');
 Route::get('/worlds/{id}', 'WorldController@view');
 Route::post('/worlds/{id}', 'WorldController@UpdateServerInfo');
+Route::post('/worlds/{id}/initialize', 'WorldController@InitServer');
 Route::post('/ops/{id}/{player}', 'OpController@op');
 Route::delete('/ops/{id}/{player}', 'OpController@deop');
 Route::get('/subscriptions/{id}', 'SubscriptionController@view');

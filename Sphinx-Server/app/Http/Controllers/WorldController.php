@@ -224,6 +224,27 @@ class WorldController extends Controller
 
         return 'true';
     }
+	
+	public function InitServer(Request $request,$serverId)
+    {
+        $server = Server::find($serverId);
+
+		if (Player::current()->uuid != $server->owner->uuid) {
+            abort(403); // 403 Forbidden
+        }
+
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+        // setting the realm to closed and setting the name and desc.
+        $server->name = $request->input('name');
+		$server->motd = $request->input('description');
+		$server->state = "CLOSED";
+        $server->Save(); // save!
+
+        return 'true';
+    }
 
 }
 
