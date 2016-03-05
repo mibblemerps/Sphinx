@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{ $realm->id }}</td>
                             <td>{{ $realm->name }}</td>
-                            <td>{!! ($realm->state == 'OPEN') ? '<span style="color:green;">OPEN</span>' : '<span style="color:red;">' . $realm->state . '</span>' !!}</td>
+                            <td>{!! ($realm->state == 'OPEN') ? '<span style="color:green;">OPEN</span>' : (($realm->state == 'UNINITIALIZED') ? '<span style="color:orange;">UNINITIALIZED</span>' : '<span style="color:red;">' . $realm->state .'</span>') !!}</td>
                             <td><img src="http://mcapi.ca/avatar/2d/{{ $realm->owner->username }}/16/true"> {{ $realm->owner->username }}</td>
                             <td>
                                 <input type="button" value="Edit" class="realm-edit-btn btn-success" data-serverid="{{ $realm->id }}">
