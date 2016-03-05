@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Validation\ValidationException;
+use Illuminate\Http\Response;
 
 class Handler extends ExceptionHandler
 {
