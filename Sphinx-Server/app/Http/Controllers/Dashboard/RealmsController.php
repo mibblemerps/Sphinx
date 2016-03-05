@@ -48,11 +48,18 @@ class RealmsController extends Controller
         }
 
         // Create Realm.
-        $realm = new Server();
-        $realm->name = $realmName;
-        $realm->owner = $player;
-        $realm->state = Server::STATE_UNINITIALIZED;
-        $realm->save();
+        Server::create([
+            'address' => '',
+            'state' => Server::STATE_UNINITIALIZED,
+            'name' => $realmName,
+            'days_left' => 365,
+            'expired' => false,
+            'invited_players' => [$player],
+            'operators' => [$player],
+            'minigames_server' => false,
+            'motd' => 'Carrots are good for your eyesight.',
+            'owner' => $player
+        ]);
 
         // All good!
         return [
