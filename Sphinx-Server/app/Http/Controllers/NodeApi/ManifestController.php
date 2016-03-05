@@ -5,6 +5,7 @@ namespace App\Http\Controllers\NodeApi;
 use App\Facades\SphinxNode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Sphinx API controller for requesting the manifest.
@@ -23,6 +24,7 @@ class ManifestController extends Controller
     {
         if ($request->ip() != explode(':', env('SPHINX_NODE_ADDRESS'))[0]) {
             // IP address mismatch.
+            Log::info('Denied manifest request from ' . $request->ip());
             abort(403); // 403 Forbidden.
         }
 
