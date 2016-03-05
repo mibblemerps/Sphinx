@@ -52,6 +52,12 @@ Route::group(['namespace' => 'App\Http\Controllers\NodeApi', 'prefix' => '/sphin
 
 // Sphinx Dashboard
 Route::group(['namespace' => 'Dashboard', 'prefix' => '/sphinx/dashboard', 'middleware' => 'web'], function () {
+    // Login routes.
     Route::get('/login', 'AuthController@loginForm');
     Route::post('/login', 'AuthController@login');
+
+    // Restricted routes that require the user to be logged in.
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/', 'DashboardController@dashboard');
+    });
 });

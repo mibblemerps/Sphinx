@@ -1,7 +1,7 @@
 @extends('common.template')
 
 @section('content')
-    <h1>Sphinx Dashboard</h1>
+    <h1>Hello, {{ Auth::user()->username }}!</h1>
 
     @if(!\App\Facades\SphinxNode::ping())
         <div class="alert alert-danger">
