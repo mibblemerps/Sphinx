@@ -107,9 +107,16 @@ SphinxServer.prototype.handleStats = function (connection, payload) {
         }
     });
     
+    // Check how many total players are online across all Realms.
+    var onlinePlayers = 0;
+    Object.keys(this.servers).forEach(function (serverid) {
+        onlinePlayers = onlinePlayers + _this.servers[serverid].playerCount
+    });
+    
     // Respond with stats.
     connection.sendText(JSON.stringify({
-        serversRunning: serversRunning 
+        serversRunning: serversRunning,
+        onlinePlayers: onlinePlayers
     }));
 }
 
