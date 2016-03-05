@@ -21,7 +21,7 @@ $simple_navbar = true;
             </div>
         @endif
 
-        {{ csrf_field() }}
+        {!! csrf_field() !!}
         <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
         <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in">
