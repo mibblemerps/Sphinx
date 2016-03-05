@@ -1,0 +1,13 @@
+.statistics-table {
+    margin-top: 30px;
+}
+
+.statistics-table .stat-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.statistics-table .stat-value {
+    font-size: 15px;
+    font-family: monospace;
+}
