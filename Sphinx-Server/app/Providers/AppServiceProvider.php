@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Auth\MinecraftAuth;
 use App\Realms\Server;
+use App\Facades\SphinxNode;
 
 class AppServiceProvider extends ServiceProvider
 {
