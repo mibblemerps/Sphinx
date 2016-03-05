@@ -156,4 +156,12 @@ class SphinxNode
         $resp = json_decode($this->connection->receive(), true);
         return $resp;
     }
+
+    public function deleteServer($serverId)
+    {
+        $this->connection->send(json_encode([
+            'action' => 'delete_server',
+            'serverid' => $serverId + 0
+        ]));
+    }
 }

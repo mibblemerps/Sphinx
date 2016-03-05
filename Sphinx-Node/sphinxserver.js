@@ -5,6 +5,7 @@
 var ws = require("nodejs-websocket");
 var http = require("http");
 var Server = require("./server.js");
+var rimraf = require("rimraf");
 
 var SphinxServer = function (servers, serverStartQueue, remoteip, bindto) {
 	this.servers = servers;
@@ -121,6 +122,41 @@ SphinxServer.prototype.handleStats = function (connection, payload) {
 }
 
 /**
+ * Remove a server and it's associated data and files.
+ */
+SphinxServer.prototype.handleRemoveServer = function (connection, payload) {
+    var _this = this;
+    
+    var serverid = payload.serverid;
+    var server = this.servers[serverid];
+    
+    console.log(("Removing " + server.serverdata.name + "[" + server.serverdata.id + "]...").yellow);
+    
+    var deleteServerFiles = function () {
+        // Delete server files.
+        try {
+            rimraf("servers/" + serverid, function () {
+                // Remove from memory.
+                delete _this.servers[serverid];
+                
+                console.log(("Successfully removed " + server.serverdata.name + "[" + server.serverdata.id + "]!").yellow);
+            });
+        } catch (e) {
+            console.log(("ERROR! Failed to delete server files for " + server.serverdata.name + "[" + server.serverdata.id + "]!").red);
+        }
+    };
+
+    if (server.running) {
+        // Stop the server.
+        server.stop();
+        server.once("stopped", deleteServerFiles);
+    } else {
+        // Server already not running. Proceed to delete server files.
+        deleteServerFiles();
+    }
+}
+
+/**
  * Send a request out for the manifest to be sent.
  * The manifest will arrive seperately via the Websocket.
  */
@@ -164,6 +200,10 @@ SphinxServer.prototype.startServer = function () {
                         
                     case "stats":
                         _this.handleStats(connection, payload);
+                        break;
+                        
+                    case "delete_server":
+                        _this.handleRemoveServer(connection, payload);
                         break;
 						
 				}
