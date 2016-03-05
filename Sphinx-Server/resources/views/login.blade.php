@@ -1,4 +1,7 @@
-<?php $simple_navbar = true; ?>
+<?php
+$active_tab = 'login';
+$simple_navbar = true;
+?>
 
 @extends('common.template')
 

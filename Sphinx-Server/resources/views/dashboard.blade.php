@@ -1,3 +1,5 @@
+<?php $active_tab = 'home'; ?>
+
 @extends('common.template')
 
 @section('head')

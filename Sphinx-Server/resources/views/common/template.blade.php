@@ -37,9 +37,9 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     @if(!(isset($simple_navbar) && $simple_navbar) )
-                        <li class="active"><a href="{{ url('/sphinx/dashboard') }}">Home</a></li>
-                        <li><a href="{{ url('/sphinx/dashboard/realms') }}">Realms</a></li>
-                        <li><a href="{{ url('/sphinx/dashboard/logout?_token=' . csrf_token()) }}">Logout</a></li>
+                        <li {!! ($active_tab == 'home') ? 'class="active"' : '' !!}><a href="{{ url('/sphinx/dashboard') }}">Home</a></li>
+                        <li {!! ($active_tab == 'realms') ? 'class="active"' : '' !!}><a href="{{ url('/sphinx/dashboard/realms') }}">Realms</a></li>
+                        <li {!! ($active_tab == 'logout') ? 'class="active"' : '' !!}><a href="{{ url('/sphinx/dashboard/logout?_token=' . csrf_token()) }}">Logout</a></li>
                     @endif
                 </ul>
             </div>
