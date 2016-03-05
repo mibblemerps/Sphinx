@@ -2,6 +2,8 @@
 
 @section('head')
     <link rel="stylesheet" href="{{ url('/css/dashboard.css') }}">
+
+    <script src="{{ url('/js/dashboard.js') }}"></script>
 @endsection
 
 @section('content')
@@ -20,19 +22,19 @@
             <table class="statistics-table table table-hover">
                 <tr>
                     <td class="stat-name">Node Online?</td>
-                    <td class="stat-value">{!! $stats['nodeOnline'] ? '<span style="color:green;">Online</span>' : '<span style="color:red;">Offline</span>' !!}</td>
+                    <td class="stat-value" id="stat-nodeOnline">{!! $stats['nodeOnline'] ? '<span style="color:green;">Online</span>' : '<span style="color:red;">Offline</span>' !!}</td>
                 </tr>
                 <tr>
                     <td class="stat-name">Realm Count</td>
-                    <td class="stat-value">{{ $stats['realmCount'] }}</td>
+                    <td class="stat-value" id="stat-realmCount">{{ $stats['realmCount'] }}</td>
                 </tr>
                 <tr>
                     <td class="stat-name">Servers Running</td>
-                    <td class="stat-value">{{ $stats['serversRunning'] }}</td>
+                    <td class="stat-value" id="stat-serversRunning">{{ $stats['serversRunning'] }}</td>
                 </tr>
                 <tr>
                     <td class="stat-name">Online Players</td>
-                    <td class="stat-value">{{ $stats['onlinePlayers'] }}</td>
+                    <td class="stat-value" id="stat-onlinePlayers">{{ $stats['onlinePlayers'] }}</td>
                 </tr>
             </table>
         </div>
