@@ -1,11 +1,12 @@
 // users.js
 
-function createUser(username, email, password, doneCallback) {
+function createUser(username, email, password, confirmPassword, doneCallback) {
     // Send request to create Realm.
     var request = $.post(window.sphinx.dashboardUrl + "/ajax/create_user", {
         username: username,
         email: email,
         password: password,
+        confirm_password: confirmPassword,
         _token: window.sphinx.csrfToken
     });
 
@@ -37,6 +38,7 @@ $(document).ready(function () {
             $("#user-create-username").val(),
             $("#user-create-email").val(),
             $("#user-create-password").val(),
+            $("#user-create-password-confirm").val(),
             function (success, errors) {
                 if (success) {
                     window.location.reload();

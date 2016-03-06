@@ -32,7 +32,8 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|max:32|unique:users',
             'email' => 'required|email|max:96|unique:users',
-            'password' => 'required|max:96|min:6'
+            'password' => 'required|max:96|min:6',
+            'confirm_password' => 'required|same:password'
         ]);
         $username = $request->input('username');
         $email = $request->input('email');
