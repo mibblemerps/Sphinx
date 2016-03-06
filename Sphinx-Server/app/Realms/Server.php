@@ -3,6 +3,7 @@
 namespace App\Realms;
 use App\Facades\SphinxNode;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Log;
  * @property Player $owner The owner of the Realm.
  */
 class Server extends Model {
+    use SoftDeletes;
+
     const STATE_ADMINLOCK = 'ADMIN_LOCK';
     const STATE_CLOSED = 'CLOSED';
     const STATE_OPEN = 'OPEN';
@@ -41,6 +44,8 @@ class Server extends Model {
     const DIFFICULTY_HARD = 3;
 
     protected $guarded = [];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * Should updates be automatically pushed to the Sphinx Node?
