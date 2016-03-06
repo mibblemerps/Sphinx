@@ -72,4 +72,12 @@ $(document).ready(function () {
             }
         );
     });
+
+    $(".form-create-user input").keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        if (keycode == 13) {
+            $("#user-create-submit").click();
+        }
+    });
 });
