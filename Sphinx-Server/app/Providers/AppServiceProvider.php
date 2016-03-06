@@ -16,7 +16,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Event handler to send manifest on server update.
+        $update = function ($server) {
+            try {
+                if ($server->autoPush) {
+                    SphinxNode::sendManifest([$server->id]);
+                }
+            } catch (\Exception $e) {
+                // Failed to send manifest. Not end of the world.
+            }
+        };
+        Server::saved($update);
+        Server::created($update);
     }
 
     /**
@@ -30,18 +41,5 @@ class AppServiceProvider extends ServiceProvider
 
 		// Register Minecraft authenticator.
         $this->app['minecraft_auth'] = new MinecraftAuth($this->app['request']);
-		
-        // Event handler to send manifest on server update.
-        $update = function ($server) {
-            try {
-                if ($server->autoPush) {
-                    SphinxNode::sendManifest([$server->id]);
-                }
-            } catch (\Exception $e) {
-                // Failed to send manifest. Not end of the world.
-            }
-        };
-        Server::saved($update);
-        Server::created($update);
     }
 }
