@@ -62,6 +62,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => '/sphinx/dashboard', 'midd
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'DashboardController@dashboard');
         Route::get('/realms', 'RealmsController@listing');
+        Route::get('/users', 'UsersController@listing');
 
         Route::get('/ajax/stats', 'DashboardController@statsApi');
         Route::post('/ajax/create_realm', 'RealmsController@create');
