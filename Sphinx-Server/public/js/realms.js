@@ -113,4 +113,13 @@ $(document).ready(function () {
             }
         );
     });
+
+    // Submit create Realm form when enter key is pressed in Realm name or Realm owner text boxes.
+    $("#realm-create-name, #realm-create-owner").keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        if (keycode == 13) {
+            $("#realm-create-submit").click();
+        }
+    });
 });
