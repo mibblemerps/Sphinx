@@ -122,4 +122,18 @@ $(document).ready(function () {
             $("#realm-create-submit").click();
         }
     });
+
+    $("#realm-create-owner").keyup(function () {
+        var realmName = $("#realm-create-name").val();
+        if (realmName == "" || realmName.substring(realmName.length - "'s Realm".length) == "'s Realm") {
+            var owner = $("#realm-create-owner").val();
+            if (owner == "") {
+                // No owner entered.
+                $("#realm-create-name").val("");
+            } else {
+                // Owner specified, generate Realm name.
+                $("#realm-create-name").val($("#realm-create-owner").val() + "'s Realm");
+            }
+        }
+    });
 });
