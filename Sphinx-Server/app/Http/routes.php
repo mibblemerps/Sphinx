@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('https://github.com/mitchfizz05/Sphinx');
+    return redirect('/sphinx/dashboard');
 });
 
 if (env('APP_DEBUG') && !App\Facades\MinecraftAuth::check()) {
