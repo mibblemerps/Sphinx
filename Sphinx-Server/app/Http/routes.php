@@ -17,7 +17,7 @@ if (env('APP_DEBUG') && !App\Facades\MinecraftAuth::check()) {
 // Availability.
 Route::get('/mco/available', 'AvailabilityController@available');
 Route::get('/mco/client/compatible', 'AvailabilityController@compatible');
-Route::get('/mco/stageAvailable', 'AvailableController@stagingAvailable');
+Route::get('/mco/stageAvailable', 'AvailabilityController@stagingAvailable');
 Route::post('/regions/ping/stat', 'AvailabilityController@regionPing');
 Route::get('/trial', 'AvailabilityController@trialAvailable');
 
