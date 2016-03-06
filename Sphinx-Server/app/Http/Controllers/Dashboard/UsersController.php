@@ -59,4 +59,27 @@ class UsersController extends Controller
             'success' => true
         ];
     }
+
+    /**
+     * Remove a user.
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function remove(Request $request)
+    {
+        // Validate request.
+        $this->validate($request, [
+            'userid' => 'required|exists:users,id'
+        ]);
+
+        // Remove user.
+        $user = User::find($request->input('userid'));
+        $user->delete(); // :(
+
+        // Done.
+        return [
+            'success' => true
+        ];
+    }
 }

@@ -27,6 +27,30 @@ function createUser(username, email, password, confirmPassword, doneCallback) {
     });
 }
 
+function deleteUser(id, doneCallback) {
+    // Send request to delete Realm.
+    var request = $.post(window.sphinx.dashboardUrl + "/ajax/delete_user", {
+        userid: id,
+        _token: window.sphinx.csrfToken
+    });
+
+    request.done(function (data) {
+        if (data.success) {
+            // Successful.
+            doneCallback(true);
+        } else {
+            // Server returned some kind of error.
+            doneCallback(false, data.error);
+        }
+    });
+    request.fail(function () {
+        // Request failed.
+        if (typeof doneCallback !== "undefined") {
+            doneCallback(false, "request_failed");
+        }
+    });
+}
+
 $(document).ready(function () {
     $("#user-create-submit").click(function () {
         // Disable create Realm text fields.
@@ -71,6 +95,34 @@ $(document).ready(function () {
                 });
             }
         );
+    });
+
+    $(".user-remove-btn").click(function () {
+        // Delete user button pressed.
+        var userid = $(this).attr("data-userid");
+        var username = $(this).attr("data-username");
+
+        // Disable delete button.
+        $(this).attr("disabled", true);
+
+        if (confirm("Please confirm you wish to remove this user (" + username + ").\nThis action cannot be undone.")) {
+            deleteUser(userid, function (success, error) {
+                if (success) {
+                    // Success!
+                    window.location.reload();
+                } else {
+                    // Sever returned an error!
+                    if (error == "request_failed") {
+                        alert("AJAX request to delete user failed!");
+                    } else {
+                        alert("Unknown error occured: " + error);
+                    }
+                }
+            });
+        } else {
+            // Aborted - enable button.
+            $(this).attr("disabled", false);
+        }
     });
 
     $(".form-create-user input").keypress(function (event) {
