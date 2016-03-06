@@ -60,7 +60,10 @@ SphinxServer.prototype.removeServer = function (serverid) {
     if ((typeof _this.servers[serverid] !== "undefined") && _this.servers[serverid].running) {
         // Stop the server.
         _this.servers[serverid].stop();
-        _this.servers[serverid].once("stopped", deleteServerFiles);
+        _this.servers[serverid].once("stopped", function () {
+            // Wait a moment for files to be released and able to be deleted.
+            setTimeout(deleteServerFiles, 500);
+        });
     } else {
         // Server already not running. Proceed to delete server files.
         deleteServerFiles();
