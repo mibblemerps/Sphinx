@@ -75,11 +75,6 @@ class SphinxNode
                 continue;
             }
 
-            if (!$server->isInvited(Player::current())) {
-                // Not invited.
-                continue;
-            }
-
             // Generate whitelist JSON.
             $whitelistJson = [];
             foreach ($server->invited_players as $player) {
