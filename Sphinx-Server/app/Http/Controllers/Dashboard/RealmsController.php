@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Facades\SphinxNode;
 use App\Http\Controllers\Controller;
 use App\Realms\Player;
 use App\Realms\Server;
@@ -62,6 +63,33 @@ class RealmsController extends Controller
         ]);
 
         // All good!
+        return [
+            'success' => true
+        ];
+    }
+
+    /**
+     * Remove a Realm, deleting it from database and removing it's associated server files.
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function remove(Request $request)
+    {
+        // Validate request.
+        $this->validate($request, [
+            'serverid' => 'required'
+        ]);
+        $serverId = $request->input('serverid');
+
+        $server = Server::findOrFail($serverId);
+
+        $server->delete(); // :(
+
+        // Let Sphinx Node know about the change.
+        SphinxNode::sendManifest([$server->id]);
+
+        // Deleted Realm!
         return [
             'success' => true
         ];

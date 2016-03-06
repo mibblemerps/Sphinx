@@ -69,9 +69,20 @@ class SphinxNode
     {
         // Generate json
         $serverJson = [];
-        foreach (Server::all() as $server) {
+        foreach (Server::withTrashed()->get() as $server) {
             if (($forServers !== []) && (!in_array($server->id, $forServers))) {
                 // Not one of the selected servers.
+                continue;
+            }
+
+            // See if this is a deleted Realm.
+            if ($server->trashed()) {
+                // This server has been deleted, let Sphinx Node this server no longer exists.
+                $serverJson[] = [
+                    'id' => $server->id,
+                    'deleted' => true
+                ];
+
                 continue;
             }
 
@@ -106,7 +117,8 @@ class SphinxNode
                 ],
                 'whitelist' => $whitelistJson,
                 'ops' => $opsJson,
-                'needRestart' => $needRestart
+                'needRestart' => $needRestart,
+                'deleted' => false
             ];
         }
 
@@ -150,13 +162,5 @@ class SphinxNode
 
         $resp = json_decode($this->connection->receive(), true);
         return $resp;
-    }
-
-    public function deleteServer($serverId)
-    {
-        $this->connection->send(json_encode([
-            'action' => 'delete_server',
-            'serverid' => $serverId + 0
-        ]));
     }
 }

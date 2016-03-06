@@ -9,10 +9,30 @@ function createRealm(name, owner, doneCallback) {
     });
 
     request.done(function (data) {
-        if (typeof doneCallback !== "undefined") {
+        if (data.success) {
+            // Successful.
             doneCallback(true);
+        } else {
+            // Server returned some kind of error.
+            doneCallback(false, data.error);
         }
+    });
+    request.fail(function () {
+        // Request failed.
+        if (typeof doneCallback !== "undefined") {
+            doneCallback(false, "request_failed");
+        }
+    });
+}
 
+function deleteRealm(id, doneCallback) {
+    // Send request to delete Realm.
+    var request = $.post(window.sphinx.dashboardUrl + "/ajax/delete_realm", {
+        serverid: id,
+        _token: window.sphinx.csrfToken
+    });
+
+    request.done(function (data) {
         if (data.success) {
             // Successful.
             doneCallback(true);
@@ -35,7 +55,32 @@ $(document).ready(function () {
     });
 
     $(".realm-remove-btn").click(function () {
-        alert("Realm deletion is incomplete.");
+        var serverid = $(this).attr("data-serverid");
+        var servername = $(this).attr("data-servername");
+
+        $(this).attr("disabled", true); // disable remove button
+
+        if (confirm("Please confirm you wish to remove this Realm (" + servername + ").\nThis action cannot be undone.")) {
+            // Delete Realm.
+            deleteRealm(serverid, function (success, error) {
+                if (success) {
+                    // Successfully deleted Realm.
+                    window.location.reload(); // reload page.
+                } else {
+                    // Sever returned an error!
+                    if (error == "request_failed") {
+                        alert("Delete Realm AJAX request failed.");
+                    } else {
+                        alert("Unknown error: " + error);
+                    }
+
+                    $(this).attr("disabled", false);
+                }
+            });
+        } else {
+            // Aborted.
+            $(this).attr("disabled", false); // enable remove button
+        }
     });
 
     $("#realm-create-submit").click(function () {

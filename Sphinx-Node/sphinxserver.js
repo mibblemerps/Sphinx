@@ -5,7 +5,20 @@
 var ws = require("nodejs-websocket");
 var http = require("http");
 var Server = require("./server.js");
+var fs = require("fs");
 var rimraf = require("rimraf");
+var sanitizefs = require("sanitize-filename");
+
+function fileExists(file) {
+	var exists = false;
+	try {
+		if (fs.lstatSync(file)) {
+			exists = true;
+		}
+	} catch (e) {  }
+	
+	return exists;
+}
 
 var SphinxServer = function (servers, serverStartQueue, remoteip, bindto) {
 	this.servers = servers;
@@ -13,6 +26,45 @@ var SphinxServer = function (servers, serverStartQueue, remoteip, bindto) {
 	this.serverStartQueue = serverStartQueue;
 	this.bindip = bindto.split(":")[0];
 	this.bindport = bindto.split(":")[1];
+}
+
+/**
+ * Remove a server and it's associated data and files.
+ */
+SphinxServer.prototype.removeServer = function (serverid) {
+    var _this = this;
+    
+    if (!fileExists("servers/" + serverid)) {
+        // Server doesn't exist anyway.
+        return;
+    }
+    
+    console.log(("Removing " + serverid + "...").yellow);
+    
+    var deleteServerFiles = function () {
+        // Delete server files.
+        try {
+            rimraf("servers/" + serverid, function () {
+                if (typeof _this.servers[serverid] !== "undefined") {
+                    // Remove from memory.
+                    delete _this.servers[serverid];
+                }
+                
+                console.log(("Successfully removed " + serverid + "!").yellow);
+            });
+        } catch (e) {
+            console.log(("ERROR! Failed to delete server files for " + serverid + "!").red);
+        }
+    };
+
+    if ((typeof _this.servers[serverid] !== "undefined") && _this.servers[serverid].running) {
+        // Stop the server.
+        _this.servers[serverid].stop();
+        _this.servers[serverid].once("stopped", deleteServerFiles);
+    } else {
+        // Server already not running. Proceed to delete server files.
+        deleteServerFiles();
+    }
 }
 
 /**
@@ -33,13 +85,19 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 	Object.keys(payload.servers).forEach(function (key) {
 		var serverManifest = payload.servers[key];
 		
-		console.log(("Received metadata for server " + serverManifest.name + " [" + serverManifest.id + "].").yellow);
-		
+        if (serverManifest.deleted) {
+            // Server deleted, remove server if neccesary.
+            _this.removeServer(serverManifest.id);
+            return;
+        }
+        
+        console.log(("Received metadata for server " + serverManifest.name + " [" + serverManifest.id + "].").yellow);
+        
 		var restartNeeded = serverManifest.needRestart;
 		serverManifest.needRestart = undefined;
-		
+        
 		var server = _this.servers[serverManifest.id];
-		
+        
 		if (typeof server === "undefined") {
 			// Server not defined.
 			_this.servers[serverManifest.id] = new Server(serverManifest);
@@ -122,41 +180,6 @@ SphinxServer.prototype.handleStats = function (connection, payload) {
 }
 
 /**
- * Remove a server and it's associated data and files.
- */
-SphinxServer.prototype.handleRemoveServer = function (connection, payload) {
-    var _this = this;
-    
-    var serverid = payload.serverid;
-    var server = this.servers[serverid];
-    
-    console.log(("Removing " + server.serverdata.name + "[" + server.serverdata.id + "]...").yellow);
-    
-    var deleteServerFiles = function () {
-        // Delete server files.
-        try {
-            rimraf("servers/" + serverid, function () {
-                // Remove from memory.
-                delete _this.servers[serverid];
-                
-                console.log(("Successfully removed " + server.serverdata.name + "[" + server.serverdata.id + "]!").yellow);
-            });
-        } catch (e) {
-            console.log(("ERROR! Failed to delete server files for " + server.serverdata.name + "[" + server.serverdata.id + "]!").red);
-        }
-    };
-
-    if (server.running) {
-        // Stop the server.
-        server.stop();
-        server.once("stopped", deleteServerFiles);
-    } else {
-        // Server already not running. Proceed to delete server files.
-        deleteServerFiles();
-    }
-}
-
-/**
  * Send a request out for the manifest to be sent.
  * The manifest will arrive seperately via the Websocket.
  */
@@ -182,7 +205,7 @@ SphinxServer.prototype.startServer = function () {
 		}
 		
 		connection.on("text", function (data) {
-			try {
+			//try {
 				var payload = JSON.parse(data);
 				
 				switch (payload.action) {
@@ -201,15 +224,11 @@ SphinxServer.prototype.startServer = function () {
                     case "stats":
                         _this.handleStats(connection, payload);
                         break;
-                        
-                    case "delete_server":
-                        _this.handleRemoveServer(connection, payload);
-                        break;
 						
 				}
-			} catch (e) {
-				console.log(("Error occured whilst processing a request!").red);
-			}
+			//} catch (e) {
+			//	console.log(("Error occured whilst processing a request!").red);
+			//}
 		});
 	}).listen(this.bindport, this.bindip);
 	

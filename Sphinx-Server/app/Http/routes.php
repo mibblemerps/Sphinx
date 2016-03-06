@@ -65,5 +65,6 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => '/sphinx/dashboard', 'midd
 
         Route::get('/ajax/stats', 'DashboardController@statsApi');
         Route::post('/ajax/create_realm', 'RealmsController@create');
+        Route::post('/ajax/delete_realm', 'RealmsController@remove');
     });
 });
