@@ -38,15 +38,21 @@
         </div>
         <div class="col-md-4">
             <h2>Add User</h2>
+            <div id="user-create-error" class="alert alert-danger" style="display:none;">
+                <ul id="user-create-errors"></ul>
+            </div>
             <div class="form-create-user">
                 <label for="name">Username</label>
-                <input type="text" id="user-create-name" class="form-control" name="name" maxlength="32">
+                <input type="text" id="user-create-username" class="form-control" name="username" maxlength="32">
 
                 <label for="name">Email</label>
                 <input type="text" id="user-create-email" class="form-control" name="email" maxlength="96">
 
                 <label for="name">Password</label>
                 <input type="password" id="user-create-password" class="form-control" name="password" maxlength="96">
+
+                <label for="name">Confirm Password</label>
+                <input type="password" id="user-create-password-confirm" class="form-control" name="password_confirm" maxlength="96">
 
                 <input type="button" id="user-create-submit" class="btn btn-lg btn-success" value="Create">
             </div>
