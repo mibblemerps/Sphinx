@@ -6,6 +6,7 @@ use App\Facades\SphinxNode;
 use App\Realms\Player;
 use App\Realms\Realm;
 use App\Realms\Invite;
+use App\Realms\World;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -77,8 +78,6 @@ class RealmController extends Controller
             'activeSlot' => $firstSlotId,
             'slots' => $slots
         );
-
-        Log::info(json_encode($json));
 
         return $json;
     }
