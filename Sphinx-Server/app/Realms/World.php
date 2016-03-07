@@ -35,4 +35,14 @@ class World extends Model
     const DIFFICULTY_HARD = 3;
 
     protected $guarded = [];
+
+    /**
+     * Server relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function server()
+    {
+        return $this->belongsTo('App\Realms\Server');
+    }
 }

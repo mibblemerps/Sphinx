@@ -201,6 +201,16 @@ class Server extends Model {
     }
 
     /**
+     * Worlds relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function worlds()
+    {
+        return $this->hasMany('App\Realms\World', 'realm_id');
+    }
+
+    /**
      * Mutator for owner attribute, encodes player objects into json.
      *
      * @param $value
