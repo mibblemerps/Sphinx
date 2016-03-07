@@ -45,6 +45,9 @@ Route::group(['middleware' => 'realms'], function () {
     Route::post('/ops/{id}/{player}', 'OpController@op');
     Route::delete('/ops/{id}/{player}', 'OpController@deop');
     Route::get('/subscriptions/{id}', 'SubscriptionController@view');
+
+    // World management
+    Route::post('/worlds/{serverid}/slot/{slotid}', 'RealmController@updateSlot');
 });
 
 // Sphinx API

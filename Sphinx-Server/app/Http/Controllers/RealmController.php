@@ -282,6 +282,48 @@ class RealmController extends Controller
         return 'true';
     }
 
+    public function updateSlot(Request $request, $serverId, $slotId)
+    {
+        $server = Realm::find($serverId);
+
+        if (Player::current()->uuid != $server->owner->uuid) {
+            abort(403); // 403 Forbidden
+        }
+
+        if (!Player::isLoggedIn()) {
+            abort(401); // 401 Unauthorized - not logged in!
+        }
+
+        // Get the world.
+        $world = Realm::findOrFail($serverId)->worlds->where('slot_id', $slotId)->first();
+        if ($world === null) {
+            // Slot doesn't exist.
+            abort(404); // 404 Not Found.
+        }
+
+        // Available options to be set and what they map to on the model.
+        $optionMapping = [
+            'slotName' => 'name',
+            'pvp' => 'pvp',
+            'spawnAnimals' => 'spawn_animals',
+            'spawnMonsters' => 'spawn_monsters',
+            'spawnNPCs' => 'spawn_npcs',
+            'spawnProtection' => 'spawn_protection',
+            'commandBlocks' => 'command_blocks',
+            'forceGameMode' => 'force_gamemode',
+            'difficulty' => 'difficulty',
+            'gameMode' => 'gamemode',
+        ];
+
+        // Make changes.
+        foreach ($request->all() as $key => $value) {
+            if (isset($optionMapping[$key])) {
+                $dbKey = $optionMapping[$key];
+                $world->$dbKey = $value;
+            }
+        }
+        $world->save(); // Save.
+    }
 }
 
 
