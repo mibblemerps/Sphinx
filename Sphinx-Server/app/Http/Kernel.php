@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\LogMiddleware::class,
     ];
 
     /**
@@ -31,9 +32,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
         ],
 
-        'realms' => [
-            \App\Http\Middleware\LogMiddleware::class,
-        ],
+        'realms' => [],
 
         'api' => [
             'throttle:60,1',
