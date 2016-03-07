@@ -8,7 +8,7 @@ use App\Realms\Server;
 use App\Realms\Invite;
 use Illuminate\Http\Request;
 
-class WorldController extends Controller
+class RealmController extends Controller
 {
     /**
      * Generate a JSON response to be packaged up and sent to the client.
