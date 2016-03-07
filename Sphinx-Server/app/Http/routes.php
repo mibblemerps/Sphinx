@@ -22,7 +22,7 @@ Route::group(['middleware' => 'realms'], function () {
     Route::post('/regions/ping/stat', 'AvailabilityController@regionPing');
     Route::get('/trial', 'AvailabilityController@trialAvailable');
 
-// Invites.
+    // Invites.
     Route::get('/invites/count/pending', 'InviteController@pendingCount');
     Route::get('/invites/pending', 'InviteController@view');
     Route::put('/invites/accept/{id}', 'InviteController@accept');
@@ -30,12 +30,12 @@ Route::group(['middleware' => 'realms'], function () {
     Route::post('/invites/{id}', 'InviteController@invite');
     Route::delete('/invites/{id}/invite/{player}', 'RealmController@kick');
 
-// Realms
+    // Realms
     Route::get('/worlds', 'RealmController@listing');
     Route::get('/activities/liveplayerlist', 'LiveActivityController@playerlist');
     Route::delete('/invites/{id}', 'RealmController@leave');
 
-// Realm Management
+    // Realm Management
     Route::get('/worlds/{id}/join', 'RealmController@join');
     Route::put('/worlds/{id}/close', 'RealmController@close');
     Route::put('/worlds/{id}/open', 'RealmController@open');
