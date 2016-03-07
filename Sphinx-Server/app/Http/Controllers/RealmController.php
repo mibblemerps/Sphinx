@@ -7,6 +7,7 @@ use App\Realms\Player;
 use App\Realms\Realm;
 use App\Realms\Invite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RealmController extends Controller
 {
@@ -27,6 +28,32 @@ class RealmController extends Controller
             );
         }
 
+        // Generate slots JSON.
+        $slots = [];
+        $i = 1;
+        foreach ($server->worlds as $world) {
+            $slots[] = [
+                'slotId' => $i,
+
+                'options' => json_encode([
+                    'slotName' => $world->name,
+                    'minecraftVersion' => '1.9',
+
+                    'pvp' => !!$world->pvp,
+                    'spawnAnimals' => !!$world->spawn_animals,
+                    'spawnMonsters' => !!$world->spawn_monsters,
+                    'spawnNPCs' => !!$world->spawn_npcs,
+                    'spawnProtection' => $world->spawn_protection,
+                    'commandBlocks' => !!$world->command_blocks,
+                    'forceGameMode' => !!$world->force_gamemode,
+                    'difficulty' => $world->difficulty,
+                    'gameMode' => $world->gamemode
+                ])
+            ];
+
+            $i++;
+        }
+
         // Formulate JSON response.
         $json = array(
             'id' => intval($server->id),
@@ -41,8 +68,11 @@ class RealmController extends Controller
             'ip' => $server->address,
             'expired' => !!$server->expired,
             'minigame' => !!$server->minigames_server,
-            'activeSlot' => 1
+            'activeSlot' => 1,
+            'slots' => $slots
         );
+
+        Log::info(json_encode($json));
 
         return $json;
     }
