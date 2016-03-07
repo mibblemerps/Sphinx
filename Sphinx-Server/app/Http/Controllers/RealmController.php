@@ -30,10 +30,14 @@ class RealmController extends Controller
 
         // Generate slots JSON.
         $slots = [];
-        $i = 1;
+        $firstSlotId = null;
         foreach ($server->worlds as $world) {
+            if ($firstSlotId === null) {
+                $firstSlotId = $world->slot_id;
+            }
+
             $slots[] = [
-                'slotId' => $i,
+                'slotId' => $world->slot_id,
 
                 'options' => json_encode([
                     'slotName' => $world->name,
@@ -50,8 +54,10 @@ class RealmController extends Controller
                     'gameMode' => $world->gamemode
                 ])
             ];
+        }
 
-            $i++;
+        if ($firstSlotId === null) {
+            $firstSlotId = 1;
         }
 
         // Formulate JSON response.
@@ -68,7 +74,7 @@ class RealmController extends Controller
             'ip' => $server->address,
             'expired' => !!$server->expired,
             'minigame' => !!$server->minigames_server,
-            'activeSlot' => 1,
+            'activeSlot' => $firstSlotId,
             'slots' => $slots
         );
 

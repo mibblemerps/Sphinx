@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id World ID
  * @property int $realm_id ID of the Realm this world belongs to.
+ * @property int $slot_id Which slot (between 1-3) this world occupies on the Realm.
  * @property string $name World name
  * @property bool $pvp Is player vs player combat enabled?
  * @property int $gamemode Default gamemode. Represented in the form of Minecraft gamemode IDs.
