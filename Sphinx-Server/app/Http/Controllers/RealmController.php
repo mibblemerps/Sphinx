@@ -40,7 +40,8 @@ class RealmController extends Controller
             'daysLeft' => intval($server->days_left),
             'ip' => $server->address,
             'expired' => !!$server->expired,
-            'minigame' => !!$server->minigames_server
+            'minigame' => !!$server->minigames_server,
+            'activeSlot' => 1
         );
 
         return $json;
