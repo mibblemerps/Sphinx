@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Realms\Server;
+use App\Realms\Realm;
 use App\Realms\Player;
 
 class DatabaseSeeder extends Seeder
@@ -12,9 +12,9 @@ class DatabaseSeeder extends Seeder
     public function seedServers()
     {
         // Create a Potatocraft entry.
-        Server::create([
+        Realm::create([
             'address' => 'us.mineplex.com',
-            'state' => Server::STATE_OPEN,
+            'state' => Realm::STATE_OPEN,
             'name' => 'Potatocraft',
             'days_left' => 365,
             'expired' => false,

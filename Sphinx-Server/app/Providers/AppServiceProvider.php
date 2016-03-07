@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Auth\MinecraftAuth;
-use App\Realms\Server;
+use App\Realms\Realm;
 use App\Facades\SphinxNode;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,8 +26,8 @@ class AppServiceProvider extends ServiceProvider
                 // Failed to send manifest. Not end of the world.
             }
         };
-        Server::saved($update);
-        Server::created($update);
+        Realm::saved($update);
+        Realm::created($update);
     }
 
     /**

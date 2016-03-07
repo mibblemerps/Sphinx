@@ -25,9 +25,9 @@ class Invite extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function server()
+    public function realm()
     {
-        return $this->belongsTo('App\Realms\Server', 'realm_id', 'id');
+        return $this->belongsTo('App\Realms\Realm', 'realm_id', 'id');
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\SphinxNode;
 
 use App\Realms\Player;
-use App\Realms\Server;
+use App\Realms\Realm;
 use WebSocket\Client;
 
 /**
@@ -69,7 +69,7 @@ class SphinxNode
     {
         // Generate json
         $serverJson = [];
-        foreach (Server::withTrashed()->get() as $server) {
+        foreach (Realm::withTrashed()->get() as $server) {
             if (($forServers !== []) && (!in_array($server->id, $forServers))) {
                 // Not one of the selected servers.
                 continue;
@@ -108,7 +108,7 @@ class SphinxNode
                 'id' => $server->id,
                 'name' => $server->name,
                 'jar' => env('MINECRAFT_JAR', 'minecraft_server.1.8.9.jar'),
-                'active' => ($server->state == Server::STATE_OPEN),
+                'active' => ($server->state == Realm::STATE_OPEN),
                 'properties' => [
                     'max-players' => env('SERVER_MAX_PLAYERS', 10),
                     'white-list' => 'true',

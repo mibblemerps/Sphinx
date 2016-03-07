@@ -37,12 +37,12 @@ class World extends Model
     protected $guarded = [];
 
     /**
-     * Server relationship.
+     * Realm relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function server()
+    public function realm()
     {
-        return $this->belongsTo('App\Realms\Server');
+        return $this->belongsTo('App\Realms\Realm');
     }
 }

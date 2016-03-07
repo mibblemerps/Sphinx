@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\MinecraftAuth;
 use App\Realms\Invite;
 use App\Realms\Player;
-use App\Realms\Server;
+use App\Realms\Realm;
 use Illuminate\Http\Request;
 
 /**
@@ -19,9 +19,9 @@ class InviteController extends Controller
         // Formulate JSON response.
         $json = [
             'invitationId' => intval($invite->id),
-            'worldName' => $invite->server->name,
-            'worldOwnerName' => $invite->server->owner->username,
-            'worldOwnerUuid' => $invite->server->owner->uuid,
+            'worldName' => $invite->realm->name,
+            'worldOwnerName' => $invite->realm->owner->username,
+            'worldOwnerUuid' => $invite->realm->owner->uuid,
             'date' => strtotime($invite->created_at) . '000',
         ];
 
@@ -113,7 +113,7 @@ class InviteController extends Controller
             abort(400); // 400 Bad Request
         }
 
-        $server = $invite->server;
+        $server = $invite->realm;
 
         // Add current player to servers invited players list.
         // Couldn't directly append new player to invited players array due to PHP bug. https://bugs.php.net/bug.php?id=41641
@@ -140,7 +140,7 @@ class InviteController extends Controller
     public function invite(Request $request, $serverId)
     {
         // Check if player has rights to invite people to Realm.
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
         if ($server->owner->uuid != Player::current()->uuid) {
             abort(403); // 403 Forbidden.
         }
@@ -155,6 +155,6 @@ class InviteController extends Controller
         ]);
 
         // Return updated server json.
-        return WorldController::generateServerJSON($server);
+        return RealmController::generateServerJSON($server);
     }
 }

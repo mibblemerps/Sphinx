@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Facades\SphinxNode;
 use App\Http\Controllers\Controller;
 use App\Realms\Player;
-use App\Realms\Server;
+use App\Realms\Realm;
 use Illuminate\Http\Request;
 
 class RealmsController extends Controller
@@ -17,7 +17,7 @@ class RealmsController extends Controller
      */
     public function listing()
     {
-        return view('realms', ['realms' => Server::all()]);
+        return view('realms', ['realms' => Realm::all()]);
     }
 
     /**
@@ -49,9 +49,9 @@ class RealmsController extends Controller
         }
 
         // Create Realm.
-        Server::create([
+        Realm::create([
             'address' => '',
-            'state' => Server::STATE_UNINITIALIZED,
+            'state' => Realm::STATE_UNINITIALIZED,
             'name' => $realmName,
             'days_left' => 365,
             'expired' => false,
@@ -82,7 +82,7 @@ class RealmsController extends Controller
         ]);
         $serverId = $request->input('serverid');
 
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
 
         $server->delete(); // :(
 

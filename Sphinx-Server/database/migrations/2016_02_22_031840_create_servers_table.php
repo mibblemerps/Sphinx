@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
-use App\Realms\Server;
+use App\Realms\Realm;
 
 class CreateServersTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateServersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('address');
-            $table->string('state')->default(Server::STATE_OPEN);
+            $table->string('state')->default(Realm::STATE_OPEN);
             $table->integer('days_left')->default(365);
             $table->boolean('expired')->default(false);
             $table->json('invited_players')->default('[]');

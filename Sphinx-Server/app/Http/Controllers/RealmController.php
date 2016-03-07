@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\SphinxNode;
 use App\Realms\Player;
-use App\Realms\Server;
+use App\Realms\Realm;
 use App\Realms\Invite;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class RealmController extends Controller
     /**
      * Generate a JSON response to be packaged up and sent to the client.
      * NOTE: Does not return encoded JSON. JSON must manually be encoded with json_encode().
-     * @param Server $server
+     * @param Realm $server
      * @return array
      */
     public static function generateServerJSON($server) {
@@ -54,7 +54,7 @@ class RealmController extends Controller
      */
     public function listing()
     {
-        $servers = Server::all();
+        $servers = Realm::all();
 
         // Generate JSON
         $serverlistJson = [];
@@ -81,7 +81,7 @@ class RealmController extends Controller
      */
     public function view($serverId)
     {
-        return self::generateServerJSON(Server::findOrFail($serverId));
+        return self::generateServerJSON(Realm::findOrFail($serverId));
     }
 
     /**
@@ -96,7 +96,7 @@ class RealmController extends Controller
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::find($serverId);
+        $server = Realm::find($serverId);
 
         // Ensure the owner isn't removing themselves from their own Realm.
         if (Player::current()->uuid == $server->owner->uuid) {
@@ -122,7 +122,7 @@ class RealmController extends Controller
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
 
         // Check user owns server.
         if (Player::current()->uuid != $server->owner->uuid) {
@@ -143,7 +143,7 @@ class RealmController extends Controller
      */
 	public function close($serverId)
     {
-        $server = Server::find($serverId);
+        $server = Realm::find($serverId);
 
 	    if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
@@ -169,7 +169,7 @@ class RealmController extends Controller
      */
 	public function open($serverId)
     {
-        $server = Server::find($serverId);
+        $server = Realm::find($serverId);
 
         if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
@@ -195,7 +195,7 @@ class RealmController extends Controller
      */
     public function join($serverId)
     {
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
         if (!$server->isInvited(Player::current())) {
             // Not invited. Sorry! :(
             abort(403); // 403 Forbidden.
@@ -208,7 +208,7 @@ class RealmController extends Controller
 	
 	public function UpdateServerInfo(Request $request,$serverId)
     {
-        $server = Server::find($serverId);
+        $server = Realm::find($serverId);
 
 		if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden
@@ -228,7 +228,7 @@ class RealmController extends Controller
 	
 	public function InitServer(Request $request,$serverId)
     {
-        $server = Server::find($serverId);
+        $server = Realm::find($serverId);
 
 		if (Player::current()->uuid != $server->owner->uuid) {
             abort(403); // 403 Forbidden

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Facades\SphinxNode;
-use App\Realms\Server;
+use App\Realms\Realm;
 
 class DashboardController extends Controller
 {
@@ -31,7 +31,7 @@ class DashboardController extends Controller
         }
 
         // Get other stats.
-        $stats['realmCount'] = Server::count();
+        $stats['realmCount'] = Realm::count();
 
         return $stats;
     }

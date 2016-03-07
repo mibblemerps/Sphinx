@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Realms\Server;
+use App\Realms\Realm;
 
 /**
  * Class SubscriptionController
@@ -30,7 +30,7 @@ class SubscriptionController extends Controller
      */
     public function view($serverId)
     {
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
 
         return [
             'daysLeft' => $this->normalizeDays($server->days_left),

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Log;
  * @property bool $expired Has the Realm expired (for Realms).
  * @property Player $owner The owner of the Realm.
  */
-class Server extends Model {
+class Realm extends Model {
     use SoftDeletes;
 
     const STATE_ADMINLOCK = 'ADMIN_LOCK';
@@ -46,6 +46,8 @@ class Server extends Model {
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    protected $table = 'servers';
 
     /**
      * Should updates be automatically pushed to the Sphinx Node?

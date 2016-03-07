@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Realms\Server;
+use App\Realms\Realm;
 use App\Realms\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +21,7 @@ class OpController extends Controller
      */
     public function oplist($serverId)
     {
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
 
         // Make list of all op usernames.
         $opNames = [];
@@ -50,7 +50,7 @@ class OpController extends Controller
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
 
         // Check user owns server.
         if (Player::current()->uuid != $server->owner->uuid) {
@@ -78,7 +78,7 @@ class OpController extends Controller
             abort(401); // 401 Unauthorized - not logged in!
         }
 
-        $server = Server::findOrFail($serverId);
+        $server = Realm::findOrFail($serverId);
 
         // Check user owns server.
         if (Player::current()->uuid != $server->owner->uuid) {

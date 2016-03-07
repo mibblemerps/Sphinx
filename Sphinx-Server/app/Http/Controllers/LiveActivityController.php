@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Realms\Server;
+use App\Realms\Realm;
 
 /**
  * Class LiveActivityController
@@ -12,7 +12,7 @@ class LiveActivityController extends Controller
     /**
      * Generate JSON response for server activity.
      *
-     * @param Server $server
+     * @param Realm $server
      * @return array
      */
     protected function generateActivityJSON($server)
@@ -33,7 +33,7 @@ class LiveActivityController extends Controller
      */
     public function playerlist()
     {
-        $server = new Server();
+        $server = new Realm();
         $server->id = 1;
 
         return [
