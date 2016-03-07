@@ -11,7 +11,7 @@ var EventEmitter = require("events");
 var util = require("util");
 
 var regexPatterns = {
-	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.[0-9]*s\)! For help, type "help" or "\?"/g,
+	started: /\[[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\] \[Server thread\/INFO\]: Done \([0-9]*\.|,[0-9]*s\)! For help, type "help" or "\?"/g,
 };
 
 var serverCommands = {
