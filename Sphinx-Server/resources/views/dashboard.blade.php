@@ -10,7 +10,7 @@
 
 @section('content')
     @if(!$stats['nodeOnline'])
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" id="alert-node-unavailable">
             <strong>Important!</strong> The Sphinx Node is currently unreachable!<br>
             Realms cannot be updated and are likely offline.
         </div>
