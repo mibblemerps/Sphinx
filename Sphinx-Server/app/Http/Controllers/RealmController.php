@@ -315,12 +315,34 @@ class RealmController extends Controller
             'gameMode' => 'gamemode',
         ];
 
+        // New options to be set.
+        $newOptions = [
+            'name' => World::DEFAULT_NAME,
+            'pvp' => World::DEFAULT_PVP,
+            'gamemode' => World::DEFAULT_GAMEMODE,
+            'spawn_animals' => World::DEFAULT_SPAWN_ANIMALS,
+            'difficulty' => World::DEFAULT_DIFFICULTY,
+            'spawn_monsters' => World::DEFAULT_SPAWN_MONSTERS,
+            'spawn_protection' => World::DEFAULT_SPAWN_PROTECTION,
+            'spawn_npcs' => World::DEFAULT_SPAWN_NPCS,
+            'force_gamemode' => World::DEFAULT_FORCE_GAMEMODE,
+            'command_blocks' => World::DEFAULT_COMMAND_BLOCKS
+        ];
+
         // Make changes.
         foreach ($request->all() as $key => $value) {
             if (isset($optionMapping[$key])) {
+                Log::info('Set ' . $key . ' to ' . $value);
                 $dbKey = $optionMapping[$key];
-                $world->$dbKey = $value;
+                $newOptions[$dbKey] = $value;
+            } else {
+                Log::info('Bad key ' . $key);
             }
+        }
+
+        // Apply changes to model.
+        foreach ($newOptions as $key => $value) {
+            $world->$key = $value;
         }
 
         // Save everything.
