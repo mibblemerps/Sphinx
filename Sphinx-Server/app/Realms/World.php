@@ -35,21 +35,32 @@ class World extends Model
     const DIFFICULTY_NORMAL = 2;
     const DIFFICULTY_HARD = 3;
 
+    const DEFAULT_NAME = 'World 1';
+    const DEFAULT_PVP = true;
+    const DEFAULT_GAMEMODE = true;
+    const DEFAULT_SPAWN_ANIMALS = true;
+    const DEFAULT_DIFFICULTY = self::DIFFICULTY_EASY;
+    const DEFAULT_SPAWN_MONSTERS = true;
+    const DEFAULT_SPAWN_PROTECTION = 0;
+    const DEFAULT_SPAWN_NPCS = true;
+    const DEFAULT_FORCE_GAMEMODE = false;
+    const DEFAULT_COMMAND_BLOCKS = false;
+
     protected $guarded = [];
 
     // Default values.
     protected $attributes = [
         'slot_id' => 1,
-        'name' => 'World 1',
-        'pvp' => true,
-        'gamemode' => self::GAMEMODE_SURVIVAL,
-        'spawn_animals' => true,
-        'difficulty' => self::DIFFICULTY_EASY,
-        'spawn_monsters' => true,
-        'spawn_protection' => 0,
-        'spawn_npcs' => true,
-        'force_gamemode' => false,
-        'command_blocks' => false
+        'name' => self::DEFAULT_NAME,
+        'pvp' => self::DEFAULT_PVP,
+        'gamemode' => self::DEFAULT_GAMEMODE,
+        'spawn_animals' => self::DEFAULT_SPAWN_ANIMALS,
+        'difficulty' => self::DEFAULT_DIFFICULTY,
+        'spawn_monsters' => self::DEFAULT_SPAWN_MONSTERS,
+        'spawn_protection' => self::DEFAULT_SPAWN_PROTECTION,
+        'spawn_npcs' => self::DEFAULT_SPAWN_NPCS,
+        'force_gamemode' => self::DEFAULT_FORCE_GAMEMODE,
+        'command_blocks' => self::DEFAULT_COMMAND_BLOCKS
     ];
 
     /**
