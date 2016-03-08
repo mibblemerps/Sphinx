@@ -30,6 +30,9 @@ Route::group(['middleware' => 'realms'], function () {
     Route::post('/invites/{id}', 'InviteController@invite');
     Route::delete('/invites/{id}/invite/{player}', 'RealmController@kick');
 
+    // World temlates.
+    Route::get('/worlds/templates', 'TemplateController@listing');
+
     // Realms
     Route::get('/worlds', 'RealmController@listing');
     Route::get('/activities/liveplayerlist', 'LiveActivityController@playerlist');
