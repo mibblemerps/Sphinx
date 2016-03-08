@@ -150,6 +150,12 @@ Server.prototype.start = function (startedCallback) {
 	
 	console.log(("Starting server " + this.serverdata.id + "...").yellow);
 	
+    // Refresh this servers whitelist and ops list.
+    server.updateServerLists();
+    
+    // Update server properties.
+    server.updateServerProperties();
+    
 	var jarfile = __dirname + "/jars/" + this.serverdata.jar;
 	
 	// Spawn Java process.

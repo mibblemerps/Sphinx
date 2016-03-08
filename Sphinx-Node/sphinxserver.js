@@ -114,12 +114,6 @@ SphinxServer.prototype.handleServerManifest = function (connection, payload) {
 			server.serverdata = serverManifest;
 		}
 		
-		// Refresh this servers whitelist and ops list.
-		server.updateServerLists();
-		
-		// Update server properties.
-		server.updateServerProperties();
-		
 		if (restartNeeded) {
 			if (server.serverdata.active) {
 				if (server.running || (process.env.INACTIVITY_TIMER == -1)) {
