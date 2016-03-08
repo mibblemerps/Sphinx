@@ -20,6 +20,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $spawn_npcs Should NPC's naturally spawn?
  * @property bool $force_gamemode Should the default gamemode be enforced?
  * @property bool $command_blocks Are command blocks allowed? (Still restricted to operators only).
+ * @property string $seed World generation seed.
+ * @property string $level_type Level type.
+ * @property int $template_id ID of template used for world. @TODO implement this.
  *
  * @package App\Realms
  */
@@ -34,6 +37,12 @@ class World extends Model
     const DIFFICULTY_EASY = 1;
     const DIFFICULTY_NORMAL = 2;
     const DIFFICULTY_HARD = 3;
+
+    const LEVEL_TYPE_DEFAULT = 'DEFAULT';
+    const LEVEL_TYPE_FLAT = 'FLAT';
+    const LEVEL_TYPE_LARGE_BIOMES = 'LARGEBIOMES';
+    const LEVEL_TYPE_AMPLIFIED = 'AMPLIFIED';
+    const LEVEL_TYPE_CUSTOMIZED = 'CUSTOMIZED';
 
     const DEFAULT_NAME = 'World 1';
     const DEFAULT_PVP = true;
@@ -60,7 +69,11 @@ class World extends Model
         'spawn_protection' => self::DEFAULT_SPAWN_PROTECTION,
         'spawn_npcs' => self::DEFAULT_SPAWN_NPCS,
         'force_gamemode' => self::DEFAULT_FORCE_GAMEMODE,
-        'command_blocks' => self::DEFAULT_COMMAND_BLOCKS
+        'command_blocks' => self::DEFAULT_COMMAND_BLOCKS,
+
+        'seed' => null,
+        'level_type' => self::LEVEL_TYPE_DEFAULT,
+        'template_id' => null
     ];
 
     /**
