@@ -151,10 +151,10 @@ Server.prototype.start = function (startedCallback) {
 	console.log(("Starting server " + this.serverdata.id + "...").yellow);
 	
     // Refresh this servers whitelist and ops list.
-    server.updateServerLists();
+    this.updateServerLists();
     
     // Update server properties.
-    server.updateServerProperties();
+    this.updateServerProperties();
     
 	var jarfile = __dirname + "/jars/" + this.serverdata.jar;
 	
