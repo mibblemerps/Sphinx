@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Realms\World;
 use Illuminate\Support\ServiceProvider;
 use App\Auth\MinecraftAuth;
 use App\Realms\Realm;
@@ -28,6 +29,16 @@ class AppServiceProvider extends ServiceProvider
         };
         Realm::saved($update);
         Realm::created($update);
+
+        // Create initial world for new realms.
+        Realm::created(function ($realm) {
+            // Create world
+            World::create([
+                'realm_id' => $realm->id,
+                'name' => 'World 1',
+                'slot_id' => 1
+            ]);
+        });
     }
 
     /**
