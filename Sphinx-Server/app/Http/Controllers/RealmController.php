@@ -329,14 +329,25 @@ class RealmController extends Controller
             'command_blocks' => World::DEFAULT_COMMAND_BLOCKS
         ];
 
+        // Options that do not require a server restart.
+        $restartExemptOptions = ['name'];
+
+        // Options that have been changed.
+        $changedOptions = [];
+
         // Make changes.
         foreach ($request->all() as $key => $value) {
             if (isset($optionMapping[$key])) {
-                Log::info('Set ' . $key . ' to ' . $value);
                 $dbKey = $optionMapping[$key];
                 $newOptions[$dbKey] = $value;
-            } else {
-                Log::info('Bad key ' . $key);
+            }
+        }
+
+        // Determine changed values.
+        foreach ($newOptions as $key => $value) {
+            if ($world->$key != $value) {
+                // I'm different! :3
+                $changedOptions[] = $key;
             }
         }
 
@@ -347,8 +358,14 @@ class RealmController extends Controller
 
         // Save everything.
         $world->save();
-        $server->silentSave();
-        SphinxNode::sendManifest([$serverId], true); // send manifest with flag to restart server.
+        if (array_diff($changedOptions, $restartExemptOptions)) {
+            // A change requires a server restart.
+            $server->silentSave();
+            SphinxNode::sendManifest([$serverId], true); // send manifest with flag to restart server.
+        } else {
+            // Change does not require a server restart.
+            $server->save();
+        }
     }
 }
 
