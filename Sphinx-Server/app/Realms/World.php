@@ -37,6 +37,21 @@ class World extends Model
 
     protected $guarded = [];
 
+    // Default values.
+    protected $attributes = [
+        'slot_id' => 1,
+        'name' => 'World 1',
+        'pvp' => true,
+        'gamemode' => self::GAMEMODE_SURVIVAL,
+        'spawn_animals' => true,
+        'difficulty' => self::DIFFICULTY_EASY,
+        'spawn_monsters' => true,
+        'spawn_protection' => 0,
+        'spawn_npcs' => true,
+        'force_gamemode' => false,
+        'command_blocks' => false
+    ];
+
     /**
      * Realm relationship.
      *

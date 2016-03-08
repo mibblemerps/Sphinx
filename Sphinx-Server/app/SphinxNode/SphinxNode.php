@@ -4,6 +4,7 @@ namespace App\SphinxNode;
 
 use App\Realms\Player;
 use App\Realms\Realm;
+use App\Realms\World;
 use WebSocket\Client;
 
 /**
@@ -104,6 +105,13 @@ class SphinxNode
                 ];
             }
 
+            // Get world/slot.
+            $world = $server->worlds->first();
+            if ($world === null) {
+                // Has not slot defined.
+                $world = new World(); // create a blank one.
+            }
+
             $serverJson[] = [
                 'id' => $server->id,
                 'name' => $server->name,
@@ -113,7 +121,17 @@ class SphinxNode
                     'max-players' => env('SERVER_MAX_PLAYERS', 10),
                     'white-list' => 'true',
                     'motd' => $server->motd,
-                    'op-permission-level' => (env('ENFORCE_OP_PERMISSIONS', true) ? '2' : '4')
+                    'op-permission-level' => (env('ENFORCE_OP_PERMISSIONS', true) ? '2' : '4'),
+
+                    'pvp' => $world->pvp ? 'true' : 'false',
+                    'gamemode' => $world->gamemode,
+                    'spawn-animals' => $world->spawn_animals ? 'true' : 'false',
+                    'difficulty' => $world->difficulty,
+                    'spawn-monsters' => $world->spawn_monsters ? 'true' : 'false',
+                    'spawn-protection' => $world->spawn_protection,
+                    'spawn-npcs' => $world->spawn_npcs ? 'true' : 'false',
+                    'force-gamemode' => $world->force_gamemode ? 'true' : 'false',
+                    'enable-command-block' => $world->command_blocks ? 'true' : 'false'
                 ],
                 'whitelist' => $whitelistJson,
                 'ops' => $opsJson,

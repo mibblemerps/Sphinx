@@ -322,7 +322,11 @@ class RealmController extends Controller
                 $world->$dbKey = $value;
             }
         }
-        $world->save(); // Save.
+
+        // Save everything.
+        $world->save();
+        $server->silentSave();
+        SphinxNode::sendManifest([$serverId], true); // send manifest with flag to restart server.
     }
 }
 
