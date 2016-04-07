@@ -277,6 +277,8 @@ Server.prototype.updateServerProperties = function () {
 	// Set IP/port information.
 	props.set("server-port", this.serverport);
 	props.set("server-ip", process.env.SERVER_BIND_IP);
+	props.set("level-name", this.serverdata.slot_id)
+	
 	
 	// Save
 	fs.writeFileSync(this.serverPath + "/server.properties", props.compile());

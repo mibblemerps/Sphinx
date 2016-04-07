@@ -136,7 +136,8 @@ class SphinxNode
                 'whitelist' => $whitelistJson,
                 'ops' => $opsJson,
                 'needRestart' => $needRestart,
-                'deleted' => false
+                'deleted' => false,
+				'slot_id' => $world->slot_id
             ];
         }
 
