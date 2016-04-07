@@ -20,7 +20,12 @@ Route::group(['middleware' => 'realms'], function () {
     Route::get('/mco/client/compatible', 'AvailabilityController@compatible');
     Route::get('/mco/stageAvailable', 'AvailabilityController@stagingAvailable');
     Route::post('/regions/ping/stat', 'AvailabilityController@regionPing');
-    Route::get('/trial', 'AvailabilityController@trialAvailable');
+    
+	
+	
+	// Trials
+	Route::get('/trial', 'AvailabilityController@trialAvailable');
+	Route::post('/trial', 'RealmController@MakeTrialWorld');
 
     // Invites.
     Route::get('/invites/count/pending', 'InviteController@pendingCount');

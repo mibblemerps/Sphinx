@@ -281,7 +281,25 @@ class RealmController extends Controller
 
         return 'true';
     }
-
+		public function MakeTrialWorld(Request $request)
+		
+    {
+		$player = new Player(Player::current()->uuid, Player::current()->username);
+        // Make a Trial World
+		Realm::create([
+            'address' => '',
+            'state' => Realm::STATE_OPEN,
+            'name' => $request->input('name'),
+            'days_left' => 365,
+            'expired' => false,
+            'invited_players' => [$player],
+            'operators' => [$player],
+            'minigames_server' => false,
+            'motd' => $request->input('description'),
+            'owner' => $player
+        ]);
+        return 'true';
+    }
     public function updateSlot(Request $request, $serverId, $slotId)
     {
         $server = Realm::find($serverId);
