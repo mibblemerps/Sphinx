@@ -60,8 +60,16 @@ class RealmController extends Controller
         if ($firstSlotId === null) {
             $firstSlotId = 1;
         }
-
-        // Formulate JSON response.
+		if ($server->days_left < 1)
+        {
+			$expired = 1;
+		} 
+		else 
+		{
+			$expired = 0;
+			
+		}
+		// Formulate JSON response.
         $json = array(
             'id' => intval($server->id),
             'remoteSubscriptionId' => "$server->id",
@@ -73,7 +81,7 @@ class RealmController extends Controller
             'ownerUUID' => $server->owner->uuid,
             'daysLeft' => intval($server->days_left),
             'ip' => $server->address,
-            'expired' => !!$server->expired,
+            'expired' => !!$expired,
             'minigame' => !!$server->minigames_server,
             'activeSlot' => $firstSlotId,
             'slots' => $slots
