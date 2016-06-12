@@ -3,7 +3,7 @@
 SET version=v1.0.1B
 
 SET for_minecraft=1.10
-SET for_realms=1.9
+SET for_realms=1.9.0
 
 :: Minecraft path
 SET minecraft=%appdata%\.minecraft
