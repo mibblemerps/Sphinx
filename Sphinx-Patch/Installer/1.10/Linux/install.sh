@@ -3,6 +3,7 @@
 VERSION="v1.0.0B"
 
 FOR_MINECRAFT="1.10"
+FOR_REALMS="1.9.0"
 
 MINECRAFT="$HOME/.minecraft"
 
