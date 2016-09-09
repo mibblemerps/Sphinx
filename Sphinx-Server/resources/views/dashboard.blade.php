@@ -20,7 +20,12 @@
         <div class="col-md-8">
             <h1>Hello, {{ Auth::user()->username }}!</h1>
         </div>
+		<br />
         <div class="col-md-4">
+		
+			<div class="panel panel-primary">
+			<div class="panel-heading">Sphinx Node Status</div>
+			<div class="panel-body">
             <table class="statistics-table table">
                 <tr>
                     <td class="stat-name">Node Online?</td>
@@ -39,6 +44,9 @@
                     <td class="stat-value" id="stat-onlinePlayers">{{ $stats['onlinePlayers'] }}</td>
                 </tr>
             </table>
+			 </div>
         </div>
     </div>
+	</div>
+	
 @endsection

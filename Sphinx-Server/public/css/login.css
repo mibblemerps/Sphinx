@@ -1,6 +1,7 @@
 .form-login {
-    max-width: 330px;
+    max-width: 530px;
     margin: 0 auto;
+	float: middle;
 }
 
 .form-login .form-control {

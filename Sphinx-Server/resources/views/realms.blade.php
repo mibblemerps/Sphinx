@@ -9,7 +9,9 @@
 @endsection
 
 @section('content')
+
     <div class="row">
+
         <div class="col-md-8">
             <h2>Realms</h2>
 
@@ -18,7 +20,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Active?</th>
+                        <th>Status</th>
                         <th>Owner</th>
                         <th>Actions</th>
                     </tr>
@@ -29,7 +31,7 @@
                             <td>{{ $realm->id }}</td>
                             <td>{{ $realm->name }}</td>
                             <td>{!! ($realm->state == 'OPEN') ? '<span style="color:green;">OPEN</span>' : (($realm->state == 'UNINITIALIZED') ? '<span style="color:orange;">UNINITIALIZED</span>' : '<span style="color:red;">' . $realm->state .'</span>') !!}</td>
-                            <td><img src="http://mcapi.ca/avatar/2d/{{ $realm->owner->username }}/16/true"> {{ $realm->owner->username }}</td>
+                            <td><img src="http://mcapi.ca/avatar/2d/{{ $realm->owner->username }}/16/true"> <b>{{ $realm->owner->username }}</b></td>
                             <td>
                                 <input type="button" value="Edit" class="realm-edit-btn btn-success" data-serverid="{{ $realm->id }}" data-servername="{{ $realm->name }}">
                                 <input type="button" value="Remove" class="realm-remove-btn btn-danger" data-serverid="{{ $realm->id }}" data-servername="{{ $realm->name }}">
@@ -38,9 +40,13 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
+ 
+		</div>
+		<br /><br /><br />
         <div class="col-md-4">
-            <h2>Create Realm</h2>
+		<div class="panel panel-primary">
+            <div class="panel-heading">Create Realm</div>
+			<div class="panel-body">
             <div class="form-create-realm">
                 <label for="name">Realm Name</label>
                 <input type="text" id="realm-create-name" class="form-control" name="name" maxlength="32">
@@ -49,9 +55,11 @@
                 <input type="text" id="realm-create-owner" class="form-control" name="owner" maxlength="64">
 
                 <div class="text-muted">Everything else can be configured in-game.</div>
-
-                <input type="button" id="realm-create-submit" class="btn btn-lg btn-success" value="Create">
+				<br />
+                <input type="button" id="realm-create-submit" class="btn btn-success" value="Create">
             </div>
+			</div>
         </div>
     </div>
+	</div>
 @endsection
