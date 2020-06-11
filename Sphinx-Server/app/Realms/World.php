@@ -46,9 +46,9 @@ class World extends Model
 
     const DEFAULT_NAME = 'World 1';
     const DEFAULT_PVP = true;
-    const DEFAULT_GAMEMODE = true;
+    const DEFAULT_GAMEMODE = self::GAMEMODE_SURVIVAL;
     const DEFAULT_SPAWN_ANIMALS = true;
-    const DEFAULT_DIFFICULTY = self::DIFFICULTY_EASY;
+    const DEFAULT_DIFFICULTY = self::DIFFICULTY_NORMAL;
     const DEFAULT_SPAWN_MONSTERS = true;
     const DEFAULT_SPAWN_PROTECTION = 0;
     const DEFAULT_SPAWN_NPCS = true;
